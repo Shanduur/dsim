@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import "github.com/Sheerley/pluggabl/pkg/compute"
 
 func main() {
-	fmt.Print("Hello world")
+	//compute.Videostream()
+	//fmt.Println(gocv.Version(), gocv.OpenCVVersion())
+	compute.Example()
 }
