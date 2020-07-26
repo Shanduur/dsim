@@ -9,7 +9,62 @@ import (
 	"unsafe"
 )
 
-func Videostream() {
+func BruteSIFTMatching(query string, train string) {
+	img1 := gocv.IMRead(query, gocv.IMReadGrayScale)
+	img2 := gocv.IMRead(train, gocv.IMReadGrayScale)
+
+	sift := contrib.NewSIFT()
+	defer sift.Close()
+
+	kp1, des1 := sift.DetectAndCompute(img1, gocv.NewMat())
+	kp2, des2 := sift.DetectAndCompute(img2, gocv.NewMat())
+
+	bf := gocv.NewBFMatcher()
+	matches := bf.KnnMatch(des1, des2, 2)
+
+	var good []gocv.DMatch
+
+	for _, m := range matches {
+		if len(m) > 1 {
+			if m[0].Distance < 0.75 * m[1].Distance {
+				good = append(good, m[0])
+			}
+		}
+	}
+
+	gocv.DrawKeyPoints(img1, kp1, &img1, color.RGBA{
+		R: 255,
+		G: 0,
+		B: 0,
+		A: 0,
+	}, gocv.DrawDefault)
+
+	gocv.DrawKeyPoints(img2, kp2, &img2, color.RGBA{
+		R: 255,
+		G: 0,
+		B: 0,
+		A: 0,
+	}, gocv.DrawDefault)
+
+	// Temporary solution until DrawKeyPointsBGRA comes into mainstream
+	gocv.CvtColor(img1, &img1, gocv.ColorBGRToRGBA)
+	gocv.CvtColor(img2, &img2, gocv.ColorBGRToRGBA)
+
+	window1 := gocv.NewWindow("Query")
+	window1.IMShow(img1)
+
+	window2 := gocv.NewWindow("Train")
+	window2.IMShow(img2)
+
+	fmt.Println(len(good))
+
+	window1.WaitKey(0)
+	window2.WaitKey(0)
+}
+
+// Function testing SIFT real time performance using
+// video capture device.
+func EXAMPLE_VideoStream() {
 	webcam, _ := gocv.VideoCaptureDevice(0)
 	window := gocv.NewWindow("Window 1")
 	img := gocv.NewMat()
@@ -39,7 +94,9 @@ func detector(image *gocv.Mat) {
 	}, gocv.DrawDefault)
 }
 
-func Example() {
+// Function showing with exemplary use of the SIFT algorithm
+// on static images.
+func EXAMPLE_StaticImage() {
 	window1 := gocv.NewWindow("Example")
 	img := gocv.IMRead("/home/shanduur/Pictures/osd.jpg", gocv.IMReadColor)
 	sift1 := contrib.NewSIFT()
@@ -63,7 +120,6 @@ func Example() {
 		B: 0,
 		A: 0,
 	}, gocv.DrawDefault)
-
 
 	fmt.Printf("Length of color kp list: %v\t Size: %vkb\n", len(kp1), float64(len(kp1)*int(unsafe.Sizeof(kp1[0])))/1024)
 	fmt.Printf("Length of gray kp list: %v\t Size: %vkb\n", len(kp2), float64(len(kp2)*int(unsafe.Sizeof(kp2[0])))/1024)
@@ -92,8 +148,6 @@ func Example() {
 		A: 0,
 	}, 2)
 
-
 	window1.IMShow(gray)
 	window1.WaitKey(0)
-
 }
