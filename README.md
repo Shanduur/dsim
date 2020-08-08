@@ -1,6 +1,10 @@
 # pluggabl
 Pluggabl is my fina engineering project.
 
+# App scheme
+
+![scheme](./docs/plugabbl.png)
+
 # Additional tools:
 
 gRPC - `protobuf-compiler`
