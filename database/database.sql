@@ -3,7 +3,8 @@
 CREATE TABLE users (
     user_id BIGSERIAL PRIMARY KEY NOT NULL,
     username VARCHAR(32) NOT NULL,
-    email VARCHAR(64)
+    email VARCHAR(64),
+    creation_date DATE NOT NULL
 );
 
 CREATE TABLE types (
@@ -17,5 +18,6 @@ CREATE TABLE blobs (
     blob_data BYTEA NOT NULL,
     blob_type INT REFERENCES types(type_id),
     blob_name VARCHAR(256),
-    owner_id BIGINT REFERENCES users(user_id) NOT NULL
+    owner_id BIGINT REFERENCES users(user_id) NOT NULL,
+    insertion_date DATE NOT NULL
 );
