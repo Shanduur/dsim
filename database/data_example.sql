@@ -3,7 +3,8 @@
 INSERT INTO users VALUES(
     DEFAULT,
     'admin',
-    'admin@example.org'
+    'admin@example.org',
+    '1999-12-31'
 );
 
 -- insertion of examplary type:
@@ -21,7 +22,8 @@ INSERT INTO blobs VALUES(
     DECODE('706C75676162626C20697320617765736F6D650A0A', 'hex'),
     1,
     'example',
-    1
+    1,
+    '2020-08-10'
 );
 
 -- list database users:
