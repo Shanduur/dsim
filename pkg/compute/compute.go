@@ -1,10 +1,16 @@
 package compute
 
 import (
-	"gocv.io/x/gocv"
 	"image/color"
+
+	"gocv.io/x/gocv"
 )
 
+// BestMatches takes two arguments being Querry and Train
+// and holding paths to the images that have to be
+// processed during the SIFT detection and Brute
+// force matchin. Function returns gocv.Mat holding
+// result of feature matching algorithm
 func BestMatches(query string, train string) gocv.Mat {
 
 	img1 := gocv.IMRead(query, gocv.IMReadGrayScale)
@@ -26,7 +32,7 @@ func BestMatches(query string, train string) gocv.Mat {
 
 	for _, m := range matches {
 		if len(m) > 1 {
-			if m[0].Distance < 0.75 * m[1].Distance {
+			if m[0].Distance < 0.75*m[1].Distance {
 				good = append(good, m[0])
 			}
 		}
@@ -49,6 +55,8 @@ func BestMatches(query string, train string) gocv.Mat {
 	out := gocv.NewMat()
 	defer out.Close()
 
+	// this should be available in the closest future
+	// inside the GoCV. Pull request is waiting.
 	//gocv.DrawMatches()
 
 	return out
