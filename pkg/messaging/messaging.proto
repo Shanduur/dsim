@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package messaging;
+
+option go_package = "pkg/messaging";
+
+service PuploadService {
+    rpc Handshaker(Handshake) returns (HandshakeStatus) {}
+    rpc Uploader(stream Chunk) returns (UploadStatus) {}
+}
+
+enum StatusCode {
+    Unknown = 0;
+    Ok = 1;
+    Failed = 2;
+    Busy = 3;
+}
+
+message Handshake {
+    int64 UserID = 1;
+    int32 BlobSize = 2;
+}
+
+message HandshakeStatus {
+    string Message = 1;
+    StatusCode Code = 2;
+}
+
+message Chunk {
+    bytes Content = 1;
+}
+
+message UploadStatus {
+    string Message = 1;
+    StatusCode Code = 2;
+}
