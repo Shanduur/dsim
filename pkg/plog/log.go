@@ -39,7 +39,7 @@ func getHeader(lvl int8) string {
 		s = "FATAL"
 	}
 
-	return fmt.Sprintf("[%v] %v ", dt.Format(dtFormat), s)
+	return fmt.Sprintf("%v [%v] ", dt.Format(dtFormat), s)
 }
 
 // CloseLogFile is used to defer closing the log file.
