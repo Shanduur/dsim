@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package pluggable.transfer;
+
+option go_package = "pkg/pb";
+
+message Chunk {
+    bytes content = 1;
+}
