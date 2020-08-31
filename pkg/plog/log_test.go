@@ -29,7 +29,7 @@ func TestSetLogLevel(t *testing.T) {
 }
 
 func TestLogFile(t *testing.T) {
-	path := "./log.txt"
+	path := "./log.tmp.txt"
 
 	f, err := os.Create(path)
 	if err != nil {
@@ -43,11 +43,6 @@ func TestLogFile(t *testing.T) {
 	}
 
 	CloseLogFile()
-
-	err = os.Remove(path)
-	if err != nil {
-		t.Errorf("Error removing file: %v", err)
-	}
 }
 
 func TestGetHeader(t *testing.T) {

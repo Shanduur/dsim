@@ -21,3 +21,33 @@ func ProtobufToBinaryFile(message proto.Message, filename string) (err error) {
 
 	return nil
 }
+
+// BinaryFileToProtobuf deserializes the binary file into the gRPC message
+func BinaryFileToProtobuf(filename string, message proto.Message) (err error) {
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return fmt.Errorf("unable to read binary file: %v", err)
+	}
+
+	err = proto.Unmarshal(data, message)
+	if err != nil {
+		return fmt.Errorf("unable to unmarshall binary data into proto message: %v", err)
+	}
+
+	return nil
+}
+
+// ProtobufToJSONFile saves the proto message into the JSON file
+func ProtobufToJSONFile(message proto.Message, filename string) (err error) {
+	json, err := ProtobufToJSON(message)
+	if err != nil {
+		return fmt.Errorf("unable to marshal proto message into json: %v", err)
+	}
+
+	err = ioutil.WriteFile(filename, []byte(json), 0644)
+	if err != nil {
+		return fmt.Errorf("unable to write json string into file: %v", err)
+	}
+
+	return nil
+}
