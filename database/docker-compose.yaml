@@ -18,20 +18,6 @@ services:
     restart: unless-stopped
     ports:
       - 8080:8080
-
-  rest:
-    image: postgrest/postgrest
-    restart: unless-stopped
-    ports: 
-      - 3000:3000
-    links:
-      - db:db
-    environment:
-      PGRST_DB_URI: postgres://user:password@db:5432/database
-      PGRST_DB_SCHEMA: public
-      PGRST_DB_ANON_ROLE: user #In production this role should not be the same as the one used for the connection
-    depends_on:
-      - db
-
+      
 volumes:
   dbdata:
