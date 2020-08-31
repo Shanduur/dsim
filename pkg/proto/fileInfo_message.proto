@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package pluggable.transfer;
+
+option go_package = "pkg/pb";
+
+message FileInfo {
+    enum SizeType {
+        bytes = 0;
+        kilobytes = 1;
+        megabytes = 2;
+    }
+
+    string file_extension = 1;
+    SizeType size_type = 2;
+    uint64 size = 3;
+}

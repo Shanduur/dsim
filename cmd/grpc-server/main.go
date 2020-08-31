@@ -1,27 +1,31 @@
 package main
 
 import (
-	"net"
-
 	"github.com/Sheerley/pluggabl/pkg/plog"
 	"github.com/Sheerley/pluggabl/pkg/transfer"
-	"google.golang.org/grpc"
 )
 
 func main() {
+	var (
+		port        = 5070
+		key         = ""
+		certificate = ""
+		server      transfer.Server
+	)
 
-	lis, err := net.Listen("tcp", ":9000")
+	grpcServer, err := transfer.NewServerGRPC(transfer.ServerGRPCConfig{
+		Port:        port,
+		Certificate: certificate,
+		Key:         key,
+	})
+
 	if err != nil {
-		plog.Fatalf(1, "failed to listen: %v\n", err)
+		plog.Fatalf(1, "failed to create server: %v", err)
 	}
 
-	s := transfer.Server{}
+	server = &grpcServer
 
-	grpcServer := grpc.NewServer()
+	err = server.Listen()
 
-	transfer.RegisterTransferServiceServer(grpcServer, &s)
-
-	if err := grpcServer.Serve(lis); err != nil {
-		plog.Fatalf(1, "failed to serve: %v\n", err)
-	}
+	defer server.Close()
 }

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package pluggable.transfer;
+
+option go_package = "pkg/pb";
+
+import "credentials_message.proto";
+import "fileInfo_message.proto";
+
+message Request {
+    Credentials user = 1;
+    uint32 number_of_files = 2;
+    repeated FileInfo file_information = 3;
+}

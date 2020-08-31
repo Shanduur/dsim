@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pluggable.transfer;
+
+option go_package = "pkg/pb";
+
+message Response {
+    enum ReturnCode {
+        unknown = 0;
+        ok = 1;
+        error = 2;
+    }
+
+    ReturnCode return_code = 1;
+    string return_message = 2;
+}
