@@ -1,0 +1,7 @@
+{
+  "primary-node-address": "192.168.0.105",
+  "secondary-node-address": "192.168.0.106",
+  "garbage-collection-timeout": 1000,
+  "max-threads": 4,
+  "primary": true
+}
