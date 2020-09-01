@@ -1,21 +1,28 @@
 package transfer
 
 import (
+	"crypto/sha512"
+
 	"github.com/Sheerley/pluggabl/pkg/pb"
 )
 
-// NewCredentials generates Credentials struct
-func NewCredentials() *pb.Credentials {
+// NewDummyCredentials generates Credentials struct
+func NewDummyCredentials() *pb.Credentials {
+	hasher := sha512.New()
+	bv := []byte("placeholder")
+
+	hasher.Write(bv)
+
 	userCreds := &pb.Credentials{
 		UserId:  "placeholder",
-		UserKey: "placeholder",
+		UserKey: hasher.Sum(nil),
 	}
 
 	return userCreds
 }
 
-// NewFileInfo generates File information
-func NewFileInfo() *pb.FileInfo {
+// NewDummyFileInfo generates File information
+func NewDummyFileInfo() *pb.FileInfo {
 	fileInfo := &pb.FileInfo{
 		FileExtension: ".txt",
 		SizeType:      pb.FileInfo_kilobytes,
@@ -25,24 +32,24 @@ func NewFileInfo() *pb.FileInfo {
 	return fileInfo
 }
 
-// NewFilesSlice generates slice containing informations about transfered files
-func NewFilesSlice(number uint32) []*pb.FileInfo {
+// NewDummyFilesSlice generates slice containing informations about transfered files
+func NewDummyFilesSlice(number uint32) []*pb.FileInfo {
 	var slice []*pb.FileInfo
 
 	var i uint32
 	for i = 0; i < number; i++ {
-		slice = append(slice, NewFileInfo())
+		slice = append(slice, NewDummyFileInfo())
 	}
 
 	return slice
 }
 
-// NewRequest generates new request message
-func NewRequest(number uint32) *pb.Request {
-	req := &pb.Request{
-		User:            NewCredentials(),
+// NewDummyJob generates new request message
+func NewDummyJob(number uint32) *pb.Job {
+	req := &pb.Job{
+		User:            NewDummyCredentials(),
 		NumberOfFiles:   number,
-		FileInformation: NewFilesSlice(number),
+		FileInformation: NewDummyFilesSlice(number),
 	}
 
 	return req

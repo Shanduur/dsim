@@ -7,8 +7,8 @@ proto:
 	pkg/proto/*.proto
 
 clean:
-	rm pkg/pb/*.pb.go
-	rm */**/*.tmp.*
+	rm -f pkg/pb/*.pb.go
+	rm -f */**/*.tmp.*
 
 gtest:
 	go test -cover -race ./...

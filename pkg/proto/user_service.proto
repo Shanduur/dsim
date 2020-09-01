@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package pluggable.transfer;
+
+option go_package = "pkg/pb";
+
+import "credentials_message.proto";
+import "response_message.proto";
+
+
+message ActionUserRequest {
+    Credentials credentials = 1;
+}
+
+message ActionUserResponse {
+    Response response = 1;
+}
+
+service CreateUserService {
+    rpc CreateUser(ActionUserRequest) returns (ActionUserResponse) {};
+}
+
+service UpdateUserService {
+    rpc DeleteUser(ActionUserRequest) returns (ActionUserResponse) {};
+}
+
+service DeleteUserService {
+    rpc DeleteUser(ActionUserRequest) returns (ActionUserResponse) {};
+}
