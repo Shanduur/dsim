@@ -142,30 +142,21 @@ var file_user_service_proto_rawDesc = []byte{
 	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x70, 0x6c,
 	0x75, 0x67, 0x67, 0x61, 0x62, 0x6c, 0x65, 0x2e, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72,
 	0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x08, 0x72, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x32, 0x72, 0x0a, 0x11, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x55, 0x73, 0x65,
-	0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x5d, 0x0a, 0x0a, 0x43, 0x72, 0x65, 0x61,
-	0x74, 0x65, 0x55, 0x73, 0x65, 0x72, 0x12, 0x25, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x67, 0x61, 0x62,
-	0x6c, 0x65, 0x2e, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x2e, 0x41, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e,
-	0x70, 0x6c, 0x75, 0x67, 0x67, 0x61, 0x62, 0x6c, 0x65, 0x2e, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66,
-	0x65, 0x72, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x32, 0x72, 0x0a, 0x11, 0x55, 0x70, 0x64, 0x61, 0x74,
-	0x65, 0x55, 0x73, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x5d, 0x0a, 0x0a,
-	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x55, 0x73, 0x65, 0x72, 0x12, 0x25, 0x2e, 0x70, 0x6c, 0x75,
-	0x67, 0x67, 0x61, 0x62, 0x6c, 0x65, 0x2e, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x2e,
-	0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x1a, 0x26, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x67, 0x61, 0x62, 0x6c, 0x65, 0x2e, 0x74, 0x72,
+	0x6e, 0x73, 0x65, 0x32, 0xcb, 0x01, 0x0a, 0x0b, 0x55, 0x73, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76,
+	0x69, 0x63, 0x65, 0x12, 0x5d, 0x0a, 0x0a, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x55, 0x73, 0x65,
+	0x72, 0x12, 0x25, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x67, 0x61, 0x62, 0x6c, 0x65, 0x2e, 0x74, 0x72,
 	0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x55, 0x73, 0x65,
-	0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x32, 0x72, 0x0a, 0x11, 0x44,
-	0x65, 0x6c, 0x65, 0x74, 0x65, 0x55, 0x73, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
-	0x12, 0x5d, 0x0a, 0x0a, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x55, 0x73, 0x65, 0x72, 0x12, 0x25,
-	0x2e, 0x70, 0x6c, 0x75, 0x67, 0x67, 0x61, 0x62, 0x6c, 0x65, 0x2e, 0x74, 0x72, 0x61, 0x6e, 0x73,
-	0x66, 0x65, 0x72, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x67, 0x61, 0x62, 0x6c,
-	0x65, 0x2e, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42,
-	0x08, 0x5a, 0x06, 0x70, 0x6b, 0x67, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x67,
+	0x61, 0x62, 0x6c, 0x65, 0x2e, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x2e, 0x41, 0x63,
+	0x74, 0x69, 0x6f, 0x6e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x00, 0x12, 0x5d, 0x0a, 0x0a, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x55, 0x73, 0x65, 0x72,
+	0x12, 0x25, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x67, 0x61, 0x62, 0x6c, 0x65, 0x2e, 0x74, 0x72, 0x61,
+	0x6e, 0x73, 0x66, 0x65, 0x72, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x55, 0x73, 0x65, 0x72,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e, 0x70, 0x6c, 0x75, 0x67, 0x67, 0x61,
+	0x62, 0x6c, 0x65, 0x2e, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x2e, 0x41, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x00, 0x42, 0x08, 0x5a, 0x06, 0x70, 0x6b, 0x67, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -190,14 +181,12 @@ var file_user_service_proto_goTypes = []interface{}{
 var file_user_service_proto_depIdxs = []int32{
 	2, // 0: pluggable.transfer.ActionUserRequest.credentials:type_name -> pluggable.transfer.Credentials
 	3, // 1: pluggable.transfer.ActionUserResponse.response:type_name -> pluggable.transfer.Response
-	0, // 2: pluggable.transfer.CreateUserService.CreateUser:input_type -> pluggable.transfer.ActionUserRequest
-	0, // 3: pluggable.transfer.UpdateUserService.DeleteUser:input_type -> pluggable.transfer.ActionUserRequest
-	0, // 4: pluggable.transfer.DeleteUserService.DeleteUser:input_type -> pluggable.transfer.ActionUserRequest
-	1, // 5: pluggable.transfer.CreateUserService.CreateUser:output_type -> pluggable.transfer.ActionUserResponse
-	1, // 6: pluggable.transfer.UpdateUserService.DeleteUser:output_type -> pluggable.transfer.ActionUserResponse
-	1, // 7: pluggable.transfer.DeleteUserService.DeleteUser:output_type -> pluggable.transfer.ActionUserResponse
-	5, // [5:8] is the sub-list for method output_type
-	2, // [2:5] is the sub-list for method input_type
+	0, // 2: pluggable.transfer.UserService.CreateUser:input_type -> pluggable.transfer.ActionUserRequest
+	0, // 3: pluggable.transfer.UserService.DeleteUser:input_type -> pluggable.transfer.ActionUserRequest
+	1, // 4: pluggable.transfer.UserService.CreateUser:output_type -> pluggable.transfer.ActionUserResponse
+	1, // 5: pluggable.transfer.UserService.DeleteUser:output_type -> pluggable.transfer.ActionUserResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
 	2, // [2:2] is the sub-list for extension extendee
 	0, // [0:2] is the sub-list for field type_name
@@ -244,7 +233,7 @@ func file_user_service_proto_init() {
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
-			NumServices:   3,
+			NumServices:   1,
 		},
 		GoTypes:           file_user_service_proto_goTypes,
 		DependencyIndexes: file_user_service_proto_depIdxs,
@@ -264,216 +253,108 @@ var _ grpc.ClientConnInterface
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 
-// CreateUserServiceClient is the client API for CreateUserService service.
+// UserServiceClient is the client API for UserService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type CreateUserServiceClient interface {
+type UserServiceClient interface {
 	CreateUser(ctx context.Context, in *ActionUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error)
+	DeleteUser(ctx context.Context, in *ActionUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error)
 }
 
-type createUserServiceClient struct {
+type userServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewCreateUserServiceClient(cc grpc.ClientConnInterface) CreateUserServiceClient {
-	return &createUserServiceClient{cc}
+func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
+	return &userServiceClient{cc}
 }
 
-func (c *createUserServiceClient) CreateUser(ctx context.Context, in *ActionUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error) {
+func (c *userServiceClient) CreateUser(ctx context.Context, in *ActionUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error) {
 	out := new(ActionUserResponse)
-	err := c.cc.Invoke(ctx, "/pluggable.transfer.CreateUserService/CreateUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pluggable.transfer.UserService/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// CreateUserServiceServer is the server API for CreateUserService service.
-type CreateUserServiceServer interface {
+func (c *userServiceClient) DeleteUser(ctx context.Context, in *ActionUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error) {
+	out := new(ActionUserResponse)
+	err := c.cc.Invoke(ctx, "/pluggable.transfer.UserService/DeleteUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// UserServiceServer is the server API for UserService service.
+type UserServiceServer interface {
 	CreateUser(context.Context, *ActionUserRequest) (*ActionUserResponse, error)
+	DeleteUser(context.Context, *ActionUserRequest) (*ActionUserResponse, error)
 }
 
-// UnimplementedCreateUserServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedCreateUserServiceServer struct {
+// UnimplementedUserServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedUserServiceServer struct {
 }
 
-func (*UnimplementedCreateUserServiceServer) CreateUser(context.Context, *ActionUserRequest) (*ActionUserResponse, error) {
+func (*UnimplementedUserServiceServer) CreateUser(context.Context, *ActionUserRequest) (*ActionUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
-
-func RegisterCreateUserServiceServer(s *grpc.Server, srv CreateUserServiceServer) {
-	s.RegisterService(&_CreateUserService_serviceDesc, srv)
+func (*UnimplementedUserServiceServer) DeleteUser(context.Context, *ActionUserRequest) (*ActionUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 
-func _CreateUserService_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func RegisterUserServiceServer(s *grpc.Server, srv UserServiceServer) {
+	s.RegisterService(&_UserService_serviceDesc, srv)
+}
+
+func _UserService_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ActionUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CreateUserServiceServer).CreateUser(ctx, in)
+		return srv.(UserServiceServer).CreateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pluggable.transfer.CreateUserService/CreateUser",
+		FullMethod: "/pluggable.transfer.UserService/CreateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CreateUserServiceServer).CreateUser(ctx, req.(*ActionUserRequest))
+		return srv.(UserServiceServer).CreateUser(ctx, req.(*ActionUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _CreateUserService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "pluggable.transfer.CreateUserService",
-	HandlerType: (*CreateUserServiceServer)(nil),
+func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActionUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).DeleteUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pluggable.transfer.UserService/DeleteUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).DeleteUser(ctx, req.(*ActionUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _UserService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "pluggable.transfer.UserService",
+	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreateUser",
-			Handler:    _CreateUserService_CreateUser_Handler,
+			Handler:    _UserService_CreateUser_Handler,
 		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "user_service.proto",
-}
-
-// UpdateUserServiceClient is the client API for UpdateUserService service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type UpdateUserServiceClient interface {
-	DeleteUser(ctx context.Context, in *ActionUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error)
-}
-
-type updateUserServiceClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewUpdateUserServiceClient(cc grpc.ClientConnInterface) UpdateUserServiceClient {
-	return &updateUserServiceClient{cc}
-}
-
-func (c *updateUserServiceClient) DeleteUser(ctx context.Context, in *ActionUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error) {
-	out := new(ActionUserResponse)
-	err := c.cc.Invoke(ctx, "/pluggable.transfer.UpdateUserService/DeleteUser", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// UpdateUserServiceServer is the server API for UpdateUserService service.
-type UpdateUserServiceServer interface {
-	DeleteUser(context.Context, *ActionUserRequest) (*ActionUserResponse, error)
-}
-
-// UnimplementedUpdateUserServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedUpdateUserServiceServer struct {
-}
-
-func (*UnimplementedUpdateUserServiceServer) DeleteUser(context.Context, *ActionUserRequest) (*ActionUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
-}
-
-func RegisterUpdateUserServiceServer(s *grpc.Server, srv UpdateUserServiceServer) {
-	s.RegisterService(&_UpdateUserService_serviceDesc, srv)
-}
-
-func _UpdateUserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ActionUserRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UpdateUserServiceServer).DeleteUser(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/pluggable.transfer.UpdateUserService/DeleteUser",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UpdateUserServiceServer).DeleteUser(ctx, req.(*ActionUserRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _UpdateUserService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "pluggable.transfer.UpdateUserService",
-	HandlerType: (*UpdateUserServiceServer)(nil),
-	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "DeleteUser",
-			Handler:    _UpdateUserService_DeleteUser_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "user_service.proto",
-}
-
-// DeleteUserServiceClient is the client API for DeleteUserService service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type DeleteUserServiceClient interface {
-	DeleteUser(ctx context.Context, in *ActionUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error)
-}
-
-type deleteUserServiceClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewDeleteUserServiceClient(cc grpc.ClientConnInterface) DeleteUserServiceClient {
-	return &deleteUserServiceClient{cc}
-}
-
-func (c *deleteUserServiceClient) DeleteUser(ctx context.Context, in *ActionUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error) {
-	out := new(ActionUserResponse)
-	err := c.cc.Invoke(ctx, "/pluggable.transfer.DeleteUserService/DeleteUser", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// DeleteUserServiceServer is the server API for DeleteUserService service.
-type DeleteUserServiceServer interface {
-	DeleteUser(context.Context, *ActionUserRequest) (*ActionUserResponse, error)
-}
-
-// UnimplementedDeleteUserServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedDeleteUserServiceServer struct {
-}
-
-func (*UnimplementedDeleteUserServiceServer) DeleteUser(context.Context, *ActionUserRequest) (*ActionUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
-}
-
-func RegisterDeleteUserServiceServer(s *grpc.Server, srv DeleteUserServiceServer) {
-	s.RegisterService(&_DeleteUserService_serviceDesc, srv)
-}
-
-func _DeleteUserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ActionUserRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DeleteUserServiceServer).DeleteUser(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/pluggable.transfer.DeleteUserService/DeleteUser",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DeleteUserServiceServer).DeleteUser(ctx, req.(*ActionUserRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _DeleteUserService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "pluggable.transfer.DeleteUserService",
-	HandlerType: (*DeleteUserServiceServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "DeleteUser",
-			Handler:    _DeleteUserService_DeleteUser_Handler,
+			Handler:    _UserService_DeleteUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

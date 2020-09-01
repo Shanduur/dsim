@@ -8,14 +8,12 @@ import (
 
 // NewDummyCredentials generates Credentials struct
 func NewDummyCredentials() *pb.Credentials {
-	hasher := sha512.New()
+	s512 := sha512.New()
 	bv := []byte("placeholder")
-
-	hasher.Write(bv)
 
 	userCreds := &pb.Credentials{
 		UserId:  "placeholder",
-		UserKey: hasher.Sum(nil),
+		UserKey: s512.Sum(bv),
 	}
 
 	return userCreds

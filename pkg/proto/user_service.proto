@@ -16,14 +16,7 @@ message ActionUserResponse {
     Response response = 1;
 }
 
-service CreateUserService {
+service UserService {
     rpc CreateUser(ActionUserRequest) returns (ActionUserResponse) {};
-}
-
-service UpdateUserService {
-    rpc DeleteUser(ActionUserRequest) returns (ActionUserResponse) {};
-}
-
-service DeleteUserService {
     rpc DeleteUser(ActionUserRequest) returns (ActionUserResponse) {};
 }

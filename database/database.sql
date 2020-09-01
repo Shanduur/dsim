@@ -2,9 +2,10 @@
 
 CREATE TABLE users (
     user_id BIGSERIAL PRIMARY KEY NOT NULL,
-    username VARCHAR(32) NOT NULL,
-    email VARCHAR(64),
-    creation_date DATE NOT NULL
+    user_name VARCHAR(32) NOT NULL,
+    user_key BYTEA NOT NULL,
+    -- email VARCHAR(64),
+    -- creation_date DATE NOT NULL
 );
 
 CREATE TABLE types (
