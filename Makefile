@@ -15,5 +15,8 @@ gtest:
 
 ptest: proto gtest
 
+gatest:
+	go test $(go list ./... | grep -v /compute/)
+
 install:
-	cd $(GOPATH)/src/gocv.io/x/gocv && $(MAKE) install
+	cd $(go env GOPATH)/src/gocv.io/x/gocv && $(MAKE) install
