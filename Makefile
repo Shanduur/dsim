@@ -17,5 +17,7 @@ ptest: proto gtest
 
 install:
 	ls -la /
-	tree /
+	ls -la /bin/
+	which go
+	ls -la $(which go)
 	cd $(go env GOPATH)/src/gocv.io/x/gocv && $(MAKE) install
