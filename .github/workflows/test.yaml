@@ -15,7 +15,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Test
-      run: make install && make ptest 
+      run: |
+        ls -la
+        make install && make ptest 
 
 #   test-gopath:
 #     env:
