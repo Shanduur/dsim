@@ -1,4 +1,4 @@
-all: clean proto gtest
+all: install clean proto gtest
 
 proto:
 	protoc \
@@ -16,8 +16,5 @@ gtest:
 ptest: proto gtest
 
 install:
-	ls -la /
-	ls -la /bin/
-	which go
-	ls -la $(which go)
-	cd $(go env GOPATH)/src/gocv.io/x/gocv && $(MAKE) install
+	go get
+	cd $(GOPATH)/src/gocv.io/x/gocv && $(MAKE) install
