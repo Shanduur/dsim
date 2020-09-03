@@ -14,12 +14,12 @@ jobs:
         go-version: ${{ matrix.go-version }}
     - name: Checkout code
       uses: actions/checkout@v2
-    # - name: Install OpenCV
-    #   uses: Dovyski/setup-opencv-action@v1
-    #   with:
-    #     opencv-version: '4.0.0'
+    - name: Install OpenCV
+      uses: Dovyski/setup-opencv-action@v1
+      with:
+        opencv-version: '4.0.0'
     - name: Test
-      run: make githubActionsSetup
+      run: make ptest
 
 #   test-gopath:
 #     env:
