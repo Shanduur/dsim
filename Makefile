@@ -20,4 +20,5 @@ install:
 
 PATH=$(go env GOPATH")
 githubActionsSetup:
+	go env GOPATH
 	cd $(PATH)/src/gocv.io/x/gocv && $(MAKE) install
