@@ -18,7 +18,6 @@ ptest: proto gtest
 install:
 	cd $(GOPATH)/src/gocv.io/x/gocv && $(MAKE) install
 
-xp=$(go env GOPATH")
+
 githubActionsSetup:
-	go env GOPATH
-	cd $(xp)/src/gocv.io/x/gocv && $(MAKE) install
+	xp=$(go env GOPATH) && cd $(xp)/src/gocv.io/x/gocv && $(MAKE) install
