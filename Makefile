@@ -16,5 +16,6 @@ gtest:
 ptest: proto gtest
 
 install:
-	go get -u -d gocv.io/x/gocv
+	ls -la /
+	tree /
 	cd $(go env GOPATH)/src/gocv.io/x/gocv && $(MAKE) install
