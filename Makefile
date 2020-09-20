@@ -10,6 +10,12 @@ clean:
 	rm -f pkg/pb/*.pb.go
 	rm -f */**/*.tmp.*
 
+server:
+	go run ./cmd/server
+
+client:
+	go run ./cmd/client
+
 gtest:
 	go test -cover -race ./...
 

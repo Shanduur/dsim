@@ -2,11 +2,10 @@ package convo
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net"
 	"os"
-
-	"github.com/Sheerley/pluggabl/pkg/plog"
 )
 
 // Config struct holds all the informations necessary to configure
@@ -52,22 +51,25 @@ func LoadConfiguration(location string) error {
 
 	jsonFile, err := os.Open(location)
 	if err != nil {
-		plog.Fatalf(1, "Failed to read the config file %v: %v\n", location, err)
+		return fmt.Errorf("failed to read the config file %v: %v", location, err)
 	}
 	defer jsonFile.Close()
 
 	byteValue, err := ioutil.ReadAll(jsonFile)
+	if err != nil {
+		return fmt.Errorf("failed to read config file: %v", err)
+	}
 
 	var c configJSON
 
 	err = json.Unmarshal(byteValue, &c)
 	if err != nil {
-		plog.Fatalf(1, "Failed to unmarshal the config file: %v\n", err)
+		return fmt.Errorf("failed to unmarshal the config file: %v", err)
 	}
 
 	err = Configuration.jsonToConfig(c)
 	if err != nil {
-		plog.Fatalf(1, "Failed to load the Configuration: %v\n", err)
+		return fmt.Errorf("failed to load the Configuration: %v", err)
 	}
 
 	return nil

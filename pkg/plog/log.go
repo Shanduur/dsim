@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 	"time"
+
+	"github.com/Sheerley/pluggabl/internal/codes"
 )
 
 const dtFormat = "01-02-2006 15:04:05.000"
@@ -70,7 +72,8 @@ func Messagef(format string, v ...interface{}) {
 	if logLevel <= INFO {
 		_, err := fmt.Fprintf(outFile, getHeader(INFO)+format, v...)
 		if err != nil {
-			log.Fatalf("%v", err)
+			log.Printf("%v", err)
+			os.Exit(codes.LogError)
 		}
 	}
 }
@@ -80,7 +83,8 @@ func Errorf(format string, v ...interface{}) {
 	if logLevel <= ERROR {
 		_, err := fmt.Fprintf(outFile, getHeader(ERROR)+format, v...)
 		if err != nil {
-			log.Fatalf("%v", err)
+			log.Printf("%v", err)
+			os.Exit(codes.LogError)
 		}
 	}
 }
@@ -90,7 +94,8 @@ func Warningf(format string, v ...interface{}) {
 	if logLevel <= WARNING {
 		_, err := fmt.Fprintf(outFile, getHeader(WARNING)+format, v...)
 		if err != nil {
-			log.Fatalf("%v", err)
+			log.Printf("%v", err)
+			os.Exit(codes.LogError)
 		}
 	}
 }
@@ -100,7 +105,8 @@ func Warningf(format string, v ...interface{}) {
 func Fatalf(code int, format string, v ...interface{}) {
 	_, err := fmt.Fprintf(outFile, getHeader(FATAL)+format, v...)
 	if err != nil {
-		log.Fatalf("%v", err)
+		log.Printf("%v", err)
+		os.Exit(codes.LogError)
 	}
 	os.Exit(code)
 }
