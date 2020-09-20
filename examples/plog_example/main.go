@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/Sheerley/pluggabl/pkg/plog"
 	"time"
+
+	"github.com/Sheerley/pluggabl/pkg/plog"
 )
 
 func main() {
-	plog.SetLogFile("cmd/plog-example/log.txt")
+	plog.SetLogFile("cmd/plog-example/log.tmp.txt")
 	defer plog.CloseLogFile() // will not run due to Fatalf
 
 	plog.Messagef("%v %v %v\n", 12, 13, 14)
@@ -23,5 +24,5 @@ func main() {
 	plog.Warningf("%v %v %v\n", 12, 13, 14)
 	time.Sleep(12 * time.Millisecond)
 
-	plog.Fatalf(1,"%v %v %v\n", 12, 13, 14)
+	plog.Fatalf(1, "%v %v %v\n", 12, 13, 14)
 }

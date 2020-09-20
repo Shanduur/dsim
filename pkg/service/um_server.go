@@ -68,7 +68,6 @@ func (srv *UserManagementServer) CreateUser(ctx context.Context, req *pb.ActionU
 		}
 
 		return
-
 	}
 
 	respBody := pb.Response{
