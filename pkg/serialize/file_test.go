@@ -14,13 +14,13 @@ func TestProtoAndBinaryFile(t *testing.T) {
 
 	name := "file.tmp.bin"
 
-	req1 := transfer.NewRequest(10)
+	req1 := transfer.NewDummyJob(10)
 	err := ProtobufToBinaryFile(req1, name)
 	if err != nil {
 		t.Errorf("Error saving protobuf message to binary file: %v", err)
 	}
 
-	req2 := &pb.Request{}
+	req2 := &pb.Job{}
 
 	err = BinaryFileToProtobuf(name, req2)
 	if err != nil {
@@ -37,7 +37,7 @@ func TestProtoAndJSONFile(t *testing.T) {
 
 	name := "file.tmp.json"
 
-	req1 := transfer.NewRequest(10)
+	req1 := transfer.NewDummyJob(10)
 	err := ProtobufToJSONFile(req1, name)
 	if err != nil {
 		t.Errorf("Unable to save proto message into JSON file")

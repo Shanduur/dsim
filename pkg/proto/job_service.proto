@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package pluggable.transfer;
+
+option go_package = "pkg/pb";
+
+import "job_message.proto";
+import "response_message.proto";
+
+message JobRequest {
+    Job job = 1;
+}
+
+message JobResponse {
+    Response response = 1;
+}
+
+service JobService {
+    rpc SubmitJob(JobRequest) returns (JobResponse) {};
+}
