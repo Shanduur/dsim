@@ -1,4 +1,4 @@
-all: clean proto gtest
+all: install clean proto gtest
 
 proto:
 	protoc \
@@ -14,3 +14,6 @@ gtest:
 	go test -cover -race ./...
 
 ptest: proto gtest
+
+install:
+	cd $(go env GOPATH)/src/gocv.io/x/gocv && $(MAKE) install
