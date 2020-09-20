@@ -44,7 +44,7 @@ func (srv *UserManagementServer) CreateUser(ctx context.Context, req *pb.ActionU
 
 		err = db.CreateUser(credentials)
 		if err != nil {
-			err = fmt.Errorf("Unable to creat user: %v", err)
+			err = fmt.Errorf("Unable to create user: %v", err)
 
 			respBody := pb.Response{
 				ReturnMessage: err.Error(),
@@ -85,10 +85,10 @@ func (srv *UserManagementServer) CreateUser(ctx context.Context, req *pb.ActionU
 	return
 }
 
-// DeleteUser is a unary RPC to create a new user
+// DeleteUser is a unary RPC to delete an existing user
 func (srv *UserManagementServer) DeleteUser(ctx context.Context, req *pb.ActionUserRequest) (rsp *pb.ActionUserResponse, err error) {
 	credentials := req.GetCredentials()
-	plog.Messagef("recieved Create User request for user %v", credentials.UserId)
+	plog.Messagef("recieved Delete User request for user %v", credentials.UserId)
 
 	if len(credentials.UserId) > 0 {
 		// checking if user exists
@@ -110,7 +110,7 @@ func (srv *UserManagementServer) DeleteUser(ctx context.Context, req *pb.ActionU
 
 		err = db.DeleteUser(credentials)
 		if err != nil {
-			err = fmt.Errorf("Unable to creat user: %v", err)
+			err = fmt.Errorf("Unable to delete user: %v", err)
 
 			respBody := pb.Response{
 				ReturnMessage: err.Error(),
@@ -125,7 +125,7 @@ func (srv *UserManagementServer) DeleteUser(ctx context.Context, req *pb.ActionU
 		}
 
 		respBody := pb.Response{
-			ReturnMessage: "User created succesfully",
+			ReturnMessage: "User deleted succesfully",
 			ReturnCode:    pb.Response_ok,
 		}
 
