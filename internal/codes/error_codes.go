@@ -17,6 +17,7 @@ const (
 	LogError               = iota
 	ComputeError           = iota
 	DbError                = iota
+	ServerError            = iota
 	ManagerConnectionError = iota
 	WorkerConnectionError  = iota
 	ClientConnectionError  = iota

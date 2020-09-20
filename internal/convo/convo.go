@@ -12,6 +12,7 @@ import (
 // pluggabl apps (client, manager and worker)
 type Config struct {
 	PrimaryNodeAddress       net.IP
+	PrimaryNodePort          int
 	SecondaryNodeAddress     net.IP
 	GarbageCollectionTimeout int
 	MaxThreads               int
@@ -20,6 +21,7 @@ type Config struct {
 
 type configJSON struct {
 	PnAddr     string `json:"primary-node-address"`
+	PnPort     int    `json:"primary-node-port"`
 	SnAddr     string `json:"secondary-node-address"`
 	GcTimeout  int    `json:"garbage-collection-timeout"`
 	MaxThreads int    `json:"max-threads"`
@@ -37,6 +39,7 @@ func (cc *Config) jsonToConfig(cj configJSON) error {
 	cc.MaxThreads = cj.MaxThreads
 	cc.IsPrimary = cj.IsPrimary
 	cc.PrimaryNodeAddress = net.ParseIP(cj.PnAddr)
+	cc.PrimaryNodePort = cj.PnPort
 	cc.SecondaryNodeAddress = net.ParseIP(cj.SnAddr)
 
 	return nil
