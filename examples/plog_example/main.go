@@ -24,7 +24,5 @@ func main() {
 	plog.Warningf("%v %v %v\n", 12, 13, 14)
 	time.Sleep(12 * time.Millisecond)
 
-
-	
 	plog.Fatalf(1, "%v %v %v\n", 12, 13, 14)
 }
