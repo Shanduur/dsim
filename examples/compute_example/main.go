@@ -1,8 +1,11 @@
 package main
 
 import (
-	"github.com/Sheerley/pluggabl/pkg/compute"
 	"os"
+
+	"github.com/Sheerley/pluggabl/internal/codes"
+	"github.com/Sheerley/pluggabl/pkg/compute"
+	"github.com/Sheerley/pluggabl/pkg/plog"
 )
 
 func main() {
@@ -13,5 +16,5 @@ func main() {
 	if res.Rows() > 0 && res.Cols() > 0 {
 		os.Exit(0)
 	}
-	os.Exit(1)
+	plog.Fatalf(codes.ComputeError, "improper size of res matrix")
 }
