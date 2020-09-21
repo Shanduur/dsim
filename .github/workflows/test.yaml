@@ -19,4 +19,9 @@ jobs:
         go test -cover -race $(go list ./... | grep -v /compute | grep -v /cmd)
     - name: Gofmt
       run: |
-        gofmt -e -d .
+        if [[ $(gofmt -e -d .) ]]; then
+          exit 0
+        else 
+          gofmt -e -d .
+          exit 1
+        fi
