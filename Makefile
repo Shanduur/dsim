@@ -16,10 +16,10 @@ server:
 client:
 	go run ./cmd/client
 
-gtest:
+test:
 	go test -cover -race ./...
 
-ptest: proto gtest
+ptest: proto test
 
 install:
 	cd $(go env GOPATH)/src/gocv.io/x/gocv && $(MAKE) install
