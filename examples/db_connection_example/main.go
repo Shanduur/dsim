@@ -22,7 +22,6 @@ func main() {
 
 	err = conn.QueryRow(context.Background(), "SELECT blob_data, blob_type FROM blobs WHERE blob_id=$1", 1).Scan(&blobData, &blobType)
 	if err != nil {
-
 		
 		
 		plog.Fatalf(1, "QueryRow failed: %v\n", err)
