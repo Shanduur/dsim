@@ -1,3 +1,5 @@
+GOCV_VERSION=v0.24.0 
+
 all: install clean proto gtest
 
 proto:
@@ -22,4 +24,4 @@ test:
 ptest: proto test
 
 install:
-	cd $(go env GOPATH)/src/gocv.io/x/gocv && $(MAKE) install
+	cd $(shell go env GOPATH)/pkg/mod/gocv.io/x/gocv\@$(GOCV_VERSION) && $(MAKE) install
