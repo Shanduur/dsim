@@ -6,7 +6,7 @@ import (
 	"github.com/Sheerley/pluggabl/pkg/pb"
 )
 
-// NewDummyCredentials generates Credentials struct
+// NewDummyCredentials generates dummy Credentials struct
 func NewDummyCredentials() *pb.Credentials {
 	s512 := sha512.New()
 	bv := []byte("placeholder")
@@ -19,7 +19,7 @@ func NewDummyCredentials() *pb.Credentials {
 	return userCreds
 }
 
-// NewDummyFileInfo generates File information
+// NewDummyFileInfo generates dummy File information
 func NewDummyFileInfo() *pb.FileInfo {
 	fileInfo := &pb.FileInfo{
 		FileExtension: ".txt",
@@ -30,7 +30,7 @@ func NewDummyFileInfo() *pb.FileInfo {
 	return fileInfo
 }
 
-// NewDummyFilesSlice generates slice containing informations about transfered files
+// NewDummyFilesSlice generates dummy slice containing informations about transfered files
 func NewDummyFilesSlice(number uint32) []*pb.FileInfo {
 	var slice []*pb.FileInfo
 
@@ -42,7 +42,7 @@ func NewDummyFilesSlice(number uint32) []*pb.FileInfo {
 	return slice
 }
 
-// NewDummyJob generates new request message
+// NewDummyJob generates new dummy request message
 func NewDummyJob(number uint32) *pb.Job {
 	req := &pb.Job{
 		User:            NewDummyCredentials(),
