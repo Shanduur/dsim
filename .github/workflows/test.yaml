@@ -17,3 +17,4 @@ jobs:
     - name: Test
       run: |
         go test -cover -race $(go list ./... | grep -v /compute | grep -v /cmd)
+        gofmt -e -d .
