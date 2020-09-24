@@ -18,6 +18,9 @@
 
         // for DB related things
         "mtxr.sqltools",
-        "mtxr.sqltools-driver-pg"
+        "mtxr.sqltools-driver-pg",
+
+        // for working with drawio files
+        "hediet.vscode-drawio",
     ],
 }

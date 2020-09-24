@@ -13,38 +13,39 @@ import (
 // Config struct holds all the informations necessary to configure
 // pluggabl apps (client, manager and worker)
 type Config struct {
-	PrimaryNodeAddress       net.IP
-	PrimaryNodePort          int
-	SecondaryNodeAddress     net.IP
+	Type                     string
+	ManagerAddress           net.IP
+	ManagerPort              int
+	WorkerAddress            net.IP
+	WorkerPort               int
 	GarbageCollectionTimeout int
 	MaxThreads               int
-	IsPrimary                bool
 }
 
 type configJSON struct {
-	PnAddr     string `json:"primary-node-address"`
-	PnPort     int    `json:"primary-node-port"`
-	SnAddr     string `json:"secondary-node-address"`
+	Type       string `json:"type"`
+	MAddr      string `json:"manager-address"`
+	MPort      int    `json:"manager-port"`
+	WAddr      string `json:"worker-address"`
+	WPort      int    `json:"worker-port"`
 	GcTimeout  int    `json:"garbage-collection-timeout"`
 	MaxThreads int    `json:"max-threads"`
-	IsPrimary  bool   `json:"primary"`
 }
 
-var defaultFileLocation = "config/config.json"
+var defaultFileLocation = "config/config.json" // TODO: set default config location in ~/.config/
 
 // Configuration is a default instance of Config struct holding the data
 // from loaded from the configuraion file.
 var Configuration Config
 
-func (cc *Config) jsonToConfig(cj configJSON) error {
+func (cc *Config) jsonToConfig(cj configJSON) {
 	cc.GarbageCollectionTimeout = cj.GcTimeout
 	cc.MaxThreads = cj.MaxThreads
-	cc.IsPrimary = cj.IsPrimary
-	cc.PrimaryNodeAddress = net.ParseIP(cj.PnAddr)
-	cc.PrimaryNodePort = cj.PnPort
-	cc.SecondaryNodeAddress = net.ParseIP(cj.SnAddr)
-
-	return nil
+	cc.Type = cj.Type
+	cc.ManagerAddress = net.ParseIP(cj.MAddr)
+	cc.ManagerPort = cj.WPort
+	cc.ManagerAddress = net.ParseIP(cj.MAddr)
+	cc.ManagerPort = cj.WPort
 }
 
 // LoadConfiguration takes string with location of config in JSON format
@@ -72,10 +73,7 @@ func LoadConfiguration(location string) error {
 		return fmt.Errorf("failed to unmarshal the config file: %v", err)
 	}
 
-	err = Configuration.jsonToConfig(c)
-	if err != nil {
-		return fmt.Errorf("failed to load the Configuration: %v", err)
-	}
+	Configuration.jsonToConfig(c)
 
 	return nil
 }
