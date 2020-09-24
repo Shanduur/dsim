@@ -1,0 +1,16 @@
+{
+    "recommendations": [
+        // most important extension
+        "golang.go",
+
+        "pkief.material-icon-theme",
+        "github.github-vscode-theme",
+
+        "github.vscode-pull-request-github",
+        "ms-vsliveshare.vsliveshare",
+        "ms-vscode-remote.remote-wsl",
+        "ms-vscode-remote.remote-ssh",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg"
+    ],
+}
