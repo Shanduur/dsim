@@ -3,13 +3,20 @@
         // most important extension
         "golang.go",
 
+        // those are used only for styling
         "pkief.material-icon-theme",
         "github.github-vscode-theme",
 
+        // better cooperating
         "github.vscode-pull-request-github",
         "ms-vsliveshare.vsliveshare",
+
+        // if you are working on remotes
         "ms-vscode-remote.remote-wsl",
         "ms-vscode-remote.remote-ssh",
+        "ms-vscode-remote.remote-containers",
+
+        // for DB related things
         "mtxr.sqltools",
         "mtxr.sqltools-driver-pg"
     ],
