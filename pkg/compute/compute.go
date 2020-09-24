@@ -56,8 +56,9 @@ func BestMatches(query string, train string) gocv.Mat {
 	defer out.Close()
 
 	// this should be available in the closest future
-	// inside the GoCV. Pull request is waiting.
-	//gocv.DrawMatches()
+	// inside the GoCV.
+	// Pull request merged to dev
+	// gocv.DrawMatches()
 
 	return out
 }
