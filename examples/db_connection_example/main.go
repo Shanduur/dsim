@@ -13,7 +13,7 @@ func main() {
 
 	conn, err := pgx.Connect(context.Background(), "postgresql://localhost/database?user=user&password=password")
 	if err != nil {
-		plog.Fatalf(1, "Unable to connect to database: %v\n", err)
+		plog.Fatalf(1, "Unable to connect to database: %v", err)
 	}
 	defer conn.Close(context.Background())
 
@@ -22,7 +22,7 @@ func main() {
 
 	err = conn.QueryRow(context.Background(), "SELECT blob_data, blob_type FROM blobs WHERE blob_id=$1", 1).Scan(&blobData, &blobType)
 	if err != nil {
-		plog.Fatalf(1, "QueryRow failed: %v\n", err)
+		plog.Fatalf(1, "QueryRow failed: %v", err)
 	}
 
 	permissions := 0666
@@ -35,6 +35,6 @@ func main() {
 
 	err = ioutil.WriteFile("fetched/example"+extension, blobData, os.FileMode(permissions))
 	if err != nil {
-		plog.Fatalf(1, "Something went wrong while saving file: %v\n", err)
+		plog.Fatalf(1, "Something went wrong while saving file: %v", err)
 	}
 }
