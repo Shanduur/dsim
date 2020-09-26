@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/Sheerley/pluggabl/internal/codes"
 	"github.com/Sheerley/pluggabl/pkg/pb"
 )
 
@@ -23,7 +24,7 @@ func UserExists(user *pb.Credentials) error {
 	}
 
 	if count != 0 {
-		return fmt.Errorf("querry returned more than 0")
+		return &codes.RecordExists{}
 	}
 
 	return nil
