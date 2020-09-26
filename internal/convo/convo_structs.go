@@ -14,6 +14,9 @@ type Config struct {
 	WorkerPort               int
 	GarbageCollectionTimeout int
 	MaxThreads               int
+	DatabaseName             string
+	DatabaseUsername         string
+	DatabasePassword         string
 }
 
 type configJSON struct {
@@ -24,6 +27,9 @@ type configJSON struct {
 	WPort      int    `json:"worker-port"`
 	GcTimeout  int    `json:"garbage-collection-timeout"`
 	MaxThreads int    `json:"max-threads"`
+	DbName     string `json:"db-name"`
+	DbUname    string `json:"db-username"`
+	DbPasswd   string `json:"db-password"`
 }
 
 func jsonToConfig(cj configJSON) (cc Config) {
@@ -34,6 +40,9 @@ func jsonToConfig(cj configJSON) (cc Config) {
 	cc.ManagerPort = cj.MPort
 	cc.WorkerAddress = net.ParseIP(cj.WAddr)
 	cc.WorkerPort = cj.WPort
+	cc.DatabaseName = cj.DbName
+	cc.DatabaseUsername = cj.DbUname
+	cc.DatabasePassword = cj.DbPasswd
 
 	return
 }

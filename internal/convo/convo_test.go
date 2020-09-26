@@ -47,6 +47,18 @@ func TestLoadConfiguration(t *testing.T) {
 			if conf.WorkerPort != 4004 {
 				t.Errorf("%v WP: got %v wanted %v", m, conf.WorkerPort, 4004)
 			}
+
+			if conf.DatabaseName != "database" {
+				t.Errorf("%v DN: got %v wanted %v", m, conf.DatabaseName, 4004)
+			}
+
+			if conf.DatabaseUsername != "admin" {
+				t.Errorf("%v DU: got %v wanted %v", m, conf.DatabaseUsername, 4004)
+			}
+
+			if conf.DatabasePassword != "password" {
+				t.Errorf("%v DP: got %v wanted %v", m, conf.DatabasePassword, 4004)
+			}
 		}
 
 		if m == "worker" {

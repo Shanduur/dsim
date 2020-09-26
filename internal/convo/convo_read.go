@@ -19,7 +19,7 @@ func LoadConfiguration(location string) (conf Config, err error) {
 
 	byteValue, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
-		fmt.Errorf("failed to read config file: %v", err)
+		err = fmt.Errorf("failed to read config file: %v", err)
 		return
 	}
 
