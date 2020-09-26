@@ -9,30 +9,27 @@ import (
 
 // LoadConfiguration takes string with location of config in JSON format
 // and then reads it's contents into the Configuration (Config struct instance)
-func LoadConfiguration(location string) error {
-	if location == "default" {
-		location = defaultFileLocation
-	}
-
+func LoadConfiguration(location string) (conf Config, err error) {
 	jsonFile, err := os.Open(location)
 	if err != nil {
-		return fmt.Errorf("failed to read the config file %v: %v", location, err)
+		err = fmt.Errorf("failed to read the config file %v: %v", location, err)
+		return
 	}
 	defer jsonFile.Close()
 
 	byteValue, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
-		return fmt.Errorf("failed to read config file: %v", err)
+		err = fmt.Errorf("failed to read config file: %v", err)
+		return
 	}
 
 	var c configJSON
 
 	err = json.Unmarshal(byteValue, &c)
 	if err != nil {
-		return fmt.Errorf("failed to unmarshal the config file: %v", err)
+		err = fmt.Errorf("failed to unmarshal the config file: %v", err)
+		return
 	}
 
-	Configuration.jsonToConfig(c)
-
-	return nil
+	return jsonToConfig(c), nil
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/Sheerley/pluggabl/internal/codes"
 	"github.com/Sheerley/pluggabl/pkg/db"
 	"github.com/Sheerley/pluggabl/pkg/plog"
 
@@ -28,7 +29,9 @@ func (srv *UserManagementServer) CreateUser(ctx context.Context, req *pb.ActionU
 		// checking if user exists
 		err = db.UserExists(credentials)
 		if err != nil {
-			err = fmt.Errorf("User already exists: %v", err)
+			if err == (&codes.RecordExists{}) {
+				err = fmt.Errorf("user already exists: %v", err)
+			}
 
 			respBody := pb.Response{
 				ReturnMessage: err.Error(),
@@ -44,7 +47,7 @@ func (srv *UserManagementServer) CreateUser(ctx context.Context, req *pb.ActionU
 
 		err = db.CreateUser(credentials)
 		if err != nil {
-			err = fmt.Errorf("Unable to create user: %v", err)
+			err = fmt.Errorf("unable to create user: %v", err)
 
 			respBody := pb.Response{
 				ReturnMessage: err.Error(),

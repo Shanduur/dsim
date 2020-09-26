@@ -63,14 +63,14 @@ func SetLogFile(path string) {
 	outFile, err = os.OpenFile(path, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		outFile = os.Stderr
-		Errorf("%v\n", err)
+		Errorf("%v", err)
 	}
 }
 
 // Messagef is used to create formatted message - INFO level.
 func Messagef(format string, v ...interface{}) {
 	if logLevel <= INFO {
-		_, err := fmt.Fprintf(outFile, getHeader(INFO)+format, v...)
+		_, err := fmt.Fprintf(outFile, getHeader(INFO)+format+"\n", v...)
 		if err != nil {
 			log.Printf("%v", err)
 			os.Exit(codes.LogError)
@@ -81,7 +81,7 @@ func Messagef(format string, v ...interface{}) {
 // Errorf is used to create formatted message - ERROR level.
 func Errorf(format string, v ...interface{}) {
 	if logLevel <= ERROR {
-		_, err := fmt.Fprintf(outFile, getHeader(ERROR)+format, v...)
+		_, err := fmt.Fprintf(outFile, getHeader(ERROR)+format+"\n", v...)
 		if err != nil {
 			log.Printf("%v", err)
 			os.Exit(codes.LogError)
@@ -92,7 +92,7 @@ func Errorf(format string, v ...interface{}) {
 // Warningf is used to create formatted message - WARNING level.
 func Warningf(format string, v ...interface{}) {
 	if logLevel <= WARNING {
-		_, err := fmt.Fprintf(outFile, getHeader(WARNING)+format, v...)
+		_, err := fmt.Fprintf(outFile, getHeader(WARNING)+format+"\n", v...)
 		if err != nil {
 			log.Printf("%v", err)
 			os.Exit(codes.LogError)
@@ -103,7 +103,7 @@ func Warningf(format string, v ...interface{}) {
 // Fatalf is used to create formatted exit message - FATAL level.
 // Warning! It forces exit of the app with exit code provided as first function argument
 func Fatalf(code int, format string, v ...interface{}) {
-	_, err := fmt.Fprintf(outFile, getHeader(FATAL)+format, v...)
+	_, err := fmt.Fprintf(outFile, getHeader(FATAL)+format+"\n", v...)
 	if err != nil {
 		log.Printf("%v", err)
 		os.Exit(codes.LogError)

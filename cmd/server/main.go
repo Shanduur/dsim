@@ -16,7 +16,7 @@ import (
 func main() {
 	var wg sync.WaitGroup
 
-	err := convo.LoadConfiguration("default")
+	conf, err := convo.LoadConfiguration("config/config_manager.json")
 	if err != nil {
 		plog.Fatalf(codes.ConfError, "error while loading configuration: %v", err)
 	}
@@ -26,7 +26,9 @@ func main() {
 
 	pb.RegisterUserServiceServer(grpcServer, umServ)
 
-	address := fmt.Sprintf("0.0.0.0:%v", convo.Configuration.PrimaryNodePort)
+	address := fmt.Sprintf("0.0.0.0:%v", conf.ManagerPort)
+
+	plog.Messagef("net.Listen tcp on %v", address)
 	listener, err := net.Listen("tcp", address)
 	if err != nil {
 		plog.Fatalf(codes.ServerError, "error while creating listener: %v", err)

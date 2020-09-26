@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  go:
+    build:
+      context: .
+      args:
+        GIT_NAME: example
+        GIT_EMAIL: mail@example.com
+        SSH_AUTH_KEY: 'ssh-rsa HERE_RSA mail@example.com'
+    restart: unless-stopped
+    volumes: 
+      - code:/root/code/
+    ports:
+      - '9020:22'
+
+volumes:
+  code:

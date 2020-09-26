@@ -1,17 +1,40 @@
 package db
 
-import "github.com/jackc/pgx/v4"
+import (
+	"context"
+	"fmt"
+	"os"
 
-// Conn is default connection to database
-var Conn pgx.Conn
+	"github.com/Sheerley/pluggabl/internal/codes"
+	"github.com/Sheerley/pluggabl/internal/convo"
+	"github.com/Sheerley/pluggabl/pkg/plog"
 
-// Connect is used to connect to database
-func Connect() error {
+	"github.com/jackc/pgx/v4"
+)
 
-	return nil
+var dbURL = "postgresql://%v:%v/%v?user=%v&password=%v"
+
+type dbconf struct {
 }
 
-// Close is meant to be deffered and close existing database connection
-func Close() {
+func connect() (*pgx.Conn, error) {
+	url := os.Getenv("PG_DATABASE")
+
+	if len(url) < len(dbURL) {
+		plog.Messagef("env var PG_DATABASE is not valid, attempting to load config file")
+
+		conf, err := convo.LoadConfiguration("config/config_db.json")
+		if err != nil {
+			plog.Fatalf(codes.ConfError, "error while loading db configuration: %v", err)
+		} else {
+			url = fmt.Sprintf(dbURL, conf.DatabaseAddress, conf.DatabasePort, conf.DatabaseName,
+				conf.DatabaseUsername, conf.DatabasePassword)
+		}
+	}
+
+	return pgx.Connect(context.Background(), url)
+}
+
+func close() {
 
 }
