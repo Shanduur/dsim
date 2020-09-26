@@ -50,14 +50,14 @@ R_1.02
 Branches containing your work that will be merged into the **develop** should be named with pattern:
 
 ```regexp
-YYYY/MM/DD 2020
+YYYY/MM/DD-YourName
 ```
 
 For example:
 
 
 ```
-2006/12/27 Shanduur
+2006/12/27-Shanduur
 ```
 
 ---
