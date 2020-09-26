@@ -21,12 +21,14 @@ ARG GIT_NAME=name
 ARG GIT_EMAIL=email
 ARG SSH_AUTH_KEY
 
-RUN echo '[USER]' > /root/.git_config
-RUN echo "\tname = $GIT_NAME" >> /root/.git_config
-RUN echo "[credential]" >> /root/.git_config
-RUN echo "\thelper = store --file ~/.git_credentials" >> /root/.git_config
+RUN echo '[user]' > /root/.gitconfig
+RUN echo "\tname = $GIT_NAME" >> /root/.gitconfig
+RUN echo "\temail = $GIT_EMAIL" >> /root/.gitconfig
+RUN echo "[credential]" >> /root/.gitconfig
+RUN echo "\thelper = store --file ~/.git_credentials" >> /root/.gitconfig
 
 RUN mkdir /root/.ssh && echo $SSH_AUTH_KEY > /root/.ssh/authorized_keys
+RUN mkdir /root/code
 
 # configure SSH server
 RUN mkdir /var/run/sshd
