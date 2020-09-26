@@ -10,9 +10,14 @@ import (
 
 // UserExists checks if user exists inside database
 func UserExists(user *pb.Credentials) error {
+	conn, err := connect()
+	if err != nil {
+		return fmt.Errorf("unable to connect to database: %v", err)
+	}
+
 	count := 0
 
-	err := Conn.QueryRow(context.Background(), "SELECT COUNT(user_id) FROM users WHERE user_name =  $1", user.UserId).Scan(&count)
+	err = conn.QueryRow(context.Background(), "SELECT COUNT(user_id) FROM users WHERE user_name =  $1", user.UserId).Scan(&count)
 	if err != nil {
 		return fmt.Errorf("unable to execute querry: %v", err)
 	}
@@ -26,7 +31,12 @@ func UserExists(user *pb.Credentials) error {
 
 // CreateUser inserts new user into table
 func CreateUser(user *pb.Credentials) error {
-	tx, err := Conn.Begin(context.Background())
+	conn, err := connect()
+	if err != nil {
+		return fmt.Errorf("unable to connect to database: %v", err)
+	}
+
+	tx, err := conn.Begin(context.Background())
 	if err != nil {
 		return err
 	}
@@ -50,7 +60,12 @@ func CreateUser(user *pb.Credentials) error {
 func DeleteUser(user *pb.Credentials) error {
 	var key []byte
 
-	err := Conn.QueryRow(context.Background(), "SELECT user_key FROM users WHERE user_name = $1", user.UserId).Scan(&key)
+	conn, err := connect()
+	if err != nil {
+		return fmt.Errorf("unable to connect to database: %v", err)
+	}
+
+	err = conn.QueryRow(context.Background(), "SELECT user_key FROM users WHERE user_name = $1", user.UserId).Scan(&key)
 	if err != nil {
 		return fmt.Errorf("unable to execute querry: %v", err)
 	}
@@ -61,7 +76,7 @@ func DeleteUser(user *pb.Credentials) error {
 		return fmt.Errorf("passwords are not equal")
 	}
 
-	tx, err := Conn.Begin(context.Background())
+	tx, err := conn.Begin(context.Background())
 	if err != nil {
 		return err
 	}

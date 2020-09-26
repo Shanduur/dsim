@@ -1,17 +1,16 @@
 package db
 
-import "github.com/jackc/pgx/v4"
+import (
+	"context"
+	"os"
 
-// Conn is default connection to database
-var Conn pgx.Conn
+	"github.com/jackc/pgx/v4"
+)
 
-// Connect is used to connect to database
-func Connect() error {
-
-	return nil
+func connect() (*pgx.Conn, error) {
+	return pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 }
 
-// Close is meant to be deffered and close existing database connection
-func Close() {
+func close() {
 
 }
