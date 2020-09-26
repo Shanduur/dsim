@@ -20,7 +20,7 @@ func Equal(a, b []byte) bool {
 }
 
 func TestLoadConfiguration(t *testing.T) {
-	matrix := [3]string{"client", "manager", "worker"}
+	matrix := []string{"client", "manager", "worker", "db"}
 
 	err := errors.New("")
 
@@ -35,7 +35,7 @@ func TestLoadConfiguration(t *testing.T) {
 		managerIP := net.ParseIP("192.168.0.105")
 		workerIP := net.ParseIP("192.168.0.106")
 
-		if m != "client" {
+		if m != "client" && m != "db" {
 			if conf.GarbageCollectionTimeout != 1000 {
 				t.Errorf("GCT: got %v wanted %v", conf.GarbageCollectionTimeout, 1000)
 			}
@@ -46,6 +46,34 @@ func TestLoadConfiguration(t *testing.T) {
 
 			if conf.WorkerPort != 4004 {
 				t.Errorf("%v WP: got %v wanted %v", m, conf.WorkerPort, 4004)
+			}
+		}
+
+		if m == "worker" {
+			if conf.MaxThreads != 4 {
+				t.Errorf("%v MT: got %v wanted %v", m, conf.MaxThreads, 4)
+			}
+		}
+
+		if m != "db" {
+			if !Equal(conf.ManagerAddress, managerIP) {
+				t.Errorf("%v MA: got %v wanted %v", m, conf.ManagerAddress, managerIP)
+			}
+
+			if conf.ManagerPort != 4004 {
+				t.Errorf("%v MP: got %v wanted %v", m, conf.WorkerPort, 4004)
+			}
+		}
+
+		if m == "db" {
+			dbIP := net.ParseIP("192.168.0.107")
+
+			if !Equal(conf.DatabaseAddress, dbIP) {
+				t.Errorf("%v DN: got %v wanted %v", m, conf.DatabaseName, dbIP)
+			}
+
+			if conf.DatabasePort != 5432 {
+				t.Errorf("%v DN: got %v wanted %v", m, conf.DatabasePort, 5432)
 			}
 
 			if conf.DatabaseName != "database" {
@@ -59,20 +87,6 @@ func TestLoadConfiguration(t *testing.T) {
 			if conf.DatabasePassword != "password" {
 				t.Errorf("%v DP: got %v wanted %v", m, conf.DatabasePassword, 4004)
 			}
-		}
-
-		if m == "worker" {
-			if conf.MaxThreads != 4 {
-				t.Errorf("%v MT: got %v wanted %v", m, conf.MaxThreads, 4)
-			}
-		}
-
-		if !Equal(conf.ManagerAddress, managerIP) {
-			t.Errorf("%v MA: got %v wanted %v", m, conf.ManagerAddress, managerIP)
-		}
-
-		if conf.ManagerPort != 4004 {
-			t.Errorf("%v MP: got %v wanted %v", m, conf.WorkerPort, 4004)
 		}
 	}
 
