@@ -39,7 +39,7 @@ func main() {
 	res, err := umClient.CreateUser(context.Background(), req)
 	if err != nil {
 		st, ok := status.FromError(err)
-		if ok && int(st.Code()) == int(pb.Response_error) {
+		if ok && pb.Response_ReturnCode(st.Code()) == pb.Response_error {
 			plog.Fatalf(codes.DbError, "%v %v", err)
 		}
 	}
