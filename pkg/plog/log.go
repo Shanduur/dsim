@@ -47,7 +47,13 @@ func getHeader(lvl int8) string {
 
 // CloseLogFile is used to defer closing the log file.
 func CloseLogFile() {
-	err := outFile.Close()
+	var err error
+
+	if outFile != os.Stderr {
+		err = outFile.Close()
+		outFile = os.Stderr
+	}
+
 	if err != nil {
 		Errorf("%v", err)
 	}

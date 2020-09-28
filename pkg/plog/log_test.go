@@ -1,6 +1,7 @@
 package plog
 
 import (
+	"context"
 	"os"
 	"strings"
 	"testing"
@@ -43,6 +44,7 @@ func TestLogFile(t *testing.T) {
 	}
 
 	CloseLogFile()
+	CloseLogFile()
 }
 
 func TestGetHeader(t *testing.T) {
@@ -62,4 +64,20 @@ func TestGetHeader(t *testing.T) {
 			t.Errorf("getHeader: got %v, want %v", vals[i], h)
 		}
 	}
+}
+
+func TestFunctions(t *testing.T) {
+	tMessage := "test message"
+
+	Messagef("%v", tMessage)
+	Warningf("%v", tMessage)
+	Errorf("%v", tMessage)
+
+	ctx, cancel := context.WithCancel(context.Background())
+
+	defer ContextStatus(ctx)
+
+	go func(cf context.CancelFunc) {
+		cf()
+	}(cancel)
 }
