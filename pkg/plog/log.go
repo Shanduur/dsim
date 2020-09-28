@@ -1,6 +1,7 @@
 package plog
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -109,4 +110,11 @@ func Fatalf(code int, format string, v ...interface{}) {
 		os.Exit(codes.LogError)
 	}
 	os.Exit(code)
+}
+
+// ContextStatus creates warning in logs when ctx recievs cancelation.
+func ContextStatus(ctx context.Context) {
+	if ctx.Err() == context.Canceled {
+		Warningf("%v", &codes.SignalCanceled{})
+	}
 }
