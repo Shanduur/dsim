@@ -31,7 +31,7 @@ func UserExists(user *pb.Credentials) error {
 }
 
 // CreateUser inserts new user into table
-func CreateUser(user *pb.Credentials) error {
+func CreateUser(ctx context.Context, user *pb.Credentials) error {
 	conn, err := connect()
 	if err != nil {
 		return fmt.Errorf("unable to connect to database: %v", err)
@@ -41,12 +41,17 @@ func CreateUser(user *pb.Credentials) error {
 	if err != nil {
 		return err
 	}
+
 	// in case of returning error rollback unfinished transaction
 	defer tx.Rollback(context.Background())
 
 	_, err = tx.Exec(context.Background(), "INSERT INTO users(user_name, user_key) VALUES ($1, $2)", user.UserId, user.UserKey)
 	if err != nil {
 		return err
+	}
+
+	if ctx.Err() == context.Canceled {
+		return &codes.SignalCanceled{}
 	}
 
 	err = tx.Commit(context.Background())
@@ -58,7 +63,7 @@ func CreateUser(user *pb.Credentials) error {
 }
 
 // DeleteUser deletes user from table
-func DeleteUser(user *pb.Credentials) error {
+func DeleteUser(ctx context.Context, user *pb.Credentials) error {
 	var key []byte
 
 	conn, err := connect()
@@ -87,6 +92,10 @@ func DeleteUser(user *pb.Credentials) error {
 	_, err = tx.Exec(context.Background(), "INSERT INTO users(user_name, user_key) VALUES ($1, $2)", user.UserId, user.UserKey)
 	if err != nil {
 		return err
+	}
+
+	if ctx.Err() == context.Canceled {
+		return &codes.SignalCanceled{}
 	}
 
 	err = tx.Commit(context.Background())
