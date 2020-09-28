@@ -36,7 +36,11 @@ func main() {
 		Credentials: creds,
 	}
 
-	res, err := umClient.CreateUser(context.Background(), req)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	res, err := umClient.CreateUser(ctx, req)
+
 	if err != nil {
 		st, ok := status.FromError(err)
 		if ok && pb.Response_ReturnCode(st.Code()) == pb.Response_error {
