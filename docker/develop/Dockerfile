@@ -20,7 +20,7 @@ RUN go get google.golang.org/protobuf/cmd/protoc-gen-go
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go
 
 # add GOLANG to path for SSH user
-RUN echo 'export PATH=$PATH:/usr/local/go/bin' >> /root/.bashrc
+RUN echo 'export PATH=$PATH:/usr/local/go/bin:/root/go/bin' >> /root/.bashrc
 
 # this should be changed
 ARG GIT_NAME=name
