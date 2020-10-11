@@ -84,7 +84,7 @@ func (srv *UserManagementServer) CreateUser(ctx context.Context, req *pb.ActionU
 		Response: &respBody,
 	}
 
-	err = fmt.Errorf("username length is equal or smaller than 0")
+	err = fmt.Errorf("username length is equal to or smaller than 0")
 
 	return
 }
