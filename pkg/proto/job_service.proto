@@ -6,9 +6,13 @@ option go_package = "pkg/pb";
 
 import "job_message.proto";
 import "response_message.proto";
+import "chunk_message.proto";
 
 message JobRequest {
-    Job job = 1;
+    oneof data {
+        Job job = 1;
+        Chunk chunk_data = 2;
+    }
 }
 
 message JobResponse {
@@ -16,5 +20,5 @@ message JobResponse {
 }
 
 service JobService {
-    rpc SubmitJob(JobRequest) returns (JobResponse) {};
+    rpc SubmitJob(stream JobRequest) returns (JobResponse) {};
 }
