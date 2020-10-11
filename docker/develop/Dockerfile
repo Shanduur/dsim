@@ -15,10 +15,6 @@ RUN apt-get install -y sudo
 # install Clang Format
 RUN apt-get install -y clang-format
 
-# install go protc plugin
-RUN go get google.golang.org/protobuf/cmd/protoc-gen-go
-RUN go install google.golang.org/protobuf/cmd/protoc-gen-go
-
 # add GOLANG to path for SSH user
 RUN echo 'export PATH=$PATH:/usr/local/go/bin:/root/go/bin' >> /root/.bashrc
 
