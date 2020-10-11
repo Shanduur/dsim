@@ -1,7 +1,7 @@
 {
-    "address": "192.168.0.107",
+    "address": "192.168.1.232",
     "port": 5432,
-    "database": "database",
+    "database": "pluggable_db",
     "username": "admin",
-    "password": "password"
+    "password": "XRB9UWu^bm8E^2aV"
 }

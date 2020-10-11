@@ -44,6 +44,8 @@ func (srv *UserManagementServer) CreateUser(ctx context.Context, req *pb.ActionU
 				Response: &respBody,
 			}
 
+			plog.Errorf("%v", err)
+
 			return
 		}
 
@@ -60,6 +62,8 @@ func (srv *UserManagementServer) CreateUser(ctx context.Context, req *pb.ActionU
 				Response: &respBody,
 			}
 
+			plog.Errorf("%v", err)
+
 			return
 		}
 
@@ -71,6 +75,8 @@ func (srv *UserManagementServer) CreateUser(ctx context.Context, req *pb.ActionU
 		rsp = &pb.ActionUserResponse{
 			Response: &respBody,
 		}
+
+		plog.Errorf("%v", err)
 
 		return
 	}
@@ -85,6 +91,8 @@ func (srv *UserManagementServer) CreateUser(ctx context.Context, req *pb.ActionU
 	}
 
 	err = fmt.Errorf("username length is equal to or smaller than 0")
+
+	plog.Errorf("%v", err)
 
 	return
 }
@@ -112,6 +120,8 @@ func (srv *UserManagementServer) DeleteUser(ctx context.Context, req *pb.ActionU
 				Response: &respBody,
 			}
 
+			plog.Errorf("%v", err)
+
 			return
 		}
 
@@ -128,6 +138,8 @@ func (srv *UserManagementServer) DeleteUser(ctx context.Context, req *pb.ActionU
 				Response: &respBody,
 			}
 
+			plog.Errorf("%v", err)
+
 			return
 		}
 
@@ -139,6 +151,8 @@ func (srv *UserManagementServer) DeleteUser(ctx context.Context, req *pb.ActionU
 		rsp = &pb.ActionUserResponse{
 			Response: &respBody,
 		}
+
+		plog.Errorf("%v", err)
 
 		return
 	}
@@ -153,6 +167,8 @@ func (srv *UserManagementServer) DeleteUser(ctx context.Context, req *pb.ActionU
 	}
 
 	err = fmt.Errorf("username length is equal or smaller than 0")
+
+	plog.Errorf("%v", err)
 
 	return
 }

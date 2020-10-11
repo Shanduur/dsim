@@ -71,24 +71,13 @@ func (srv *TransportServer) SubmitJob(ctx context.Context, stream pb.JobService_
 			ReturnCode:    pb.Response_error,
 		}
 
+		plog.Errorf("%v", err)
+
 		return
-	}
-
-	var size uint64
-	size = 0
-
-	// get max size
-	for _, f := range fileInfo {
-		if size < f.GetSize() {
-			size = f.GetSize()
-		}
 	}
 
 	// create temporary storage for blob
 	tempStorage := make([][]byte, numberOfFiles)
-	for i := uint32(0); i < numberOfFiles; i++ {
-		tempStorage[i] = make([]byte, size)
-	}
 
 	fileData := bytes.Buffer{}
 	fileSize := 0
@@ -111,6 +100,8 @@ func (srv *TransportServer) SubmitJob(ctx context.Context, stream pb.JobService_
 				ReturnCode:    pb.Response_unknown,
 			}
 
+			plog.Errorf("%v", err)
+
 			return
 		}
 
@@ -120,6 +111,7 @@ func (srv *TransportServer) SubmitJob(ctx context.Context, stream pb.JobService_
 
 		if fileNum != currentFile {
 			// copy data to temp storage
+			tempStorage[currentFile] = make([]byte, len(fileData.Bytes()))
 			tempStorage[currentFile] = fileData.Bytes()
 
 			// empty the data
@@ -141,6 +133,8 @@ func (srv *TransportServer) SubmitJob(ctx context.Context, stream pb.JobService_
 				ReturnMessage: msg,
 				ReturnCode:    pb.Response_error,
 			}
+
+			plog.Errorf("%v", err)
 
 			return
 		}
