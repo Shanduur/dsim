@@ -8,7 +8,7 @@ CREATE TABLE users (
     -- creation_date DATE NOT NULL
 );
 
-CREATE TABLE types (
+CREATE TABLE filetypes (
     type_id SERIAL PRIMARY KEY NOT NULL,
     type_extension VARCHAR(16) NOT NULL,
     type_description VARCHAR(1024) NOT NULL
@@ -17,7 +17,7 @@ CREATE TABLE types (
 CREATE TABLE blobs (
     blob_id BIGSERIAL PRIMARY KEY NOT NULL,
     blob_data BYTEA NOT NULL,
-    blob_type INT REFERENCES types(type_id),
+    blob_type INT REFERENCES filetypes(type_id),
     blob_name VARCHAR(256),
     owner_id BIGINT REFERENCES users(user_id) NOT NULL,
     insertion_date DATE NOT NULL
