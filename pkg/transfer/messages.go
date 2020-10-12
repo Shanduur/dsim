@@ -23,8 +23,6 @@ func NewDummyCredentials() *pb.Credentials {
 func NewDummyFileInfo() *pb.FileInfo {
 	fileInfo := &pb.FileInfo{
 		FileExtension: ".txt",
-		SizeType:      pb.FileInfo_kilobytes,
-		Size:          2048,
 	}
 
 	return fileInfo

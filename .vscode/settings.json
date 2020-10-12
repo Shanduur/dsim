@@ -14,4 +14,10 @@
         "editor.insertSpaces": true,
         "editor.tabSize": 2,
     },
+    "protoc": {
+        "path": "/usr/bin/protoc",
+        "options": [
+            "--proto_path=pkg/proto/",
+        ]
+    }
 }

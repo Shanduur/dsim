@@ -3,6 +3,10 @@
         // most important extension
         "golang.go",
 
+        // for proto
+        "zxh404.vscode-proto3",
+        "xaver.clang-format",
+        
         // those are used only for styling
         "pkief.material-icon-theme",
         "github.github-vscode-theme",
