@@ -16,7 +16,8 @@ message JobRequest {
 }
 
 message JobResponse {
-    Response response = 1;
+    repeated int64 id = 1;
+    Response response = 2;
 }
 
 service JobService {
