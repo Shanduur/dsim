@@ -8,6 +8,16 @@ import (
 )
 
 func TestSetLogLevel(t *testing.T) {
+	SetLogLevel(DEBUG)
+	if logLevel != DEBUG {
+		t.Errorf("SetLogLevel: got %d, want %d", logLevel, ERROR)
+	}
+
+	SetLogLevel(VERBOSE)
+	if logLevel != VERBOSE {
+		t.Errorf("SetLogLevel: got %d, want %d", logLevel, ERROR)
+	}
+
 	SetLogLevel(ERROR)
 	if logLevel != ERROR {
 		t.Errorf("SetLogLevel: got %d, want %d", logLevel, ERROR)
@@ -48,12 +58,14 @@ func TestLogFile(t *testing.T) {
 }
 
 func TestGetHeader(t *testing.T) {
-	vals := make([]string, 4)
+	vals := make([]string, 6)
 
-	vals[0] = "INFO"
-	vals[1] = "WARN"
-	vals[2] = "ERROR"
-	vals[3] = "FATAL"
+	vals[0] = "VERBOSE"
+	vals[1] = "DEBUG"
+	vals[2] = "INFO"
+	vals[3] = "WARN"
+	vals[4] = "ERROR"
+	vals[5] = "FATAL"
 
 	var i int8
 
@@ -69,9 +81,13 @@ func TestGetHeader(t *testing.T) {
 func TestFunctions(t *testing.T) {
 	tMessage := "test message"
 
+	SetLogLevel(VERBOSE)
+
 	Messagef("%v", tMessage)
 	Warningf("%v", tMessage)
 	Errorf("%v", tMessage)
+	Debugf("%v", tMessage)
+	Verbosef("%v", tMessage)
 
 	ctx, cancel := context.WithCancel(context.Background())
 

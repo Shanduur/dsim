@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/Sheerley/pluggabl/pkg/plog"
+
 	"github.com/Sheerley/pluggabl/internal/codes"
 	"github.com/Sheerley/pluggabl/pkg/pb"
 )
@@ -34,14 +36,14 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 		return append(id, codes.UnknownID), fmt.Errorf("unable to execute querry: %v", err)
 	}
 
-	for i := 0; i <= len(data); i++ {
+	for i := 0; i < len(data); i++ {
 		err = conn.QueryRow(context.Background(), "SELECT COUNT(type_id) FROM filetypes WHERE type_extension = $1",
 			fileInfo[i].FileExtension).Scan(&count)
 		if err != nil {
 			return append(id, codes.UnknownID), fmt.Errorf("unable to execute querry: %v", err)
 		}
 
-		typeID := 0
+		typeID := 1
 		if count >= 1 {
 			err = conn.QueryRow(context.Background(), "SELECT FIRST type_id FROM filetypes WHERE type_extension = $1 LIMIT 1",
 				fileInfo[i].FileExtension).Scan(&typeID)
@@ -59,6 +61,8 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 			ownerID,
 			dt.Format("2006-01-02"))
 
+		plog.Debugf("data len: %v", len(data[i]))
+
 		if err != nil {
 			return append(id, codes.UnknownID), err
 		}
@@ -73,14 +77,14 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 		return append(id, codes.UnknownID), err
 	}
 
-	for i := 0; i <= len(data); i++ {
+	for i := 0; i < len(data); i++ {
 		var blobID int
 		err = conn.QueryRow(context.Background(),
 			"SELECT blob_id FROM blobs WHERE owner_id = $1 AND blob_name = $2 AND insertion_date = $3",
 			ownerID, fmt.Sprint(i), dt.Format("2006-01-02")).Scan(&blobID)
 
 		if err != nil {
-			return append(id, codes.UnknownID), fmt.Errorf("unable to execute querry: %v", err)
+			return append(id, codes.UnknownID), fmt.Errorf("unable to execute SELECT querry: %v", err)
 		}
 
 		id = append(id, blobID)

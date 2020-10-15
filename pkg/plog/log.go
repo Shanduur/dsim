@@ -13,11 +13,14 @@ import (
 const dtFormat = "01-02-2006 15:04:05.000"
 
 // Constants describing level of log:
+// - DEBUG - additional debug logs will be registred,
 // - INFO - all logs will be registred,
 // - WARNING - only warning logs and above will be registred,
 // - ERROR - only error logs and above will be registred,
 // - FATAL - (NOT ADVISED!) only fatal logs will be registred.
 const (
+	VERBOSE = iota
+	DEBUG   = iota
 	INFO    = iota
 	WARNING = iota
 	ERROR   = iota
@@ -32,13 +35,18 @@ func getHeader(lvl int8) string {
 
 	var s string
 
-	if lvl == 0 {
+	switch lvl {
+	case VERBOSE:
+		s = "VERBOSE"
+	case DEBUG:
+		s = "DEBUG"
+	case INFO:
 		s = "INFO"
-	} else if lvl == 1 {
-		s = "WARN"
-	} else if lvl == 2 {
+	case WARNING:
+		s = "WARNING"
+	case ERROR:
 		s = "ERROR"
-	} else {
+	case FATAL:
 		s = "FATAL"
 	}
 
@@ -100,6 +108,28 @@ func Errorf(format string, v ...interface{}) {
 func Warningf(format string, v ...interface{}) {
 	if logLevel <= WARNING {
 		_, err := fmt.Fprintf(outFile, getHeader(WARNING)+format+"\n", v...)
+		if err != nil {
+			log.Printf("%v", err)
+			os.Exit(codes.LogError)
+		}
+	}
+}
+
+// Debugf is used to create formatted debug message - DEBUG level.
+func Debugf(format string, v ...interface{}) {
+	if logLevel <= DEBUG {
+		_, err := fmt.Fprintf(outFile, getHeader(DEBUG)+format+"\n", v...)
+		if err != nil {
+			log.Printf("%v", err)
+			os.Exit(codes.LogError)
+		}
+	}
+}
+
+// Verbosef is used to create extended formatted debug message - VERBOSE level.
+func Verbosef(format string, v ...interface{}) {
+	if logLevel <= VERBOSE {
+		_, err := fmt.Fprintf(outFile, getHeader(VERBOSE)+format+"\n", v...)
 		if err != nil {
 			log.Printf("%v", err)
 			os.Exit(codes.LogError)

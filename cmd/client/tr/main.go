@@ -43,8 +43,8 @@ func main() {
 	var files []*os.File
 	var fileinfo []*pb.FileInfo
 
-	filenames = append(filenames, "box.png")
-	filenames = append(filenames, "box_in_scene.png")
+	filenames = append(filenames, "examples/images/box.png")
+	filenames = append(filenames, "examples/images/box_in_scene.png")
 
 	for i := 0; i < len(filenames); i++ {
 		f, err := os.Open(filenames[i])
@@ -84,6 +84,8 @@ func main() {
 		reader := bufio.NewReader(files[i])
 
 		buffer := make([]byte, 1024)
+
+		plog.Debugf("file %v", i)
 
 		for {
 			n, err := reader.Read(buffer)
