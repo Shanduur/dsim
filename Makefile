@@ -15,8 +15,11 @@ clean:
 server:
 	go run ./cmd/server
 
-client:
-	go run ./cmd/client
+client-u:
+	go run ./cmd/client/um
+
+client-t:
+	go run ./cmd/client/tr
 
 test:
 	go test -cover -race ./...
