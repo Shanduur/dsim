@@ -46,10 +46,7 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 	err = db.Auth(ctx, user)
 	if err != nil {
 		if err.Error() == (&codes.NotAuthenticated{}).Error() {
-			rsp := &pb.Response{
-				ReturnMessage: err.Error(),
-				ReturnCode:    pb.Response_error,
-			}
+			plog.Errorf("%v", err)
 
 			jrsp = &pb.JobResponse{
 				Id:       append(id, codes.UnknownID),
@@ -69,6 +66,7 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 
 	if fileInfoTabSize != numberOfFiles {
 		err = fmt.Errorf("unable to process request - data mismatch")
+
 		plog.Errorf("%v", err)
 
 		return
