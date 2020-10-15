@@ -15,10 +15,10 @@ clean:
 server:
 	go run ./cmd/server
 
-client-um:
+client-u:
 	go run ./cmd/client/um
 
-client-tr:
+client-t:
 	go run ./cmd/client/tr
 
 test:

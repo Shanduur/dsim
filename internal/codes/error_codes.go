@@ -21,4 +21,10 @@ const (
 	ManagerConnectionError = iota
 	WorkerConnectionError  = iota
 	ClientConnectionError  = iota
+	FileError              = iota
+)
+
+// Values for unknown returns
+const (
+	UnknownID = -1
 )

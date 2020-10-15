@@ -24,6 +24,10 @@ func NewTransportServer() *TransportServer {
 func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err error) {
 	ctx := stream.Context()
 
+	var jrsp *pb.JobResponse
+
+	var id []int64
+
 	req, err := stream.Recv()
 	if err != nil {
 		err = fmt.Errorf("cannot recieve file info: %d", err)
@@ -43,10 +47,20 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 		if err.Error() == (&codes.NotAuthenticated{}).Error() {
 			plog.Errorf("%v", err)
 
+			jrsp = &pb.JobResponse{
+				Id:       append(id, codes.UnknownID),
+				Response: rsp,
+			}
+
 			return
 		}
 
 		plog.Errorf("%v", err)
+
+		jrsp = &pb.JobResponse{
+			Id:       append(id, codes.UnknownID),
+			Response: rsp,
+		}
 
 		return
 	}
@@ -110,6 +124,54 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 			return
 		}
 	}
+
+	tempID, err := db.UploadFiles(ctx, tempStorage, fileInfo, user)
+
+	for i := 0; i < len(tempID); i++ {
+		id = append(id, int64(tempID[i]))
+	}
+
+	if err != nil {
+		msg := fmt.Sprintf("cannot upload file to database: %v", err)
+		rsp := &pb.Response{
+			ReturnMessage: msg,
+			ReturnCode:    pb.Response_error,
+		}
+
+		jrsp = &pb.JobResponse{
+			Id:       id,
+			Response: rsp,
+		}
+
+		plog.Errorf("%v", err)
+
+		return
+	}
+
+	msg := fmt.Sprintf("succesfully uploaded images with id: %v", id)
+
+	rsp := &pb.Response{
+		ReturnMessage: msg,
+		ReturnCode:    pb.Response_ok,
+	}
+
+	jrsp = &pb.JobResponse{
+		Id:       id,
+		Response: rsp,
+	}
+
+	err = stream.SendAndClose(jrsp)
+	if err != nil {
+		plog.Errorf("%v", err)
+
+		return
+	}
+
+	plural := ""
+	if len(id) > 1 {
+		plural = "s"
+	}
+	plog.Messagef("succesfully recieved %v blob%v with id%v: %v", len(id), plural, plural, id)
 
 	return
 }

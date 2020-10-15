@@ -4,71 +4,89 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/Sheerley/pluggabl/internal/codes"
 	"github.com/Sheerley/pluggabl/pkg/pb"
 )
 
 // UploadFiles function inserts blobs into database
-func UploadFiles(ctx context.Context, data [][]byte, fileExtension string, user *pb.Credentials) error {
+func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, user *pb.Credentials) (id []int, err error) {
 	conn, err := connect()
 	if err != nil {
-		return fmt.Errorf("unable to connect to database: %v", err)
+		return append(id, codes.UnknownID), fmt.Errorf("unable to connect to database: %v", err)
 	}
 
 	tx, err := conn.Begin(context.Background())
 	if err != nil {
-		return err
+		return append(id, codes.UnknownID), err
 	}
 
 	// in case of returning error rollback unfinished transaction
 	defer tx.Rollback(context.Background())
 
 	count := 0
-
-	err = conn.QueryRow(context.Background(), "SELECT COUNT(type_id) FROM filetypes WHERE type_extension = $1", fileExtension).Scan(&count)
-	if err != nil {
-		return fmt.Errorf("unable to execute querry: %v", err)
-	}
-
-	typeID := 0
-	if count >= 1 {
-		err = conn.QueryRow(context.Background(), "SELECT FIRST type_id FROM filetypes WHERE type_extension = $1 LIMIT 1", fileExtension).Scan(&typeID)
-		if err != nil {
-			return fmt.Errorf("unable to execute querry: %v", err)
-		}
-	}
-
+	dt := time.Now()
 	ownerID := 0
+
 	err = conn.QueryRow(context.Background(), "SELECT user_id FROM users WHERE user_name = $1", user.UserId).Scan(&ownerID)
 	if err != nil {
-		return fmt.Errorf("unable to execute querry: %v", err)
+		return append(id, codes.UnknownID), fmt.Errorf("unable to execute querry: %v", err)
 	}
 
 	for i := 0; i <= len(data); i++ {
+		err = conn.QueryRow(context.Background(), "SELECT COUNT(type_id) FROM filetypes WHERE type_extension = $1",
+			fileInfo[i].FileExtension).Scan(&count)
+		if err != nil {
+			return append(id, codes.UnknownID), fmt.Errorf("unable to execute querry: %v", err)
+		}
+
+		typeID := 0
+		if count >= 1 {
+			err = conn.QueryRow(context.Background(), "SELECT FIRST type_id FROM filetypes WHERE type_extension = $1 LIMIT 1",
+				fileInfo[i].FileExtension).Scan(&typeID)
+			if err != nil {
+				return append(id, codes.UnknownID), fmt.Errorf("unable to execute querry: %v", err)
+			}
+		}
+
 		_, err = tx.Exec(context.Background(),
 			"INSERT INTO blobs(blob_data, blob_type, blob_name, owner_id, insertion_date)"+
-				"VALUES ($1, $2, $3, $4, NOW())",
+				"VALUES ($1, $2, $3, $4, $5)",
 			data[i],
 			typeID,
 			fmt.Sprint(i),
-			ownerID)
+			ownerID,
+			dt.Format("2006-01-02"))
 
 		if err != nil {
-			return err
+			return append(id, codes.UnknownID), err
 		}
 	}
 
 	if ctx.Err() == context.Canceled {
-		return &codes.SignalCanceled{}
+		return append(id, codes.UnknownID), &codes.SignalCanceled{}
 	}
 
 	err = tx.Commit(context.Background())
 	if err != nil {
-		return err
+		return append(id, codes.UnknownID), err
 	}
 
-	return nil
+	for i := 0; i <= len(data); i++ {
+		var blobID int
+		err = conn.QueryRow(context.Background(),
+			"SELECT blob_id FROM blobs WHERE owner_id = $1 AND blob_name = $2 AND insertion_date = $3",
+			ownerID, fmt.Sprint(i), dt.Format("2006-01-02")).Scan(&blobID)
+
+		if err != nil {
+			return append(id, codes.UnknownID), fmt.Errorf("unable to execute querry: %v", err)
+		}
+
+		id = append(id, blobID)
+	}
+
+	return id, nil
 }
 
 // UserExists checks if user exists inside database
