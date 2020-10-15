@@ -16,6 +16,8 @@ import (
 func main() {
 	var wg sync.WaitGroup
 
+	plog.SetLogLevel(plog.VERBOSE)
+
 	conf, err := convo.LoadConfiguration("config/config_manager.json")
 	if err != nil {
 		plog.Fatalf(codes.ConfError, "error while loading configuration: %v", err)

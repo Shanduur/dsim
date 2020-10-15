@@ -23,6 +23,7 @@ func NewTransportServer() *TransportServer {
 // SubmitJob is handler function for requesting Job
 func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err error) {
 	ctx := stream.Context()
+	defer plog.ContextStatus(ctx)
 
 	var jrsp *pb.JobResponse
 
@@ -55,12 +56,8 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 			return
 		}
 
+		err = fmt.Errorf("unable to process request")
 		plog.Errorf("%v", err)
-
-		jrsp = &pb.JobResponse{
-			Id:       append(id, codes.UnknownID),
-			Response: rsp,
-		}
 
 		return
 	}
@@ -68,6 +65,8 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 	fileInfoTabSize := uint32(len(fileInfo))
 
 	if fileInfoTabSize != numberOfFiles {
+		err = fmt.Errorf("unable to process request - data mismatch")
+
 		plog.Errorf("%v", err)
 
 		return
@@ -82,11 +81,17 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 	currentFile := int32(0)
 
 	for {
-		plog.Messagef("waiting to recieve more data")
+		plog.Verbosef("waiting to recieve more data from file number %v", currentFile)
 
 		req, err = stream.Recv()
 		if err == io.EOF {
+			tempStorage[currentFile] = make([]byte, len(fileData.Bytes()))
+			tempStorage[currentFile] = fileData.Bytes()
+
+			plog.Debugf("size of file %v: %v", currentFile, fileSize)
+
 			plog.Messagef("recieving finished")
+
 			break
 		}
 
@@ -101,6 +106,7 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 		size := len(chunk)
 
 		if fileNum != currentFile {
+			plog.Debugf("changing file from %v to %v", currentFile, fileNum)
 			// copy data to temp storage
 			tempStorage[currentFile] = make([]byte, len(fileData.Bytes()))
 			tempStorage[currentFile] = fileData.Bytes()
@@ -108,11 +114,12 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 			// empty the data
 			fileData.Reset()
 
-			// change file num
-			currentFile = fileNum
-
+			plog.Debugf("size of file %v: %v", currentFile, fileSize)
 			// reset file size
 			fileSize = 0
+
+			// change file num
+			currentFile = fileNum
 		}
 
 		fileSize += size
@@ -132,18 +139,7 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 	}
 
 	if err != nil {
-		msg := fmt.Sprintf("cannot upload file to database: %v", err)
-		rsp := &pb.Response{
-			ReturnMessage: msg,
-			ReturnCode:    pb.Response_error,
-		}
-
-		jrsp = &pb.JobResponse{
-			Id:       id,
-			Response: rsp,
-		}
-
-		plog.Errorf("%v", err)
+		plog.Errorf("cannot upload file to database: %v", err)
 
 		return
 	}
