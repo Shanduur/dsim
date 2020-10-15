@@ -1,7 +1,0 @@
-{
-    "address": "192.168.0.107",
-    "port": 5432,
-    "database": "database",
-    "username": "admin",
-    "password": "password"
-}
