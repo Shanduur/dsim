@@ -2,7 +2,6 @@ package service
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"io"
 
@@ -22,16 +21,11 @@ func NewTransportServer() *TransportServer {
 }
 
 // SubmitJob is handler function for requesting Job
-func (srv *TransportServer) SubmitJob(ctx context.Context, stream pb.JobService_SubmitJobServer) (rsp *pb.Response, err error) {
-	defer plog.ContextStatus(ctx)
+func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err error) {
+	ctx := stream.Context()
 
 	req, err := stream.Recv()
 	if err != nil {
-		rsp = &pb.Response{
-			ReturnMessage: err.Error(),
-			ReturnCode:    pb.Response_error,
-		}
-
 		err = fmt.Errorf("cannot recieve file info: %d", err)
 
 		plog.Errorf("%v", err)
@@ -47,18 +41,12 @@ func (srv *TransportServer) SubmitJob(ctx context.Context, stream pb.JobService_
 	err = db.Auth(ctx, user)
 	if err != nil {
 		if err.Error() == (&codes.NotAuthenticated{}).Error() {
-			rsp = &pb.Response{
-				ReturnMessage: err.Error(),
-				ReturnCode:    pb.Response_error,
-			}
+			plog.Errorf("%v", err)
 
 			return
 		}
 
-		rsp = &pb.Response{
-			ReturnMessage: "unable to process request",
-			ReturnCode:    pb.Response_unknown,
-		}
+		plog.Errorf("%v", err)
 
 		return
 	}
@@ -66,11 +54,6 @@ func (srv *TransportServer) SubmitJob(ctx context.Context, stream pb.JobService_
 	fileInfoTabSize := uint32(len(fileInfo))
 
 	if fileInfoTabSize != numberOfFiles {
-		rsp = &pb.Response{
-			ReturnMessage: "unable to process request - data mismatch",
-			ReturnCode:    pb.Response_error,
-		}
-
 		plog.Errorf("%v", err)
 
 		return
@@ -94,13 +77,7 @@ func (srv *TransportServer) SubmitJob(ctx context.Context, stream pb.JobService_
 		}
 
 		if err != nil {
-			msg := fmt.Sprintf("cannot recieve chunk data: %v", err)
-			rsp = &pb.Response{
-				ReturnMessage: msg,
-				ReturnCode:    pb.Response_unknown,
-			}
-
-			plog.Errorf("%v", err)
+			plog.Errorf("cannot recieve chunk data: %v", err)
 
 			return
 		}
@@ -128,13 +105,7 @@ func (srv *TransportServer) SubmitJob(ctx context.Context, stream pb.JobService_
 
 		_, err = fileData.Write(chunk)
 		if err != nil {
-			msg := fmt.Sprintf("cannot write chunk data: %v", err)
-			rsp = &pb.Response{
-				ReturnMessage: msg,
-				ReturnCode:    pb.Response_error,
-			}
-
-			plog.Errorf("%v", err)
+			plog.Errorf("cannot write chunk data: %v", err)
 
 			return
 		}

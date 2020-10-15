@@ -22,9 +22,11 @@ func main() {
 	}
 
 	umServ := service.NewUserManagementServer()
+	trServ := service.NewTransportServer()
 	grpcServer := grpc.NewServer()
 
 	pb.RegisterUserServiceServer(grpcServer, umServ)
+	pb.RegisterJobServiceServer(grpcServer, trServ)
 
 	address := fmt.Sprintf("0.0.0.0:%v", conf.ManagerPort)
 
