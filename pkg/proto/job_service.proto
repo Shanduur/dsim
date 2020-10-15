@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package pluggable.transfer;
+
+option go_package = "pkg/pb";
+
+import "job_message.proto";
+import "response_message.proto";
+import "chunk_message.proto";
+
+message JobRequest {
+    oneof data {
+        Job job = 1;
+        Chunk chunk_data = 2;
+    }
+}
+
+message JobResponse {
+    repeated int64 id = 1;
+    Response response = 2;
+}
+
+service JobService {
+    rpc SubmitJob(stream JobRequest) returns (JobResponse) {};
+}

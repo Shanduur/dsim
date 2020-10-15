@@ -1,0 +1,12 @@
+{
+    "type": "worker",
+    "manager-address": "192.168.0.105",
+    "manager-port": 4004,
+    "worker-address": "192.168.0.106",
+    "worker-port": 4004,
+    "garbage-collection-timeout": 1000,
+    "max-threads": 4,
+    "db-name": "database",
+    "db-username": "admin",
+    "db-password": "password"
+}

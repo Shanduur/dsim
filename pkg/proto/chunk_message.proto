@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package pluggable.transfer;
+
+option go_package = "pkg/pb";
+
+message Chunk {
+    int32 file_number = 1;
+    bytes content = 2;
+}
