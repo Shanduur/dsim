@@ -48,11 +48,6 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 		if err.Error() == (&codes.NotAuthenticated{}).Error() {
 			plog.Errorf("%v", err)
 
-			jrsp = &pb.JobResponse{
-				Id:       append(id, codes.UnknownID),
-				Response: rsp,
-			}
-
 			return
 		}
 
