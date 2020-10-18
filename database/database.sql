@@ -3,9 +3,7 @@
 CREATE TABLE users (
     user_id BIGSERIAL PRIMARY KEY NOT NULL,
     user_name VARCHAR(32) NOT NULL,
-    user_key BYTEA NOT NULL,
-    -- email VARCHAR(64),
-    -- creation_date DATE NOT NULL
+    user_key BYTEA NOT NULL
 );
 
 CREATE TABLE filetypes (
