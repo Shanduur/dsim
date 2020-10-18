@@ -59,7 +59,7 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 				"VALUES ($1, $2, $3, $4, $5) RETURNING blob_id",
 			data[i], typeID, fmt.Sprint(i), ownerID, dt.Format("2006-01-02")).Scan(&blobID)
 
-		plog.Debugf("id returned: %v")
+		plog.Debugf("id returned: %v", blobID)
 
 		if err != nil {
 			return append(id, codes.UnknownID), err
