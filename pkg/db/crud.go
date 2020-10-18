@@ -37,6 +37,8 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 	}
 
 	for i := 0; i < len(data); i++ {
+		var blobID int
+
 		err = conn.QueryRow(context.Background(), "SELECT COUNT(type_id) FROM filetypes WHERE type_extension = $1",
 			fileInfo[i].FileExtension).Scan(&count)
 		if err != nil {
@@ -52,20 +54,18 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 			}
 		}
 
-		_, err = tx.Exec(context.Background(),
+		err = tx.QueryRow(context.Background(),
 			"INSERT INTO blobs(blob_data, blob_type, blob_name, owner_id, insertion_date)"+
-				"VALUES ($1, $2, $3, $4, $5)",
-			data[i],
-			typeID,
-			fmt.Sprint(i),
-			ownerID,
-			dt.Format("2006-01-02"))
+				"VALUES ($1, $2, $3, $4, $5) RETURNING blob_id",
+			data[i], typeID, fmt.Sprint(i), ownerID, dt.Format("2006-01-02")).Scan(&blobID)
 
-		plog.Debugf("data len: %v", len(data[i]))
+		plog.Debugf("id returned: %v")
 
 		if err != nil {
 			return append(id, codes.UnknownID), err
 		}
+
+		id = append(id, blobID)
 	}
 
 	if ctx.Err() == context.Canceled {
@@ -74,20 +74,8 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 
 	err = tx.Commit(context.Background())
 	if err != nil {
+		id = nil
 		return append(id, codes.UnknownID), err
-	}
-
-	for i := 0; i < len(data); i++ {
-		var blobID int
-		err = conn.QueryRow(context.Background(),
-			"SELECT blob_id FROM blobs WHERE owner_id = $1 AND blob_name = $2 AND insertion_date = $3",
-			ownerID, fmt.Sprint(i), dt.Format("2006-01-02")).Scan(&blobID)
-
-		if err != nil {
-			return append(id, codes.UnknownID), fmt.Errorf("unable to execute SELECT querry: %v", err)
-		}
-
-		id = append(id, blobID)
 	}
 
 	return id, nil
