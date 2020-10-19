@@ -102,6 +102,23 @@ func UserExists(user *pb.Credentials) error {
 	return nil
 }
 
+// GetResult retrieves result blob from database
+func GetResult(ctx context.Context, id int64) (result []byte, err error) {
+	conn, err := connect()
+	if err != nil {
+		err = fmt.Errorf("unable to connect to database: %v", err)
+		return
+	}
+
+	err = conn.QueryRow(context.Background(), "SELECT blob_data FROM blobs WHERE blob_id = $1", id).Scan(&result)
+	if err != nil {
+		err = fmt.Errorf("unable to execute querry: %v", err)
+		return
+	}
+
+	return
+}
+
 // CreateUser inserts new user into table
 func CreateUser(ctx context.Context, user *pb.Credentials) error {
 	conn, err := connect()
