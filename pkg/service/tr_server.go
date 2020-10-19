@@ -182,5 +182,47 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 	}
 	plog.Messagef("succesfully recieved %v blob%v with id%v: %v", len(id), plural, plural, id)
 
+	ireq := pb.InternalJobRequest{
+		Job: &pb.InternalJob{
+			FileId: id,
+		},
+	}
+
+	var resultFile []byte
+
+	ires, err := pb.FPBUnimplemented(ireq)
+	if ires == nil {
+		plog.Warningf("unimplemented rpc")
+		resultFile = []byte("unimplemented")
+	}
+
+	reader := bytes.NewReader(resultFile)
+	buffer := make([]byte, 1024)
+
+	for {
+		n, err := reader.Read(buffer)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			plog.Fatalf(codes.FileError, "error reading file: %v", err)
+		}
+
+		plog.Verbosef("sending result data to client")
+
+		jrsp = &pb.JobResponse{
+			Data: &pb.JobResponse_ChunkData{
+				ChunkData: &pb.Chunk{
+					Content: buffer[:n],
+				},
+			},
+		}
+
+		err = stream.Send(jrsp)
+		if err != nil {
+			plog.Fatalf(codes.ServerError, "cannot send chunk to client: \n- %v \n- %v", err, stream.RecvMsg(nil))
+		}
+	}
+
 	return
 }

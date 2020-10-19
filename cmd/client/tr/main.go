@@ -42,6 +42,9 @@ func main() {
 	defer cancel()
 
 	stream, err := jobClient.SubmitJob(ctx)
+	if err != nil {
+		plog.Fatalf(codes.ClientConnectionError, "unable to create stream: %v", err)
+	}
 
 	var filenames []string
 	var files []*os.File
@@ -161,6 +164,23 @@ func main() {
 			break
 		}
 
+		if err != nil {
+			plog.Errorf("cannot recieve chunk data: %v", err)
+
+			return
+		}
+
+		chunk := res.GetChunkData().GetContent()
+		size := len(chunk)
+
+		fileSize += size
+
+		_, err = fileData.Write(chunk)
+		if err != nil {
+			plog.Errorf("cannot write chunk data: %v", err)
+
+			return
+		}
 	}
 
 	if len(recievedFile) == 0 {
