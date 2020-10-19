@@ -167,7 +167,7 @@ func main() {
 		plog.Fatalf(codes.ServerError, "failed to recieve file")
 	}
 
-	err = ioutil.WriteFile("recieved.tmp."+extension, recievedFile, 0644)
+	err = ioutil.WriteFile("recieved.tmp"+extension, recievedFile, 0644)
 	if err != nil {
 		plog.Fatalf(codes.FileError, "unable to write file: %v", err)
 	}
