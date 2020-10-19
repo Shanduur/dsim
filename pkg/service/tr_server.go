@@ -147,11 +147,29 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 	}
 
 	jrsp = &pb.JobResponse{
-		Id:       id,
-		Response: rsp,
+		Data: &pb.JobResponse_Response{
+			Response: rsp,
+		},
 	}
 
-	err = stream.SendAndClose(jrsp)
+	err = stream.Send(jrsp)
+	if err != nil {
+		plog.Errorf("%v", err)
+
+		return
+	}
+
+	resultInfo := &pb.FileInfo{
+		FileExtension: fileInfo[0].GetFileExtension(),
+	}
+
+	jrsp = &pb.JobResponse{
+		Data: &pb.JobResponse_FileInfo{
+			FileInfo: resultInfo,
+		},
+	}
+
+	err = stream.Send(jrsp)
 	if err != nil {
 		plog.Errorf("%v", err)
 

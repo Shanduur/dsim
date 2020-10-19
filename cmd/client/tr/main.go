@@ -2,9 +2,11 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -18,6 +20,8 @@ import (
 )
 
 func main() {
+	plog.SetLogLevel(plog.VERBOSE)
+
 	conf, err := convo.LoadConfiguration("config/config_client.json")
 	if err != nil {
 		plog.Fatalf(codes.ConfError, "error while loading configuration: %v", err)
@@ -96,6 +100,8 @@ func main() {
 				plog.Fatalf(codes.FileError, "error reading file: %v", err)
 			}
 
+			plog.Verbosef("sending data to server for file %v", i)
+
 			req := &pb.JobRequest{
 				Data: &pb.JobRequest_ChunkData{
 					ChunkData: &pb.Chunk{
@@ -112,10 +118,59 @@ func main() {
 		}
 	}
 
-	res, err := stream.CloseAndRecv()
+	plog.Debugf("finished sending")
+
+	stream.CloseSend()
+	if err != nil {
+		plog.Errorf("unable to close send %v", err)
+	}
+
+	res, err := stream.Recv()
 	if err != nil {
 		plog.Fatalf(codes.ServerError, "cannot recieve response: %v", err)
 	}
 
-	plog.Messagef("job request succesfully sent: file ID = %v", res.GetId())
+	var recievedFile []byte
+
+	fileData := bytes.Buffer{}
+	fileSize := 0
+
+	if res.GetResponse().GetReturnCode() != pb.Response_ok {
+		plog.Fatalf(codes.ServerError, "failed to finish the job: %v", err)
+	}
+
+	res, err = stream.Recv()
+	if err != nil {
+		plog.Errorf("failed to recieve file info: %v", err)
+	}
+
+	extension := res.GetFileInfo().GetFileExtension()
+	plog.Debugf("file extension recieved: %v", extension)
+
+	for {
+		plog.Verbosef("waiting to recieve more data for result file")
+
+		res, err = stream.Recv()
+		if err == io.EOF {
+			recievedFile = fileData.Bytes()
+
+			plog.Debugf("size of file: %v", fileSize)
+
+			plog.Messagef("recieving finished")
+
+			break
+		}
+
+	}
+
+	if len(recievedFile) == 0 {
+		plog.Fatalf(codes.ServerError, "failed to recieve file")
+	}
+
+	err = ioutil.WriteFile("recieved.tmp."+extension, recievedFile, 0644)
+	if err != nil {
+		plog.Fatalf(codes.FileError, "unable to write file: %v", err)
+	}
+
+	plog.Messagef("Done! Result written to %v", "recieved.tmp"+extension)
 }
