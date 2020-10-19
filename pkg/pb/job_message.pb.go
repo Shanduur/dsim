@@ -88,6 +88,53 @@ func (x *Job) GetFileInformation() []*FileInfo {
 	return nil
 }
 
+type InternalJob struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	FileId []int64 `protobuf:"varint,1,rep,packed,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+}
+
+func (x *InternalJob) Reset() {
+	*x = InternalJob{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_job_message_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *InternalJob) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InternalJob) ProtoMessage() {}
+
+func (x *InternalJob) ProtoReflect() protoreflect.Message {
+	mi := &file_job_message_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InternalJob.ProtoReflect.Descriptor instead.
+func (*InternalJob) Descriptor() ([]byte, []int) {
+	return file_job_message_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *InternalJob) GetFileId() []int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return nil
+}
+
 var File_job_message_proto protoreflect.FileDescriptor
 
 var file_job_message_proto_rawDesc = []byte{
@@ -107,8 +154,11 @@ var file_job_message_proto_rawDesc = []byte{
 	0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x70, 0x6c, 0x75, 0x67,
 	0x67, 0x61, 0x62, 0x6c, 0x65, 0x2e, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x2e, 0x46,
 	0x69, 0x6c, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x0f, 0x66, 0x69, 0x6c, 0x65, 0x49, 0x6e, 0x66,
-	0x6f, 0x72, 0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x08, 0x5a, 0x06, 0x70, 0x6b, 0x67, 0x2f,
-	0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6f, 0x72, 0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x26, 0x0a, 0x0b, 0x49, 0x6e, 0x74, 0x65,
+	0x72, 0x6e, 0x61, 0x6c, 0x4a, 0x6f, 0x62, 0x12, 0x17, 0x0a, 0x07, 0x66, 0x69, 0x6c, 0x65, 0x5f,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x03, 0x28, 0x03, 0x52, 0x06, 0x66, 0x69, 0x6c, 0x65, 0x49, 0x64,
+	0x42, 0x08, 0x5a, 0x06, 0x70, 0x6b, 0x67, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -123,15 +173,16 @@ func file_job_message_proto_rawDescGZIP() []byte {
 	return file_job_message_proto_rawDescData
 }
 
-var file_job_message_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_job_message_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_job_message_proto_goTypes = []interface{}{
 	(*Job)(nil),         // 0: pluggable.transfer.Job
-	(*Credentials)(nil), // 1: pluggable.transfer.Credentials
-	(*FileInfo)(nil),    // 2: pluggable.transfer.FileInfo
+	(*InternalJob)(nil), // 1: pluggable.transfer.InternalJob
+	(*Credentials)(nil), // 2: pluggable.transfer.Credentials
+	(*FileInfo)(nil),    // 3: pluggable.transfer.FileInfo
 }
 var file_job_message_proto_depIdxs = []int32{
-	1, // 0: pluggable.transfer.Job.user:type_name -> pluggable.transfer.Credentials
-	2, // 1: pluggable.transfer.Job.file_information:type_name -> pluggable.transfer.FileInfo
+	2, // 0: pluggable.transfer.Job.user:type_name -> pluggable.transfer.Credentials
+	3, // 1: pluggable.transfer.Job.file_information:type_name -> pluggable.transfer.FileInfo
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
@@ -159,6 +210,18 @@ func file_job_message_proto_init() {
 				return nil
 			}
 		}
+		file_job_message_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*InternalJob); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -166,7 +229,7 @@ func file_job_message_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_job_message_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
