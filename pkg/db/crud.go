@@ -47,7 +47,7 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 
 		typeID := 1
 		if count >= 1 {
-			err = conn.QueryRow(context.Background(), "SELECT FIRST type_id FROM filetypes WHERE type_extension = $1 LIMIT 1",
+			err = conn.QueryRow(context.Background(), "SELECT type_id FROM filetypes WHERE type_extension = $1 LIMIT 1",
 				fileInfo[i].FileExtension).Scan(&typeID)
 			if err != nil {
 				return append(id, codes.UnknownID), fmt.Errorf("unable to execute querry: %v", err)
