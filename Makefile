@@ -12,8 +12,11 @@ clean:
 	rm -f pkg/pb/*.pb.go
 	rm -f */**/*.tmp.*
 
-server:
-	go run ./cmd/server
+server-p:
+	go run ./cmd/server/primary
+
+server-s:
+	go run ./cmd/server/secondary
 
 client-u:
 	go run ./cmd/client/um
