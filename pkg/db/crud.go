@@ -102,8 +102,8 @@ func UserExists(user *pb.Credentials) error {
 	return nil
 }
 
-// GetResult retrieves result blob from database
-func GetResult(ctx context.Context, id int64) (result []byte, err error) {
+// GetFile retrieves result blob from database
+func GetFile(ctx context.Context, id int64) (result []byte, extension string, err error) {
 	conn, err := connect()
 	if err != nil {
 		err = fmt.Errorf("unable to connect to database: %v", err)
@@ -111,6 +111,20 @@ func GetResult(ctx context.Context, id int64) (result []byte, err error) {
 	}
 
 	err = conn.QueryRow(context.Background(), "SELECT blob_data FROM blobs WHERE blob_id = $1", id).Scan(&result)
+	if err != nil {
+		err = fmt.Errorf("unable to execute querry: %v", err)
+		return
+	}
+
+	var typeID int64
+
+	err = conn.QueryRow(context.Background(), "SELECT blob_type FROM blobs WHERE blob_id = $1", id).Scan(&typeID)
+	if err != nil {
+		err = fmt.Errorf("unable to execute querry: %v", err)
+		return
+	}
+
+	err = conn.QueryRow(context.Background(), "SELECT type_extension FROM filetypes WHERE type_id = $1", typeID).Scan(&extension)
 	if err != nil {
 		err = fmt.Errorf("unable to execute querry: %v", err)
 		return
