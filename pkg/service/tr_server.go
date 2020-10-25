@@ -84,7 +84,9 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 		req, err = stream.Recv()
 		if err == io.EOF {
 			tempStorage[currentFile] = make([]byte, len(fileData.Bytes()))
-			tempStorage[currentFile] = fileData.Bytes()
+			e := copy(tempStorage[currentFile], fileData.Bytes())
+
+			plog.Verbosef("elements copied: %v", e)
 
 			plog.Debugf("size of file %v: %v", currentFile, fileSize)
 
@@ -107,7 +109,9 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 			plog.Debugf("changing file from %v to %v", currentFile, fileNum)
 			// copy data to temp storage
 			tempStorage[currentFile] = make([]byte, len(fileData.Bytes()))
-			tempStorage[currentFile] = fileData.Bytes()
+			e := copy(tempStorage[currentFile], fileData.Bytes())
+
+			plog.Verbosef("elements copied: %v", e)
 
 			// empty the data
 			fileData.Reset()
