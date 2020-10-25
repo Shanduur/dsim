@@ -20,3 +20,11 @@ CREATE TABLE blobs (
     owner_id BIGINT REFERENCES users(user_id) NOT NULL,
     insertion_date DATE NOT NULL
 );
+
+CREATE TABLE nodes (
+    node_ip VARCHAR(15) PRIMARY KEY NOT NULL,
+    node_port INT NOT NULL,
+    node_reg_jobs INT,
+    node_max_jobs INT NOT NULL,
+    node_timeout TIMESTAMP NOT NULL
+)
