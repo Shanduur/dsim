@@ -13,7 +13,7 @@ import (
 )
 
 // UploadFiles function inserts blobs into database
-func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, user *pb.Credentials) (id []int, err error) {
+func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, user *pb.Credentials) (id []int64, err error) {
 	conn, err := connect()
 	if err != nil {
 		return append(id, codes.UnknownID), fmt.Errorf("unable to connect to database: %v", err)
@@ -37,7 +37,7 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 	}
 
 	for i := 0; i < len(data); i++ {
-		var blobID int
+		var blobID int64
 
 		err = conn.QueryRow(context.Background(), "SELECT COUNT(type_id) FROM filetypes WHERE type_extension = $1",
 			fileInfo[i].FileExtension).Scan(&count)
