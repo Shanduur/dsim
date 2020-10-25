@@ -18,7 +18,7 @@ func main() {
 
 	plog.SetLogLevel(plog.VERBOSE)
 
-	conf, err := convo.LoadConfiguration("config/config_manager.json")
+	conf, err := convo.LoadConfiguration("config/config_primary.json")
 	if err != nil {
 		plog.Fatalf(codes.ConfError, "error while loading configuration: %v", err)
 	}
@@ -30,7 +30,7 @@ func main() {
 	pb.RegisterUserServiceServer(grpcServer, umServ)
 	pb.RegisterJobServiceServer(grpcServer, trServ)
 
-	address := fmt.Sprintf("0.0.0.0:%v", conf.ManagerPort)
+	address := fmt.Sprintf("0.0.0.0:%v", conf.PrimaryNodePort)
 
 	plog.Messagef("net.Listen tcp on %v", address)
 	listener, err := net.Listen("tcp", address)
