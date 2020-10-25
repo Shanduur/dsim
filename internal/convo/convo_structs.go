@@ -5,13 +5,14 @@ import (
 )
 
 // Config struct holds all the informations necessary to configure
-// pluggabl apps (client, manager and worker)
+// pluggabl apps (client, PrimaryNode and SecondaryNode)
 type Config struct {
 	Type                     string
-	ManagerAddress           net.IP
-	ManagerPort              int
-	WorkerAddress            net.IP
-	WorkerPort               int
+	PrimaryNodeAddress       net.IP
+	PrimaryNodePort          int
+	SecondaryNodeAddress     net.IP
+	SecondaryNodePort        int
+	JobBinaryName            string
 	GarbageCollectionTimeout int
 	MaxThreads               int
 	DatabaseAddress          net.IP
@@ -23,17 +24,18 @@ type Config struct {
 
 type configJSON struct {
 	Type       string `json:"type"`
-	MAddr      string `json:"manager-address"`
-	MPort      int    `json:"manager-port"`
-	WAddr      string `json:"worker-address"`
-	WPort      int    `json:"worker-port"`
+	PAddr      string `json:"primary-node-address"`
+	PPort      int    `json:"primary-node-port"`
+	SAddr      string `json:"secondary-node-address"`
+	SPort      int    `json:"secondary-node-port"`
+	SCmd       string `json:"job-binary-name"`
 	GcTimeout  int    `json:"garbage-collection-timeout"`
 	MaxThreads int    `json:"max-threads"`
-	DbAddress  string `json:"address"`
-	DbPort     int    `json:"port"`
-	DbName     string `json:"database"`
-	DbUname    string `json:"username"`
-	DbPasswd   string `json:"password"`
+	DbAddress  string `json:"database-address"`
+	DbPort     int    `json:"database-port"`
+	DbName     string `json:"database-name"`
+	DbUname    string `json:"database-username"`
+	DbPasswd   string `json:"database-password"`
 }
 
 func jsonToConfig(cj configJSON) (cc Config) {
@@ -41,11 +43,12 @@ func jsonToConfig(cj configJSON) (cc Config) {
 	cc.MaxThreads = cj.MaxThreads
 	cc.Type = cj.Type
 
-	cc.ManagerAddress = net.ParseIP(cj.MAddr)
-	cc.ManagerPort = cj.MPort
+	cc.PrimaryNodeAddress = net.ParseIP(cj.PAddr)
+	cc.PrimaryNodePort = cj.PPort
 
-	cc.WorkerAddress = net.ParseIP(cj.WAddr)
-	cc.WorkerPort = cj.WPort
+	cc.SecondaryNodeAddress = net.ParseIP(cj.SAddr)
+	cc.SecondaryNodePort = cj.SPort
+	cc.JobBinaryName = cj.SCmd
 
 	cc.DatabaseAddress = net.ParseIP(cj.DbAddress)
 	cc.DatabasePort = cj.DbPort
