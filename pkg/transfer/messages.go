@@ -19,6 +19,19 @@ func NewDummyCredentials() *pb.Credentials {
 	return userCreds
 }
 
+// NewAdminCredentials generates struct with admin credentials
+func NewAdminCredentials() *pb.Credentials {
+	s512 := sha512.New()
+	bv := []byte("admin")
+
+	userCreds := &pb.Credentials{
+		UserId:  "admin-password",
+		UserKey: s512.Sum(bv),
+	}
+
+	return userCreds
+}
+
 // NewDummyFileInfo generates dummy File information
 func NewDummyFileInfo() *pb.FileInfo {
 	fileInfo := &pb.FileInfo{

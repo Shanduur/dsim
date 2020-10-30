@@ -13,7 +13,7 @@ import (
 )
 
 // UploadFiles function inserts blobs into database
-func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, user *pb.Credentials) (id []int, err error) {
+func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, user *pb.Credentials) (id []int64, err error) {
 	conn, err := connect()
 	if err != nil {
 		return append(id, codes.UnknownID), fmt.Errorf("unable to connect to database: %v", err)
@@ -37,7 +37,7 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 	}
 
 	for i := 0; i < len(data); i++ {
-		var blobID int
+		var blobID int64
 
 		err = conn.QueryRow(context.Background(), "SELECT COUNT(type_id) FROM filetypes WHERE type_extension = $1",
 			fileInfo[i].FileExtension).Scan(&count)
@@ -102,8 +102,8 @@ func UserExists(user *pb.Credentials) error {
 	return nil
 }
 
-// GetResult retrieves result blob from database
-func GetResult(ctx context.Context, id int64) (result []byte, err error) {
+// GetFile retrieves result blob from database
+func GetFile(ctx context.Context, id int64) (result []byte, extension string, err error) {
 	conn, err := connect()
 	if err != nil {
 		err = fmt.Errorf("unable to connect to database: %v", err)
@@ -111,6 +111,20 @@ func GetResult(ctx context.Context, id int64) (result []byte, err error) {
 	}
 
 	err = conn.QueryRow(context.Background(), "SELECT blob_data FROM blobs WHERE blob_id = $1", id).Scan(&result)
+	if err != nil {
+		err = fmt.Errorf("unable to execute querry: %v", err)
+		return
+	}
+
+	var typeID int64
+
+	err = conn.QueryRow(context.Background(), "SELECT blob_type FROM blobs WHERE blob_id = $1", id).Scan(&typeID)
+	if err != nil {
+		err = fmt.Errorf("unable to execute querry: %v", err)
+		return
+	}
+
+	err = conn.QueryRow(context.Background(), "SELECT type_extension FROM filetypes WHERE type_id = $1", typeID).Scan(&extension)
 	if err != nil {
 		err = fmt.Errorf("unable to execute querry: %v", err)
 		return

@@ -20,7 +20,7 @@ func Equal(a, b []byte) bool {
 }
 
 func TestLoadConfiguration(t *testing.T) {
-	matrix := []string{"client", "manager", "worker", "db"}
+	matrix := []string{"client", "primary", "secondary", "db"}
 
 	err := errors.New("")
 
@@ -32,36 +32,36 @@ func TestLoadConfiguration(t *testing.T) {
 			t.Errorf("LoadConfiguration: while processing %v got error: %v", m, err)
 		}
 
-		managerIP := net.ParseIP("192.168.0.105")
-		workerIP := net.ParseIP("192.168.0.106")
+		PrimaryIP := net.ParseIP("192.168.0.105")
+		SecondaryIP := net.ParseIP("192.168.0.106")
 
 		if m != "client" && m != "db" {
 			if conf.GarbageCollectionTimeout != 1000 {
 				t.Errorf("GCT: got %v wanted %v", conf.GarbageCollectionTimeout, 1000)
 			}
 
-			if !Equal(conf.WorkerAddress, workerIP) {
-				t.Errorf("%v WA: got %v wanted %v", m, conf.WorkerAddress, workerIP)
+			if !Equal(conf.SecondaryNodeAddress, SecondaryIP) {
+				t.Errorf("%v WA: got %v wanted %v", m, conf.SecondaryNodeAddress, SecondaryIP)
 			}
 
-			if conf.WorkerPort != 4004 {
-				t.Errorf("%v WP: got %v wanted %v", m, conf.WorkerPort, 4004)
+			if conf.SecondaryNodePort != 4004 {
+				t.Errorf("%v WP: got %v wanted %v", m, conf.SecondaryNodePort, 4004)
 			}
 		}
 
-		if m == "worker" {
+		if m == "secondary" {
 			if conf.MaxThreads != 4 {
 				t.Errorf("%v MT: got %v wanted %v", m, conf.MaxThreads, 4)
 			}
 		}
 
 		if m != "db" {
-			if !Equal(conf.ManagerAddress, managerIP) {
-				t.Errorf("%v MA: got %v wanted %v", m, conf.ManagerAddress, managerIP)
+			if !Equal(conf.PrimaryNodeAddress, PrimaryIP) {
+				t.Errorf("%v MA: got %v wanted %v", m, conf.PrimaryNodeAddress, PrimaryIP)
 			}
 
-			if conf.ManagerPort != 4004 {
-				t.Errorf("%v MP: got %v wanted %v", m, conf.WorkerPort, 4004)
+			if conf.PrimaryNodePort != 4004 {
+				t.Errorf("%v MP: got %v wanted %v", m, conf.SecondaryNodePort, 4004)
 			}
 		}
 
@@ -76,7 +76,7 @@ func TestLoadConfiguration(t *testing.T) {
 				t.Errorf("%v DN: got %v wanted %v", m, conf.DatabasePort, 5432)
 			}
 
-			if conf.DatabaseName != "database" {
+			if conf.DatabaseName != "database-name" {
 				t.Errorf("%v DN: got %v wanted %v", m, conf.DatabaseName, 4004)
 			}
 
@@ -84,7 +84,7 @@ func TestLoadConfiguration(t *testing.T) {
 				t.Errorf("%v DU: got %v wanted %v", m, conf.DatabaseUsername, 4004)
 			}
 
-			if conf.DatabasePassword != "password" {
+			if conf.DatabasePassword != "database-password" {
 				t.Errorf("%v DP: got %v wanted %v", m, conf.DatabasePassword, 4004)
 			}
 		}
