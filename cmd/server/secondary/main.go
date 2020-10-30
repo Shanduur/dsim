@@ -5,6 +5,8 @@ import (
 	"net"
 	"sync"
 
+	"github.com/Sheerley/pluggabl/pkg/db"
+
 	"github.com/Sheerley/pluggabl/internal/codes"
 	"github.com/Sheerley/pluggabl/internal/convo"
 	"github.com/Sheerley/pluggabl/pkg/pb"
@@ -36,12 +38,18 @@ func main() {
 		plog.Fatalf(codes.ServerError, "error while creating listener: %v", err)
 	}
 
+	err = db.RegisterNode(conf)
+	if err != nil {
+		plog.Fatalf(codes.DbError, "unable to register node: %v", err)
+	}
+	defer db.UnregisterNode(conf)
+
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
 		err = grpcServer.Serve(listener)
 		if err != nil {
-			plog.Fatalf(codes.ServerError, "error while registering listener %v", err)
+			plog.Fatalf(codes.ServerError, "error while registering listener: %v", err)
 		}
 	}()
 
