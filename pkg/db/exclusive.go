@@ -8,6 +8,7 @@ import (
 	"github.com/Sheerley/pluggabl/internal/convo"
 )
 
+// RegisterNode
 func RegisterNode(cfg convo.Config) (err error) {
 	conn, err := connect()
 	if err != nil {
