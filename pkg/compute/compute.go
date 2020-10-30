@@ -9,8 +9,8 @@ import (
 // BestMatches takes two arguments being Querry and Train
 // and holding paths to the images that have to be
 // processed during the SIFT detection and Brute
-// force matchin. Function returns gocv.Mat holding
-// result of feature matching algorithm
+// force matching. Function returns gocv.Mat holding
+// result of feature matching algorithm.
 func BestMatches(query string, train string) gocv.Mat {
 
 	img1 := gocv.IMRead(query, gocv.IMReadGrayScale)

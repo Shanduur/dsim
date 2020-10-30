@@ -8,7 +8,7 @@ import (
 	"github.com/Sheerley/pluggabl/internal/convo"
 )
 
-// RegisterNode
+// RegisterNode is used in the start of server to register node inside database
 func RegisterNode(cfg convo.Config) (err error) {
 	conn, err := connect()
 	if err != nil {
@@ -45,6 +45,7 @@ func RegisterNode(cfg convo.Config) (err error) {
 	return
 }
 
+// UnregisterNode is used in the end of server execution to remove node from database
 func UnregisterNode(cfg convo.Config) (err error) {
 	conn, err := connect()
 	if err != nil {
@@ -78,6 +79,7 @@ func UnregisterNode(cfg convo.Config) (err error) {
 	return
 }
 
+// UpdateJobStatus is used to update status of job inside node config table
 func UpdateJobStatus(cfg convo.Config, value int) (err error) {
 	conn, err := connect()
 	if err != nil {
