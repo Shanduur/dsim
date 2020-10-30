@@ -13,6 +13,7 @@ package codes
 const (
 	NoError                = iota
 	UnknownError           = iota
+	SigInterrupt           = iota
 	ConfError              = iota
 	LogError               = iota
 	ComputeError           = iota

@@ -9,8 +9,8 @@ import (
 // BestMatches takes two arguments being Querry and Train
 // and holding paths to the images that have to be
 // processed during the SIFT detection and Brute
-// force matchin. Function returns gocv.Mat holding
-// result of feature matching algorithm
+// force matching. Function returns gocv.Mat holding
+// result of feature matching algorithm.
 func BestMatches(query string, train string) gocv.Mat {
 
 	img1 := gocv.IMRead(query, gocv.IMReadGrayScale)
@@ -18,18 +18,20 @@ func BestMatches(query string, train string) gocv.Mat {
 	img2 := gocv.IMRead(train, gocv.IMReadGrayScale)
 	defer img2.Close()
 
+	// creating new SIFT
 	sift := gocv.NewSIFT()
 	defer sift.Close()
 
+	// detecting and computing keypoints using SIFT method
 	kp1, des1 := sift.DetectAndCompute(img1, gocv.NewMat())
 	kp2, des2 := sift.DetectAndCompute(img2, gocv.NewMat())
 
+	// finding K best matches for each descriptor
 	bf := gocv.NewBFMatcher()
-	defer bf.Close()
 	matches := bf.KnnMatch(des1, des2, 2)
 
+	// application of ratio test
 	var good []gocv.DMatch
-
 	for _, m := range matches {
 		if len(m) > 1 {
 			if m[0].Distance < 0.75*m[1].Distance {
@@ -38,27 +40,30 @@ func BestMatches(query string, train string) gocv.Mat {
 		}
 	}
 
-	gocv.DrawKeyPoints(img1, kp1, &img1, color.RGBA{
+	// matches color
+	c1 := color.RGBA{
+		R: 0,
+		G: 255,
+		B: 0,
+		A: 0,
+	}
+
+	// point color
+	c2 := color.RGBA{
 		R: 255,
 		G: 0,
 		B: 0,
 		A: 0,
-	}, gocv.DrawDefault)
+	}
 
-	gocv.DrawKeyPoints(img2, kp2, &img2, color.RGBA{
-		R: 255,
-		G: 0,
-		B: 0,
-		A: 0,
-	}, gocv.DrawDefault)
+	// creating empty mask
+	mask := make([]byte, 0)
 
+	// new matrix for output image
 	out := gocv.NewMat()
-	defer out.Close()
 
-	// this should be available in the closest future
-	// inside the GoCV.
-	// Pull request merged to dev
-	// gocv.DrawMatches()
+	// drawing matches
+	gocv.DrawMatches(img1, kp1, img2, kp2, good, &out, c1, c2, mask, gocv.DrawDefault)
 
 	return out
 }

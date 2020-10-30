@@ -44,6 +44,21 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 		return rsp, err
 	}
 
+	err = db.UpdateJobStatus(cfg, +1)
+	if err != nil {
+		err = fmt.Errorf("unable to update job status: %v", err)
+
+		rsp = &pb.InternalJobResponse{
+			Response: &pb.Response{
+				ReturnMessage: err.Error(),
+				ReturnCode:    pb.Response_error,
+			},
+		}
+
+		plog.Errorf("%v", err)
+
+		return rsp, err
+	}
 	defer db.UpdateJobStatus(cfg, -1)
 	defer plog.ContextStatus(ctx)
 

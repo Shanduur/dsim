@@ -7,6 +7,7 @@ import (
 
 	"github.com/Sheerley/pluggabl/internal/codes"
 	"github.com/Sheerley/pluggabl/internal/convo"
+	"github.com/Sheerley/pluggabl/internal/fuse"
 	"github.com/Sheerley/pluggabl/pkg/pb"
 	"github.com/Sheerley/pluggabl/pkg/plog"
 	"github.com/Sheerley/pluggabl/pkg/service"
@@ -39,6 +40,7 @@ func main() {
 	}
 
 	wg.Add(1)
+	go fuse.Watchdog(&wg)
 	go func() {
 		defer wg.Done()
 		err = grpcServer.Serve(listener)
