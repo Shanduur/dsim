@@ -23,6 +23,7 @@ const (
 	WorkerConnectionError  = iota
 	ClientConnectionError  = iota
 	FileError              = iota
+	IncorrectArgs          = iota
 )
 
 // Values for unknown returns

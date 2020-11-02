@@ -1,12 +1,17 @@
 GOCV_VERSION=v0.25.0 
 
-all: install clean proto gtest
+all: install clean proto gtest build
 
 proto:
 	protoc \
 	--proto_path=pkg/proto \
 	--go_out=plugins=grpc:. \
 	pkg/proto/*.proto
+
+compile:
+	go build -o ./build/primary ./cmd/server/primary 
+	go build -o ./build/secondary ./cmd/server/secondary 
+	go build -o ./build/exec ./cmd/exec 
 
 clean:
 	rm -f pkg/pb/*.pb.go
