@@ -12,6 +12,7 @@ compile:
 	go build -o ./build/primary ./cmd/server/primary 
 	go build -o ./build/secondary ./cmd/server/secondary 
 	go build -o ./build/exec ./cmd/exec 
+	go build -o ./build/client ./cmd/client
 
 clean:
 	rm -f pkg/pb/*.pb.go
