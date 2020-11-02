@@ -68,6 +68,7 @@ func BestMatches(query string, train string) gocv.Mat {
 	return out
 }
 
+// SaveMat function abstracts the gocv IMWrite
 func SaveMat(name string, img gocv.Mat) {
 	gocv.IMWrite(name, img)
 }
