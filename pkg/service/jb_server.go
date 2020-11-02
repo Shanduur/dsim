@@ -68,7 +68,7 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 	var extension string
 
 	for i := 0; i < len(fileIDs); i++ {
-		tmp, ext, err := db.GetFile(ctx, fileIDs[i])
+		tmp, name, ext, err := db.GetFile(ctx, fileIDs[i])
 		if err != nil {
 			err = fmt.Errorf("unable to retrieve file: %v", err)
 
@@ -86,8 +86,7 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 
 		extension = ext
 
-		name := uuid.New().String()
-		name = name + ".tmp" + ext
+		name = name + ext
 
 		err = ioutil.WriteFile(name, tmp, 0644)
 		if err != nil {
@@ -108,14 +107,11 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 		filenames = append(filenames, name)
 	}
 
-	args := ""
+	query := "-query=" + filenames[0]
+	train := "-train=" + filenames[1]
 
-	for i := 0; i < len(filenames); i++ {
-		args += filenames[i] + " "
-	}
-
-	outname := uuid.New().String() + ".tmp" + extension
-	job := exec.Command(cfg.JobBinaryName, args, "-o "+outname)
+	outname := uuid.New().String() + extension
+	job := exec.Command(cfg.JobBinaryName, query, train, "-out="+outname)
 
 	err = job.Run()
 	if err != nil {

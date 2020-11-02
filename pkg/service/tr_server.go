@@ -227,7 +227,7 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 		plog.Errorf(err.Error())
 		return err
 	}
-	resultFile, extension, err := db.GetFile(ctx, fileID[0])
+	resultFile, _, extension, err := db.GetFile(ctx, fileID[0])
 	if err != nil {
 		plog.Errorf("unable to download file from database: %v", err)
 		return err
