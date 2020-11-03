@@ -1,5 +1,6 @@
 {
     "type": "secondary-node-",
+    "job-binary-name": "./build/exec",
     "primary-node-address": "0.0.0.0",
     "primary-node-port": 4004,
     "secondary-node-address": "0.0.0.0",

@@ -121,7 +121,7 @@ func main() {
 		}
 
 		job := &pb.Job{
-			User:            transfer.NewDummyCredentials(),
+			User:            transfer.NewCredentials(*login, *passphrase),
 			NumberOfFiles:   uint32(len(files)),
 			FileInformation: fileinfo,
 		}
@@ -179,8 +179,16 @@ func main() {
 		}
 
 		res, err := stream.Recv()
-		if err != nil {
-			plog.Fatalf(codes.ServerError, "cannot recieve response: %v", err)
+		for {
+			if err != nil {
+				plog.Fatalf(codes.ServerError, "cannot recieve response: %v", err)
+			}
+
+			if res != nil {
+				break
+			} else {
+				res, err = stream.Recv()
+			}
 		}
 
 		var recievedFile []byte
@@ -189,7 +197,8 @@ func main() {
 		fileSize := 0
 
 		if res.GetResponse().GetReturnCode() != pb.Response_ok {
-			plog.Fatalf(codes.ServerError, "failed to finish the job: %v", err)
+			plog.Verbosef("%v", res)
+			plog.Fatalf(codes.ServerError, "failed to finish the job: \n - %v", err)
 		}
 
 		res, err = stream.Recv()
