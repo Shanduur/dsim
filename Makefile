@@ -5,7 +5,7 @@ GOCV_VERSION=v0.25.0
 all: preinstall clean proto build
 
 preinstall:
-	go mod tidy
+	go mod download
 	cd $(shell go env GOPATH)/pkg/mod/gocv.io/x/gocv\@$(GOCV_VERSION) && $(MAKE) install
 
 clean:
