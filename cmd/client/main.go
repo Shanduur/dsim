@@ -23,7 +23,7 @@ import (
 func main() {
 	configLocation := os.Getenv("CONFIG")
 	if len(configLocation) == 0 {
-		configLocation = "~/.config/config_client.json"
+		configLocation = "~/.config/pluggabl.d/config_client.json"
 	}
 
 	userManagement := flag.Bool("user-mg", false, "set true if you want to create or remove user")

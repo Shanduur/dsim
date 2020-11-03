@@ -1,6 +1,17 @@
 GOCV_VERSION=v0.25.0 
 
-all: install clean proto gtest build
+.PHONY: build preinstall install clean proto test 
+
+all: preinstall clean proto build
+
+preinstall:
+	go mod tidy
+	cd $(shell go env GOPATH)/pkg/mod/gocv.io/x/gocv\@$(GOCV_VERSION) && $(MAKE) install
+
+clean:
+	rm -f ./pkg/pb/*.pb.go
+	rm -f ./build/*
+	find . -name \*.tmp.* -type f -print0  | xargs -0 rm -f
 
 proto:
 	protoc \
@@ -8,33 +19,16 @@ proto:
 	--go_out=plugins=grpc:. \
 	pkg/proto/*.proto
 
-compile:
-	go build -o ./build/primary ./cmd/server/primary 
-	go build -o ./build/secondary ./cmd/server/secondary 
-	go build -o ./build/exec ./cmd/exec 
-	go build -o ./build/client ./cmd/client
+build:
+	go build -o ./build/pluggabl-primary ./cmd/server/primary 
+	go build -o ./build/pluggabl-secondary ./cmd/server/secondary 
+	go build -o ./build/pluggabl-exec ./cmd/exec 
+	go build -o ./build/pluggabl-client ./cmd/client
 
-clean:
-	rm -f pkg/pb/*.pb.go
-	rm -f */**/*.tmp.*
-
-server-p:
-	go run ./cmd/server/primary
-
-server-s:
-	go run ./cmd/server/secondary
-
-client-u:
-	go run ./cmd/client/um
-
-client-t:
-	go run ./cmd/client/tr
+install:
+	sudo cp ./build/pluggabl-* /tmp/
+	[ ! -d ~/.config/pluggabl.d/ ] && mkdir ~/.config/pluggabl.d/ || echo ok
+	cp ./config/*.json ~/.config/pluggabl.d/
 
 test:
 	go test -cover -race ./...
-
-ptest: proto test
-
-install:
-	go mod tidy
-	cd $(shell go env GOPATH)/pkg/mod/gocv.io/x/gocv\@$(GOCV_VERSION) && $(MAKE) install

@@ -20,6 +20,10 @@ func main() {
 	var wg sync.WaitGroup
 
 	configLocation := os.Getenv("CONFIG")
+	if len(configLocation) == 0 {
+		configLocation = "~/.config/pluggabl.d/config_primary.json"
+		plog.Warningf("config env variable not set, current config location: %v", configLocation)
+	}
 
 	logDescription := fmt.Sprintf("log level with possoble values:\n - Verbose: %v\n - Debug: %v\n - Info: %v"+
 		"\n - Waring: %v\n - Error: %v not recommended\n - Fatal: %v not recommended",
