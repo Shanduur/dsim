@@ -11,7 +11,6 @@ preinstall:
 clean:
 	rm -f ./pkg/pb/*.pb.go
 	rm -f ./build/*
-	find . -name \*.tmp.* -type f -print0  | xargs -0 rm -f
 
 proto:
 	protoc \
