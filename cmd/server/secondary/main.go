@@ -1,8 +1,10 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net"
+	"os"
 	"sync"
 
 	"github.com/Sheerley/pluggabl/internal/codes"
@@ -18,9 +20,22 @@ import (
 func main() {
 	var wg sync.WaitGroup
 
-	plog.SetLogLevel(plog.VERBOSE)
+	configLocation := os.Getenv("CONFIG")
+	if len(configLocation) == 0 {
+		configLocation = "~/.config/pluggabl.d/config_secondary.json"
+		plog.Warningf("config env variable not set, current config location: %v", configLocation)
+	}
 
-	conf, err := convo.LoadConfiguration("config/config_secondary.json")
+	logDescription := fmt.Sprintf("log level with possoble values:\n - Verbose: %v\n - Debug: %v\n - Info: %v"+
+		"\n - Waring: %v\n - Error: %v not recommended\n - Fatal: %v not recommended",
+		plog.VERBOSE, plog.DEBUG, plog.INFO, plog.WARNING, plog.ERROR, plog.FATAL)
+	logLevel := flag.Int("log-level", plog.WARNING, logDescription)
+
+	flag.Parse()
+
+	plog.SetLogLevel(*logLevel)
+
+	conf, err := convo.LoadConfiguration(configLocation)
 	if err != nil {
 		plog.Fatalf(codes.ConfError, "error while loading configuration: %v", err)
 	}

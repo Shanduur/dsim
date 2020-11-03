@@ -19,3 +19,4 @@ build/
 tmp/
 **/tmp/
 *.tmp.*
+_*.sh

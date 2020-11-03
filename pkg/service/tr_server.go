@@ -54,7 +54,7 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 			return
 		}
 
-		err = fmt.Errorf("unable to process request")
+		err = fmt.Errorf("unable to process request: %v", err)
 		plog.Errorf("%v", err)
 
 		return
@@ -220,6 +220,21 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 		return err
 	}
 
+	msg := fmt.Sprintf("job finished succesfully")
+
+	jrsp = &pb.JobResponse{
+		Data: &pb.JobResponse_Response{
+			Response: &pb.Response{
+				ReturnCode:    pb.Response_ok,
+				ReturnMessage: msg,
+			},
+		},
+	}
+
+	err2 := stream.Send(jrsp)
+
+	plog.Errorf("error sending response: \n- %v\n- %v", err, err2)
+
 	fileID := res.GetFileId()
 
 	if len(fileID) > 1 {
@@ -227,7 +242,7 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 		plog.Errorf(err.Error())
 		return err
 	}
-	resultFile, extension, err := db.GetFile(ctx, fileID[0])
+	resultFile, _, extension, err := db.GetFile(ctx, fileID[0])
 	if err != nil {
 		plog.Errorf("unable to download file from database: %v", err)
 		return err

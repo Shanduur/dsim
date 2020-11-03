@@ -7,11 +7,14 @@ import (
 
 	"github.com/Sheerley/pluggabl/internal/codes"
 	"github.com/Sheerley/pluggabl/pkg/pb"
+	"github.com/Sheerley/pluggabl/pkg/plog"
 )
 
 // Auth func is used to check if user is user credentials are correct
 func Auth(ctx context.Context, user *pb.Credentials) error {
 	var key []byte
+
+	plog.Debugf("name: %v", user.GetUserId())
 
 	conn, err := connect()
 	if err != nil {

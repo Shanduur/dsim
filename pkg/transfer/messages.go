@@ -19,13 +19,26 @@ func NewDummyCredentials() *pb.Credentials {
 	return userCreds
 }
 
+// NewCredentials generates credential struct from configs
+func NewCredentials(name string, passphrase string) *pb.Credentials {
+	s512 := sha512.New()
+	bv := []byte(passphrase)
+
+	userCreds := &pb.Credentials{
+		UserId:  name,
+		UserKey: s512.Sum(bv),
+	}
+
+	return userCreds
+}
+
 // NewAdminCredentials generates struct with admin credentials
 func NewAdminCredentials() *pb.Credentials {
 	s512 := sha512.New()
-	bv := []byte("admin")
+	bv := []byte("admin-password")
 
 	userCreds := &pb.Credentials{
-		UserId:  "admin-password",
+		UserId:  "admin",
 		UserKey: s512.Sum(bv),
 	}
 

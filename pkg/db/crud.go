@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Sheerley/pluggabl/pkg/plog"
-
 	"github.com/Sheerley/pluggabl/internal/codes"
 	"github.com/Sheerley/pluggabl/pkg/pb"
+	"github.com/Sheerley/pluggabl/pkg/plog"
+	"github.com/google/uuid"
 )
 
 // UploadFiles function inserts blobs into database
@@ -54,10 +54,11 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 			}
 		}
 
+		name := uuid.New().String()
 		err = tx.QueryRow(context.Background(),
 			"INSERT INTO blobs(blob_data, blob_type, blob_name, owner_id, insertion_date)"+
 				"VALUES ($1, $2, $3, $4, $5) RETURNING blob_id",
-			data[i], typeID, fmt.Sprint(i), ownerID, dt.Format("2006-01-02")).Scan(&blobID)
+			data[i], typeID, name, ownerID, dt.Format("2006-01-02")).Scan(&blobID)
 
 		plog.Debugf("id returned: %v", blobID)
 
@@ -103,14 +104,14 @@ func UserExists(user *pb.Credentials) error {
 }
 
 // GetFile retrieves result blob from database
-func GetFile(ctx context.Context, id int64) (result []byte, extension string, err error) {
+func GetFile(ctx context.Context, id int64) (result []byte, name string, extension string, err error) {
 	conn, err := connect()
 	if err != nil {
 		err = fmt.Errorf("unable to connect to database: %v", err)
 		return
 	}
 
-	err = conn.QueryRow(context.Background(), "SELECT blob_data FROM blobs WHERE blob_id = $1", id).Scan(&result)
+	err = conn.QueryRow(context.Background(), "SELECT blob_data, blob_name FROM blobs WHERE blob_id = $1", id).Scan(&result, &name)
 	if err != nil {
 		err = fmt.Errorf("unable to execute querry: %v", err)
 		return
