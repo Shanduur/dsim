@@ -170,6 +170,37 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 		plog.Errorf("cannot read config: \n- %v\n- %v", err, err2)
 		return err
 	}
+
+	addr, port, err := db.GetFreeNode()
+
+	if err == (&codes.NoFreeNode{}) {
+		for {
+			plog.Messagef("job queued: %v", err)
+			addr, port, err = db.GetFreeNode()
+
+			if err != (&codes.NoFreeNode{}) {
+				break
+			}
+		}
+	}
+	if err != nil {
+		msg := fmt.Sprintf("error getting node address: %v", err)
+
+		jrsp = &pb.JobResponse{
+			Data: &pb.JobResponse_Response{
+				Response: &pb.Response{
+					ReturnCode:    pb.Response_error,
+					ReturnMessage: msg,
+				},
+			},
+		}
+
+		err2 := stream.Send(jrsp)
+
+		plog.Errorf("error getting node address: \n- %v\n- %v", err, err2)
+		return err
+	}
+
 	address := fmt.Sprintf("%v:%v", conf.SecondaryNodeAddress, conf.SecondaryNodePort)
 
 	plog.Messagef("dial secondary node %v", address)

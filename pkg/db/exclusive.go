@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/Sheerley/pluggabl/internal/codes"
+
 	"github.com/Sheerley/pluggabl/internal/convo"
 )
 
@@ -71,10 +73,55 @@ func UnregisterNode(cfg convo.Config) (err error) {
 			return fmt.Errorf("unable to insert node config into table: %v", err)
 		}
 	} else {
-		return fmt.Errorf("node already registred")
+		return fmt.Errorf("node not registred")
 	}
 
 	tx.Commit(context.Background())
+
+	return
+}
+
+// GetFreeNode is used to retrive node with available computation thread
+func GetFreeNode() (addr string, port int, err error) {
+	conn, err := connect()
+	if err != nil {
+		err = fmt.Errorf("unable to connect to database: %v", err)
+		return
+	}
+
+	tx, err := conn.Begin(context.Background())
+	if err != nil {
+		err = fmt.Errorf("unable to create transaction: %v", err)
+		return
+	}
+
+	// in case of returning error rollback unfinished transaction
+	defer tx.Rollback(context.Background())
+
+	_, err = tx.Exec(context.Background(), "LOCK TABLE nodes IN ACCESS EXCLUSIVE MODE")
+	if err != nil {
+		err = fmt.Errorf("unable to lock table: %v", err)
+		return
+	}
+
+	var count int
+
+	err = tx.QueryRow(context.Background(), "SELECT COUNT(*) FROM nodes WHERE node_reg_jobs < node_max_jobs").Scan(&count)
+	if err != nil {
+		err = fmt.Errorf("unable to count in table: %v", err)
+		return
+	}
+	if count == 0 {
+		err = &codes.NoFreeNode{}
+		return
+	}
+
+	err = tx.QueryRow(context.Background(), "SELECT node_ip, node_port FROM nodes WHERE node_reg_jobs < node_max_jobs"+
+		"ORDER BY node_reg_jobs ASC LIMIT 1").Scan(&addr, &port)
+	if err != nil {
+		err = fmt.Errorf("unable to count in table: %v", err)
+		return
+	}
 
 	return
 }
