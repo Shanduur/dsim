@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/Sheerley/pluggabl/internal/convo"
 	"google.golang.org/grpc"
 
 	"github.com/Sheerley/pluggabl/internal/codes"
@@ -152,25 +151,6 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 	}
 	plog.Messagef("succesfully recieved %v blob%v with id%v: %v", len(id), plural, plural, id)
 
-	conf, err := convo.LoadConfiguration("config/config_primary.json")
-	if err != nil {
-		msg := fmt.Sprintf("cannot read config: %v", err)
-
-		jrsp = &pb.JobResponse{
-			Data: &pb.JobResponse_Response{
-				Response: &pb.Response{
-					ReturnCode:    pb.Response_error,
-					ReturnMessage: msg,
-				},
-			},
-		}
-
-		err2 := stream.Send(jrsp)
-
-		plog.Errorf("cannot read config: \n- %v\n- %v", err, err2)
-		return err
-	}
-
 	addr, port, err := db.GetFreeNode()
 
 	if err == (&codes.NoFreeNode{}) {
@@ -201,7 +181,7 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 		return err
 	}
 
-	address := fmt.Sprintf("%v:%v", conf.SecondaryNodeAddress, conf.SecondaryNodePort)
+	address := fmt.Sprintf("%v:%v", addr, port)
 
 	plog.Messagef("dial secondary node %v", address)
 

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os/exec"
+	"time"
 
 	"github.com/Sheerley/pluggabl/pkg/transfer"
 
@@ -113,7 +114,26 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 	outname := uuid.New().String() + extension
 	job := exec.Command(cfg.JobBinaryName, query, train, "-out="+outname)
 
+	c := make(chan bool)
+
+	plog.Messagef("job started")
+
+	go func(c <-chan bool) {
+		for {
+			select {
+			case <-c:
+				plog.Messagef("job done")
+				return
+			default:
+				plog.Verbosef("working")
+				time.Sleep(500 * time.Millisecond)
+			}
+		}
+	}(c)
+
 	err = job.Run()
+	c <- true
+	close(c)
 	if err != nil {
 		err = fmt.Errorf("unable to process the job: %v", err)
 
