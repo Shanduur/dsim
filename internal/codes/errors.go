@@ -23,3 +23,11 @@ type NotAuthenticated struct{}
 func (err *NotAuthenticated) Error() string {
 	return "username and password mismatch"
 }
+
+// NoFreeNode struct is an error that indicates,
+// that user cannot be authenticated
+type NoFreeNode struct{}
+
+func (err *NoFreeNode) Error() string {
+	return "no node avaliable"
+}

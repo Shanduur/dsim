@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/Sheerley/pluggabl/internal/convo"
 	"google.golang.org/grpc"
 
 	"github.com/Sheerley/pluggabl/internal/codes"
@@ -152,9 +151,20 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 	}
 	plog.Messagef("succesfully recieved %v blob%v with id%v: %v", len(id), plural, plural, id)
 
-	conf, err := convo.LoadConfiguration("config/config_primary.json")
+	addr, port, err := db.GetFreeNode()
+
+	if err == (&codes.NoFreeNode{}) {
+		for {
+			plog.Messagef("job queued: %v", err)
+			addr, port, err = db.GetFreeNode()
+
+			if err != (&codes.NoFreeNode{}) {
+				break
+			}
+		}
+	}
 	if err != nil {
-		msg := fmt.Sprintf("cannot read config: %v", err)
+		msg := fmt.Sprintf("error getting node address: %v", err)
 
 		jrsp = &pb.JobResponse{
 			Data: &pb.JobResponse_Response{
@@ -167,10 +177,11 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 
 		err2 := stream.Send(jrsp)
 
-		plog.Errorf("cannot read config: \n- %v\n- %v", err, err2)
+		plog.Errorf("error getting node address: \n- %v\n- %v", err, err2)
 		return err
 	}
-	address := fmt.Sprintf("%v:%v", conf.SecondaryNodeAddress, conf.SecondaryNodePort)
+
+	address := fmt.Sprintf("%v:%v", addr, port)
 
 	plog.Messagef("dial secondary node %v", address)
 
