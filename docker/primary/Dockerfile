@@ -9,6 +9,6 @@ COPY ./files /
 
 LABEL maintainer="mateusz.urbanek.98@gmail.com" \
     type="primary-node" \
-    version="0.0.1-init"
+version="0.1.0-init"
 
 ENTRYPOINT [ "/pluggabl/primary.run" ]
