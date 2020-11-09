@@ -1,0 +1,9 @@
+{
+    "type": "primary-node",
+    "primary-node-address": "0.0.0.0",
+    "primary-node-port": 4004,
+    "garbage-collection-timeout": 1000,
+    "db-name": "database-name",
+    "db-username": "admin",
+    "db-password": "database-password"
+}

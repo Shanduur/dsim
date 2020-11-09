@@ -1,0 +1,11 @@
+{
+    "type": "secondary-node",
+    "job-binary-name": "/pluggabl/exec.run",
+    "secondary-node-address": "0.0.0.0",
+    "secondary-node-port": 4005,
+    "garbage-collection-timeout": 1000,
+    "max-threads": 4,
+    "db-name": "database-name",
+    "db-username": "admin",
+    "db-password": "database-password"
+}
