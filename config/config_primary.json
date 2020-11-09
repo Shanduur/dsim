@@ -1,9 +1,7 @@
 {
-    "type": "manager",
+    "type": "primary-node",
     "primary-node-address": "0.0.0.0",
     "primary-node-port": 4004,
-    "secondary-node-address": "0.0.0.0",
-    "secondary-node-port": 4005,
     "garbage-collection-timeout": 1000,
     "db-name": "database-name",
     "db-username": "admin",
