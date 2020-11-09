@@ -1,17 +1,21 @@
-.PHONY: all build push lib
+.PHONY: all build push lib version
 
-LIB=0.0.1-init
-VER=0.0.1-init
+include version.env
+
+version:
+	sed -i 's|.*version=.*|version="$(VERSION)"|g' ./primary/Dockerfile
+	sed -i 's|.*version=.*|version="$(VERSION)"|g' ./secondary/Dockerfile
+	sed -i 's|.*version=.*|version="$(LIB)"|g' ./lib/Dockerfile
 
 build:
-	docker build -t shanduur/pluggabl-primary:$(VER) 	./primary/
-	docker build -t shanduur/pluggabl-secondary:$(VER) 	./secondary/
+	docker build -t shanduur/pluggabl-primary:$(VERSION) 	./primary/
+	docker build -t shanduur/pluggabl-secondary:$(VERSION) 	./secondary/
 
 push:
-	docker push shanduur/pluggabl-primary:$(LIB)
-	docker push shanduur/pluggabl-secondary:$(LIB)
+	docker push shanduur/pluggabl-primary:$(VERSION)
+	docker push shanduur/pluggabl-secondary:$(VERSION)
 
-all: build push
+all: version build push
 
 lib:
 	docker build -t shanduur/pluggabl-lib:$(LIB)
