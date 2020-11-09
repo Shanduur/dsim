@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"runtime/debug"
 )
 
 // LoadConfiguration takes string with location of config in JSON format
@@ -31,5 +32,15 @@ func LoadConfiguration(location string) (conf Config, err error) {
 		return
 	}
 
-	return jsonToConfig(c), nil
+	conf.jsonToConfig(c)
+
+	if conf.Type != "db" {
+		debug.SetGCPercent(conf.GarbageCollectionTimeout)
+	}
+
+	if conf.Type == "secondary" {
+		debug.SetMaxThreads(conf.MaxThreads)
+	}
+
+	return
 }

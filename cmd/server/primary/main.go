@@ -46,7 +46,7 @@ func main() {
 	pb.RegisterUserServiceServer(grpcServer, umServ)
 	pb.RegisterJobServiceServer(grpcServer, trServ)
 
-	address := fmt.Sprintf("0.0.0.0:%v", conf.PrimaryNodePort)
+	address := fmt.Sprintf("0.0.0.0:%v", conf.Port)
 
 	plog.Messagef("net.Listen tcp on %v", address)
 	listener, err := net.Listen("tcp", address)

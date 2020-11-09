@@ -1,6 +1,6 @@
 {
-    "database-address": "192.168.0.107",
-    "database-port": 5432,
+    "address": "192.168.0.105",
+    "port": 5432,
     "database-name": "database-name",
     "database-username": "admin",
     "database-password": "database-password"

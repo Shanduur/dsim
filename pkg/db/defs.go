@@ -23,11 +23,11 @@ func connect() (*pgx.Conn, error) {
 	if len(url) < len(dbURL) {
 		plog.Messagef("env var PG_DATABASE is not valid, attempting to load config file")
 
-		conf, err := convo.LoadConfiguration("config/config_db.json")
+		conf, err := convo.LoadConfiguration("~/.config/pluggabl.d/config_db.json")
 		if err != nil {
 			plog.Fatalf(codes.ConfError, "error while loading db configuration: %v", err)
 		} else {
-			url = fmt.Sprintf(dbURL, conf.DatabaseAddress, conf.DatabasePort, conf.DatabaseName,
+			url = fmt.Sprintf(dbURL, conf.Address, conf.Port, conf.DatabaseName,
 				conf.DatabaseUsername, conf.DatabasePassword)
 		}
 	}

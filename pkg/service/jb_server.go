@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"os/exec"
 	"time"
 
@@ -108,6 +109,8 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 		filenames = append(filenames, name)
 	}
 
+	defer purgeFiles(filenames)
+
 	query := "-query=" + filenames[0]
 	train := "-train=" + filenames[1]
 
@@ -199,4 +202,13 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 	}
 
 	return rsp, nil
+}
+
+func purgeFiles(fnames []string) {
+	for _, name := range fnames {
+		err := os.Remove(name)
+		if err != nil {
+			plog.Warningf("encountered problem while removing file %v: %v", name, err)
+		}
+	}
 }
