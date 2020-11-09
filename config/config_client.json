@@ -1,5 +1,5 @@
 {
     "type": "client",
-    "primary-node-address": "0.0.0.0",
-    "primary-node-port": 4004
+    "address": "0.0.0.0",
+    "port": 4004
 }

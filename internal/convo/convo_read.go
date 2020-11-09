@@ -38,9 +38,5 @@ func LoadConfiguration(location string) (conf Config, err error) {
 		debug.SetGCPercent(conf.GarbageCollectionTimeout)
 	}
 
-	if conf.Type == "secondary" {
-		debug.SetMaxThreads(conf.MaxThreads)
-	}
-
 	return
 }

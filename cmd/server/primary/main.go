@@ -39,6 +39,8 @@ func main() {
 		plog.Fatalf(codes.ConfError, "error while loading configuration: %v", err)
 	}
 
+	plog.Splash(conf.String())
+
 	umServ := service.NewUserManagementServer()
 	trServ := service.NewTransportServer()
 	grpcServer := grpc.NewServer()

@@ -40,6 +40,8 @@ func main() {
 		plog.Fatalf(codes.ConfError, "error while loading configuration: %v", err)
 	}
 
+	plog.Splash(conf.String())
+
 	ijServ := service.NewInternalJobServer()
 	grpcServer := grpc.NewServer()
 

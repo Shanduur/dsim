@@ -48,20 +48,20 @@ func (cc *Config) jsonToConfig(cj configJSON) {
 }
 
 func (cc Config) String() (s string) {
-	s = fmt.Sprintf("Welcome to pluggabl"+
-		"This is %v\n"+
-		"You can acces this server at %v:%v\n",
+	s = fmt.Sprintf("\tWelcome to pluggabl!\n"+
+		"\tThis server runs as %v node.\n"+
+		"\tYou can acces it at %v:%v.\n",
 		cc.Type, cc.Address, cc.Port)
 
 	if cc.Type == "secondary" {
 		s = fmt.Sprintf("%v"+
-			"Number of available threads is set to %v\n"+
-			"You will be processing jobs using %v\n",
+			"\tNumber of available concurrent processing threads is set to %v.\n"+
+			"\tYou will be processing jobs using %v.\n",
 			s, cc.MaxThreads, cc.JobBinaryName)
 	}
 
 	s = fmt.Sprintf("%v"+
-		"Garbage collection target percentage is set to %v\n",
+		"\tGarbage collection target percentage is set to %v.\n",
 		s, cc.GarbageCollectionTimeout)
 
 	return

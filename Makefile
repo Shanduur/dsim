@@ -21,7 +21,7 @@ proto:
 build:
 	go build -o ./build/pluggabl-primary 	./cmd/server/primary 
 	go build -o ./build/pluggabl-secondary 	./cmd/server/secondary 
-	go build -o ./build/pluggabl-exec 		./cmd/exec 
+	go build -o ./build/pluggabl-exec		./cmd/exec 
 	go build -o ./build/pluggabl-client 	./cmd/client
 
 install:

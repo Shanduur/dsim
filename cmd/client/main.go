@@ -55,7 +55,7 @@ func main() {
 		plog.Fatalf(codes.ConfError, "error while loading configuration: %v", err)
 	}
 
-	address := fmt.Sprintf("%v:%v", conf.PrimaryNodeAddress, conf.PrimaryNodePort)
+	address := fmt.Sprintf("%v:%v", conf.Address, conf.Port)
 
 	plog.Messagef("dial server %v", address)
 
