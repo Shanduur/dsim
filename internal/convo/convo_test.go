@@ -32,7 +32,7 @@ func TestLoadConfiguration(t *testing.T) {
 			t.Errorf("LoadConfiguration: while processing %v got error: %v", m, err)
 		}
 
-		fmt.Printf("%v", conf.String())
+		fmt.Printf("%v", conf.Tell())
 
 		if m == "db" {
 			if conf.Port != 5432 {
