@@ -6,6 +6,9 @@
         // for proto
         "zxh404.vscode-proto3",
         "xaver.clang-format",
+
+        // for envfiles
+        "mikestead.dotenv",
         
         // those are used only for styling
         "pkief.material-icon-theme",
