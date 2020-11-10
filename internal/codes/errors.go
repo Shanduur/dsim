@@ -25,9 +25,17 @@ func (err *NotAuthenticated) Error() string {
 }
 
 // NoFreeNode struct is an error that indicates,
-// that user cannot be authenticated
+// that there is no node with available thread
 type NoFreeNode struct{}
 
 func (err *NoFreeNode) Error() string {
-	return "no node avaliable"
+	return "no node with free thread avaliable"
+}
+
+// NoActiveNode struct is an error that indicates,
+// that there is active node
+type NoActiveNode struct{}
+
+func (err *NoActiveNode) Error() string {
+	return "no active node avaliable"
 }
