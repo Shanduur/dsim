@@ -34,7 +34,7 @@ func LoadConfiguration(location string) (conf Config, err error) {
 
 	conf.jsonToConfig(c)
 
-	if conf.Type != "db" {
+	if conf.Type == "primary" || conf.Type == "secondary" {
 		debug.SetGCPercent(conf.GarbageCollectionTimeout)
 	}
 

@@ -7,6 +7,24 @@ import (
 	"testing"
 )
 
+func TestSSetLogLevel(t *testing.T) {
+	levels := []int{VERBOSE, DEBUG, INFO, WARNING, ERROR, FATAL}
+	strs := []string{"VERBOSE", "DEBUG", "INFO", "WARNING", "ERROR", "FATAL"}
+	data := make(map[int]string)
+
+	for i, l := range levels {
+		data[l] = strs[i]
+	}
+
+	for _, l := range levels {
+		SSetLogLevel(data[l])
+
+		if logLevel != l {
+			t.Errorf("SSetLogLevel: got %d, want %d", logLevel, l)
+		}
+	}
+}
+
 func TestSetLogLevel(t *testing.T) {
 	SetLogLevel(DEBUG)
 	if logLevel != DEBUG {
@@ -88,6 +106,7 @@ func TestFunctions(t *testing.T) {
 	Errorf("%v", tMessage)
 	Debugf("%v", tMessage)
 	Verbosef("%v", tMessage)
+	Verbose(tMessage)
 
 	ctx, cancel := context.WithCancel(context.Background())
 
@@ -96,4 +115,8 @@ func TestFunctions(t *testing.T) {
 	go func(cf context.CancelFunc) {
 		cf()
 	}(cancel)
+}
+
+func TestSplash(t *testing.T) {
+	Splash("TEST_STRING")
 }

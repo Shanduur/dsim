@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/Sheerley/pluggabl/internal/codes"
@@ -30,12 +31,12 @@ const (
 var outFile = os.Stderr
 var logLevel = INFO
 
-func getHeader(lvl int8) string {
+func getHeader(level int8) string {
 	dt := time.Now()
 
 	var s string
 
-	switch lvl {
+	switch level {
 	case VERBOSE:
 		s = "VERBOSE"
 	case DEBUG:
@@ -70,6 +71,46 @@ func CloseLogFile() {
 // SetLogLevel is used to set the amount of infromation that should be logged.
 func SetLogLevel(level int) {
 	logLevel = level
+}
+
+// GetLogLevel returns human readable level description
+func GetLogLevel() string {
+	switch logLevel {
+	case VERBOSE:
+		return "VERBOSE"
+	case DEBUG:
+		return "DEBUG"
+	case INFO:
+		return "INFO"
+	case WARNING:
+		return "WARNING"
+	case ERROR:
+		return "ERROR"
+	case FATAL:
+		return "FATAL"
+	default:
+		return ""
+	}
+}
+
+// SSetLogLevel sets the level of logs according to the value from the string
+func SSetLogLevel(level string) {
+	level = strings.ToUpper(level)
+
+	switch level {
+	case "VERBOSE":
+		SetLogLevel(VERBOSE)
+	case "DEBUG":
+		SetLogLevel(DEBUG)
+	case "INFO":
+		SetLogLevel(INFO)
+	case "WARNING":
+		SetLogLevel(WARNING)
+	case "ERROR":
+		SetLogLevel(ERROR)
+	case "FATAL":
+		SetLogLevel(FATAL)
+	}
 }
 
 // SetLogFile is used to specify the location of log file.
@@ -137,6 +178,14 @@ func Verbosef(format string, v ...interface{}) {
 	}
 }
 
+// Verbose displays all info about variable
+func Verbose(v interface{}) {
+	Verbosef("requested variable info:\n"+
+		"\t- %+v\n"+
+		"\t- %T",
+		v, v)
+}
+
 // Fatalf is used to create formatted exit message - FATAL level.
 // Warning! It forces exit of the app with exit code provided as first function argument
 func Fatalf(code int, format string, v ...interface{}) {
@@ -166,5 +215,6 @@ func Splash(s string) {
 		"   \\ \\__\\    \\ \\_______\\ \\_______\\ \\_______\\ \\_______\\ \\__\\ \\__\\ \\_______\\ \\_______\\ \n" +
 		"    \\|__|     \\|_______|\\|_______|\\|_______|\\|_______|\\|__|\\|__|\\|_______|\\|_______| \n" +
 		"                                                                                     \n"
-	fmt.Fprintf(outFile, "%v\n%v\n", splash, s)
+	fmt.Fprintf(outFile, "%v\n%v\n\t%v %v\n", splash, s,
+		"Your Log Level is set to:", GetLogLevel())
 }

@@ -69,6 +69,14 @@ func TestLoadConfiguration(t *testing.T) {
 				if conf.MaxThreads != 4 {
 					t.Errorf("%v MT: got %v wanted %v", m, conf.MaxThreads, 4)
 				}
+
+				if conf.ExternalPort != 4010 {
+					t.Errorf("%v got %v wanted %v", m, conf.ExternalPort, 4010)
+				}
+			} else {
+				if conf.ExternalPort != conf.Port {
+					t.Errorf("%v got %v wanted %v", m, conf.ExternalPort, conf.Port)
+				}
 			}
 		}
 	}

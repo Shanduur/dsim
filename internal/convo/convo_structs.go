@@ -3,6 +3,10 @@ package convo
 import (
 	"fmt"
 	"net"
+	"os"
+	"strconv"
+
+	"github.com/Sheerley/pluggabl/pkg/plog"
 )
 
 // Config struct holds all the informations necessary to configure
@@ -11,6 +15,7 @@ type Config struct {
 	Type                     string
 	Address                  net.IP
 	Port                     int
+	ExternalPort             int
 	JobBinaryName            string
 	GarbageCollectionTimeout int
 	MaxThreads               int
@@ -23,6 +28,7 @@ type configJSON struct {
 	Type       string `json:"type"`
 	Addr       string `json:"address"`
 	Port       int    `json:"port"`
+	EPort      int    `json:"external-port"`
 	Cmd        string `json:"job-binary-name"`
 	GcTimeout  int    `json:"garbage-collection-timeout"`
 	MaxThreads int    `json:"max-threads"`
@@ -40,6 +46,23 @@ func (cc *Config) jsonToConfig(cj configJSON) {
 	cc.Port = cj.Port
 	cc.JobBinaryName = cj.Cmd
 
+	stringPort := os.Getenv("EXTERNAL")
+
+	port, err := strconv.Atoi(stringPort)
+
+	if err != nil {
+		if cj.EPort == 0 {
+			cc.ExternalPort = cj.Port
+		} else {
+			cc.ExternalPort = cj.EPort
+		}
+	} else {
+		cc.ExternalPort = port
+	}
+
+	logLevel := os.Getenv("LOG_LEVEL")
+	plog.SSetLogLevel(logLevel)
+
 	cc.DatabaseName = cj.DbName
 	cc.DatabaseUsername = cj.DbUname
 	cc.DatabasePassword = cj.DbPasswd
@@ -47,11 +70,12 @@ func (cc *Config) jsonToConfig(cj configJSON) {
 	return
 }
 
-func (cc Config) String() (s string) {
+// Tell is used to create splash info about node
+func (cc Config) Tell() (s string) {
 	s = fmt.Sprintf("\tWelcome to pluggabl!\n"+
 		"\tThis server runs as %v node.\n"+
 		"\tYou can acces it at %v:%v.\n",
-		cc.Type, cc.Address, cc.Port)
+		cc.Type, cc.Address, cc.ExternalPort)
 
 	if cc.Type == "secondary" {
 		s = fmt.Sprintf("%v"+
