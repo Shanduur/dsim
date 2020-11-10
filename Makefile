@@ -1,10 +1,10 @@
 GOCV_VERSION=v0.25.0 
 
-.PHONY: build preinstall install clean proto test docker
+.PHONY: build prebuild install clean proto test docker
 
-all: preinstall clean proto build
+all: prebuild clean proto build
 
-preinstall:
+prebuild:
 	go mod download
 	cd $(shell go env GOPATH)/pkg/mod/gocv.io/x/gocv\@$(GOCV_VERSION) && $(MAKE) install
 
@@ -25,9 +25,20 @@ build:
 	go build -o ./build/pluggabl-client 	./cmd/client
 
 install:
-	sudo cp ./build/pluggabl-* /tmp/
-	[ ! -d ~/.config/pluggabl.d/ ] && mkdir ~/.config/pluggabl.d/ || echo ok
-	cp ./config/*.json ~/.config/pluggabl.d/
+	[ ! -d /opt/pluggabl/ ] && sudo mkdir /opt/pluggabl/ || echo ok
+
+	sudo cp ./build/pluggabl-primary	/opt/pluggabl/primary.run
+	sudo cp ./build/pluggabl-secondary	/opt/pluggabl/secondary.run
+	sudo cp ./build/pluggabl-exec		/opt/pluggabl/exec.run
+	sudo cp ./build/pluggabl-client		/opt/pluggabl/client.run
+	sudo cp ./scripts/pluggabl.sh		/opt/pluggabl/pluggabl.sh
+
+	sudo ln -sf /opt/pluggabl/pluggabl.sh		/usr/bin/pluggabl
+	
+	sudo chmod +x /opt/pluggabl/*
+
+	[ ! -d /etc/pluggabl/ ] && sudo mkdir /etc/pluggabl/ || echo ok
+	sudo cp ./config/*.json /etc/pluggabl/
 
 test:
 	go test -cover -race ./...
