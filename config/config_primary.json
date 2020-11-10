@@ -2,5 +2,6 @@
     "type": "primary",
     "address": "0.0.0.0",
     "port": 4004,
+    "external-port": 4004,
     "garbage-collection-timeout": 1000
 }
