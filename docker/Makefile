@@ -1,22 +1,22 @@
-.PHONY: all build push lib version
+.PHONY: all primary secondary lib version
 
 include version.env
 
 version:
-	sed -i 's|.*version=.*|version="$(VERSION)"|g' ./primary/Dockerfile
-	sed -i 's|.*version=.*|version="$(VERSION)"|g' ./secondary/Dockerfile
-	sed -i 's|.*version=.*|version="$(LIB)"|g' ./lib/Dockerfile
+	sed -i 's|    version=.*|    version="$(PRIMARY)"|g' ./primary/Dockerfile
+	sed -i 's|    version=.*|    version="$(SECONDARY)"|g' ./secondary/Dockerfile
+	sed -i 's|    version=.*|    version="$(LIB)"|g' ./lib/Dockerfile
 
-build:
-	docker build -t shanduur/pluggabl-primary:$(VERSION) 	./primary/
-	docker build -t shanduur/pluggabl-secondary:$(VERSION) 	./secondary/
+primary:
+	docker build -t shanduur/pluggabl-secondary:$(SECONDARY)	-t shanduur/pluggabl-secondary:latest	./secondary/
+	docker push shanduur/pluggabl-secondary:$(SECONDARY)	&& docker push shanduur/pluggabl-secondary:latest
 
-push:
-	docker push shanduur/pluggabl-primary:$(VERSION)
-	docker push shanduur/pluggabl-secondary:$(VERSION)
+secondary:
+	docker build -t shanduur/pluggabl-primary:$(PRIMARY)	-t shanduur/pluggabl-primary:latest		./primary/
+	docker push shanduur/pluggabl-primary:$(PRIMARY)	&& docker push shanduur/pluggabl-primary:latest
 
-all: version build push
+all: version primary secondary
 
 lib:
-	docker build -t shanduur/pluggabl-lib:$(LIB)
+	docker build -t shanduur/pluggabl-lib:$(LIB) -t shanduur/pluggabl-lib:latest ./lib/
 	docker push 	shanduur/pluggabl-lib:$(LIB)
