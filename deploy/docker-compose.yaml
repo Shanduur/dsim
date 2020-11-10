@@ -1,0 +1,51 @@
+version: 2.4
+
+services:
+  primary:
+    image: shanduur/pluggabl-primary
+    restart: unless-stopped
+    environment:
+      - PG_DATABASE=postgresql://192.168.1.232:5432/pluggable_db?user=admin&password=XRB9UWu^bm8E^2aV
+      - LOG_LEVEL=debug
+    ports:
+      - '4004:4004'
+
+  secondary_0:
+    image: shanduur/pluggabl-secondary
+    restart: unless-stopped
+    environment:
+      - PG_DATABASE=postgresql://192.168.1.232:5432/pluggable_db?user=admin&password=XRB9UWu^bm8E^2aV
+      - EXTERNAL=4010
+      - LOG_LEVEL=debug
+    ports:
+      - '4010:4004'
+
+  secondary_1:
+    image: shanduur/pluggabl-secondary
+    restart: unless-stopped
+    environment:
+      - PG_DATABASE=postgresql://192.168.1.232:5432/pluggable_db?user=admin&password=XRB9UWu^bm8E^2aV
+      - EXTERNAL=4011
+      - LOG_LEVEL=debug
+    ports:
+      - '4011:4004'
+
+  secondary_2:
+    image: shanduur/pluggabl-secondary
+    restart: unless-stopped
+    environment:
+      - PG_DATABASE=postgresql://192.168.1.232:5432/pluggable_db?user=admin&password=XRB9UWu^bm8E^2aV
+      - EXTERNAL=4012
+      - LOG_LEVEL=debug
+    ports:
+      - '4012:4004'
+  
+  secondary_3:
+    image: shanduur/pluggabl-secondary
+    restart: unless-stopped
+    environment:
+      - PG_DATABASE=postgresql://192.168.1.232:5432/pluggable_db?user=admin&password=XRB9UWu^bm8E^2aV
+      - EXTERNAL=4013
+      - LOG_LEVEL=debug
+    ports:
+      - '4013:4004'
