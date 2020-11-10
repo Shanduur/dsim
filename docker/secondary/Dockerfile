@@ -2,13 +2,13 @@ FROM shanduur/pluggabl-lib:latest
 
 EXPOSE 4004
 
-ENV CONFIG=
+ENV CONFIG="/etc/pluggabl/config.json"
 ENV PG_DATABASE=
 
 COPY ./files/ /
 
 LABEL maintainer="mateusz.urbanek.98@gmail.com" \
     type="secondary-node" \
-version="0.1.0-init"
+    version="0.1.8"
 
-ENTRYPOINT [ "/pluggabl/secondary.run" ]
+CMD [ "/pluggabl/server.run" ]
