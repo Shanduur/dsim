@@ -25,7 +25,7 @@ func main() {
 		plog.Warningf("config env variable not set, current config location: %v", configLocation)
 	}
 
-	logDescription := fmt.Sprintf("log level with possoble values:\n - Verbose: %v\n - Debug: %v\n - Info: %v"+
+	logDescription := fmt.Sprintf("log level with possible values:\n - Verbose: %v\n - Debug: %v\n - Info: %v"+
 		"\n - Waring: %v\n - Error: %v not recommended\n - Fatal: %v not recommended",
 		plog.VERBOSE, plog.DEBUG, plog.INFO, plog.WARNING, plog.ERROR, plog.FATAL)
 	logLevel := flag.Int("log-level", plog.WARNING, logDescription)
