@@ -21,7 +21,7 @@ func main() {
 
 	configLocation := os.Getenv("CONFIG")
 	if len(configLocation) == 0 {
-		configLocation = "~/.config/pluggabl.d/config_primary.json"
+		configLocation = "/etc/pluggabl/config.json"
 		plog.Warningf("config env variable not set, current config location: %v", configLocation)
 	}
 
@@ -39,7 +39,9 @@ func main() {
 		plog.Fatalf(codes.ConfError, "error while loading configuration: %v", err)
 	}
 
-	plog.Splash(conf.String())
+	plog.Splash(conf.Tell())
+	plog.Verbose(conf)
+	plog.Verbose(os.Getenv("PG_DATABASE"))
 
 	umServ := service.NewUserManagementServer()
 	trServ := service.NewTransportServer()

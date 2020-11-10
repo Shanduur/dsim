@@ -33,7 +33,7 @@ func main() {
 	train := flag.String("train", "", "path to train file")
 	outFile := flag.String("o", "result", "path to output file, should not contain extension")
 
-	logDescription := fmt.Sprintf("log level with possoble values:\n - Verbose: %v\n - Debug: %v\n - Info: %v"+
+	logDescription := fmt.Sprintf("log level with possible values:\n - Verbose: %v\n - Debug: %v\n - Info: %v"+
 		"\n - Waring: %v\n - Error: %v not recommended\n - Fatal: %v not recommended",
 		plog.VERBOSE, plog.DEBUG, plog.INFO, plog.WARNING, plog.ERROR, plog.FATAL)
 	logLevel := flag.Int("log-level", plog.INFO, logDescription)
@@ -80,7 +80,7 @@ func main() {
 		if err != nil {
 			st, ok := status.FromError(err)
 			if ok && pb.Response_ReturnCode(st.Code()) == pb.Response_error {
-				plog.Fatalf(codes.DbError, "%v %v", err)
+				plog.Fatalf(codes.DbError, "%v", err)
 			}
 		}
 
