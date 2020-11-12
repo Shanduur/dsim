@@ -1,5 +1,5 @@
 {
     "type": "client",
-    "address": "192.168.1.109",
+    "address": "0.0.0.0",
     "port": 4004
 }
