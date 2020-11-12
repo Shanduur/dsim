@@ -66,7 +66,6 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 
 	fileIDs := req.GetJob().GetFileId()
 	var filenames []string
-
 	var extension string
 
 	for i := 0; i < len(fileIDs); i++ {
@@ -109,12 +108,14 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 		filenames = append(filenames, name)
 	}
 
+	outname := uuid.New().String() + extension
+	filenames = append(filenames, outname)
+
 	defer purgeFiles(filenames)
 
 	query := "-query=" + filenames[0]
 	train := "-train=" + filenames[1]
 
-	outname := uuid.New().String() + extension
 	job := exec.Command(cfg.JobBinaryName, query, train, "-out="+outname)
 
 	c := make(chan bool)
@@ -206,6 +207,7 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 
 func purgeFiles(fnames []string) {
 	for _, name := range fnames {
+		plog.Debugf("removing file %v", name)
 		err := os.Remove(name)
 		if err != nil {
 			plog.Warningf("encountered problem while removing file %v: %v", name, err)
