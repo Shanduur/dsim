@@ -116,7 +116,7 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 	query := "-query=" + filenames[0]
 	train := "-train=" + filenames[1]
 
-	job := exec.Command(cfg.JobBinaryName, query, train, "-out="+outname)
+	job := exec.CommandContext(ctx, cfg.JobBinaryName, query, train, "-out="+outname)
 
 	c := make(chan bool)
 

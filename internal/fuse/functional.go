@@ -6,6 +6,9 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Sheerley/pluggabl/internal/codes"
+	"github.com/Sheerley/pluggabl/internal/convo"
+	"github.com/Sheerley/pluggabl/pkg/db"
 	"github.com/Sheerley/pluggabl/pkg/plog"
 )
 
@@ -25,5 +28,27 @@ func Watchdog(wg *sync.WaitGroup) {
 		default:
 		}
 		time.Sleep(time.Second)
+	}
+}
+
+// Heartbeat is function that updates status of node in database every minute
+func Heartbeat(conf convo.Config) {
+	var err error
+	count := 1
+	for {
+		err = db.UpdateTimestamp(conf)
+		if err != nil {
+			if count <= 5 {
+				plog.Errorf("error #%v while updating timestamp: %v", count, err)
+				count++
+				time.Sleep(15 * time.Millisecond)
+			} else {
+				plog.Fatalf(codes.WorkerConnectionError,
+					"fatal error while updating timestamp: %v", err)
+			}
+		} else {
+			time.Sleep(50 * time.Second)
+			count = 1
+		}
 	}
 }

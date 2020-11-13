@@ -197,8 +197,7 @@ func main() {
 		fileSize := 0
 
 		if res.GetResponse().GetReturnCode() != pb.Response_ok {
-			plog.Verbosef("%v", res)
-			plog.Fatalf(codes.ServerError, "failed to finish the job: \n - %v", err)
+			plog.Fatalf(codes.ServerError, "failed to finish the job: \n- %v", res.GetResponse().GetReturnMessage())
 		}
 
 		res, err = stream.Recv()

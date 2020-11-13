@@ -9,6 +9,6 @@ COPY ./files/ /
 
 LABEL maintainer="mateusz.urbanek.98@gmail.com" \
     type="secondary-node" \
-    version="0.1.8"
+    version="0.1.9"
 
 CMD [ "/pluggabl/server.run" ]

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/Sheerley/pluggabl/pkg/plog"
+
 	"github.com/Sheerley/pluggabl/internal/codes"
 
 	"github.com/Sheerley/pluggabl/internal/convo"
@@ -25,21 +27,24 @@ func RegisterNode(conf convo.Config) (err error) {
 	var countActive int
 	var countInactive int
 
-	err = tx.QueryRow(context.Background(),
-		"SELECT COUNT(*) FROM nodes WHERE node_ip = $1 AND node_port = $2 AND active = TRUE",
-		fmt.Sprintf("%v", conf.Address), conf.ExternalPort).Scan(&countActive)
-	if err != nil {
-		return fmt.Errorf("unable to count in table: %v", err)
-	}
-
-	err = tx.QueryRow(context.Background(),
-		"SELECT COUNT(*) FROM nodes WHERE node_ip = $1 AND node_port = $2 AND active = FALSE",
-		fmt.Sprintf("%v", conf.Address), conf.ExternalPort).Scan(&countInactive)
-	if err != nil {
-		return fmt.Errorf("unable to count in table: %v", err)
-	}
-
 	dt := time.Now()
+	dt.Add(-1 * time.Minute)
+
+	err = tx.QueryRow(context.Background(),
+		"SELECT COUNT(*) FROM nodes WHERE node_ip = $1 AND node_port = $2 AND active = TRUE AND node_timeout > $3",
+		fmt.Sprintf("%v", conf.Address), conf.ExternalPort, dt.Format("2006-01-02 15:04:05.070")).Scan(&countActive)
+	if err != nil {
+		return fmt.Errorf("unable to count in table: %v", err)
+	}
+
+	err = tx.QueryRow(context.Background(),
+		"SELECT COUNT(*) FROM nodes WHERE node_ip = $1 AND node_port = $2 AND active = FALSE OR node_timeout < $3",
+		fmt.Sprintf("%v", conf.Address), conf.ExternalPort, dt.Format("2006-01-02 15:04:05.070")).Scan(&countInactive)
+	if err != nil {
+		return fmt.Errorf("unable to count in table: %v", err)
+	}
+
+	dt = time.Now()
 	if countActive == 0 && countInactive == 0 {
 		_, err = tx.Exec(context.Background(),
 			"INSERT INTO nodes(node_ip, node_port, node_reg_jobs, node_max_jobs, node_timeout, active) "+
@@ -129,31 +134,54 @@ func GetFreeNode() (addr string, port int, err error) {
 	var countFree int
 	var countActive int
 
+	dt := time.Now()
+
+	dt = dt.Add(-1 * time.Minute)
+
 	err = tx.QueryRow(context.Background(), "SELECT COUNT(*) FROM nodes "+
-		"WHERE node_reg_jobs < node_max_jobs AND active = TRUE").Scan(&countFree)
+		"WHERE node_reg_jobs < node_max_jobs AND active = TRUE AND node_timeout > $1",
+		dt.Format("2006-01-02 15:04:05.070")).Scan(&countFree)
 	if err != nil {
 		err = fmt.Errorf("unable to count in table: %v", err)
 		return
 	}
 
+	plog.Verbose(countFree)
+
 	err = tx.QueryRow(context.Background(), "SELECT COUNT(*) FROM nodes "+
-		"WHERE active = TRUE").Scan(&countActive)
+		"WHERE active = TRUE AND node_timeout > $1",
+		dt.Format("2006-01-02 15:04:05.070")).Scan(&countActive)
 	if err != nil {
 		err = fmt.Errorf("unable to count in table: %v", err)
 		return
 	}
+
+	plog.Verbose(countActive)
 
 	if countActive == 0 {
 		err = &codes.NoActiveNode{}
+
+		plog.Verbose(err)
+
+		_, err2 := tx.Exec(context.Background(), "UPDATE nodes SET active = FALSE "+
+			"WHERE node_timeout < $1 AND active = false",
+			dt.Format("2006-01-02 15:04:05.070"))
+		if err2 != nil {
+			plog.Errorf("error while updating inactive nodes: %v", err2)
+		}
+
 		return
 	} else if countFree == 0 {
 		err = &codes.NoFreeNode{}
+		plog.Verbose(err)
 		return
 	}
 
 	err = tx.QueryRow(context.Background(),
-		"SELECT node_ip, node_port FROM nodes WHERE node_reg_jobs < node_max_jobs "+
-			"ORDER BY node_reg_jobs ASC LIMIT 1").Scan(&addr, &port)
+		"SELECT node_ip, node_port FROM nodes "+
+			"WHERE node_reg_jobs < node_max_jobs AND active = TRUE AND node_timeout > $1 "+
+			"ORDER BY node_reg_jobs ASC LIMIT 1",
+		dt.Format("2006-01-02 15:04:05.070")).Scan(&addr, &port)
 	if err != nil {
 		err = fmt.Errorf("unable to count in table: %v", err)
 		return

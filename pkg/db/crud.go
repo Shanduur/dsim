@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/Sheerley/pluggabl/internal/codes"
+	"github.com/Sheerley/pluggabl/internal/convo"
 	"github.com/Sheerley/pluggabl/pkg/pb"
 	"github.com/Sheerley/pluggabl/pkg/plog"
 	"github.com/google/uuid"
@@ -200,6 +201,37 @@ func DeleteUser(ctx context.Context, user *pb.Credentials) error {
 
 	if ctx.Err() == context.Canceled {
 		return &codes.SignalCanceled{}
+	}
+
+	err = tx.Commit(context.Background())
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// UpdateTimestamp updates timestamp in nodes table
+func UpdateTimestamp(conf convo.Config) (err error) {
+	conn, err := connect()
+	if err != nil {
+		return fmt.Errorf("unable to connect to database: %v", err)
+	}
+
+	tx, err := conn.Begin(context.Background())
+	if err != nil {
+		return err
+	}
+
+	// in case of returning error rollback unfinished transaction
+	defer tx.Rollback(context.Background())
+
+	dt := time.Now()
+
+	_, err = tx.Exec(context.Background(), "UPDATE nodes SET node_timeout = $1, active = TRUE WHERE node_ip = $2 AND node_port = $3",
+		dt.Format("2006-01-02 15:04:05.070"), fmt.Sprintf("%v", conf.Address), conf.Port)
+	if err != nil {
+		return err
 	}
 
 	err = tx.Commit(context.Background())

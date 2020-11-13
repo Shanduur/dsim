@@ -244,7 +244,9 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 
 	err2 := stream.Send(jrsp)
 
-	plog.Errorf("error sending response: \n- %v\n- %v", err, err2)
+	if err2 != nil {
+		plog.Errorf("error sending response: \n- %v\n- %v", err, err2)
+	}
 
 	fileID := res.GetFileId()
 
