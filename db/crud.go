@@ -3,6 +3,7 @@ package db
 import (
 	"bytes"
 	"context"
+	"crypto/sha256"
 	"fmt"
 	"time"
 
@@ -30,12 +31,6 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 
 	count := 0
 	dt := time.Now()
-	ownerID := 0
-
-	err = conn.QueryRow(context.Background(), "SELECT user_id FROM users WHERE user_name = $1", user.UserId).Scan(&ownerID)
-	if err != nil {
-		return append(id, codes.UnknownID), fmt.Errorf("unable to execute querry: %v", err)
-	}
 
 	for i := 0; i < len(data); i++ {
 		var blobID int64
@@ -55,11 +50,14 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 			}
 		}
 
+		s256 := sha256.New()
+		checksum := s256.Sum(data[i])
+
 		name := uuid.New().String()
 		err = tx.QueryRow(context.Background(),
-			"INSERT INTO blobs(blob_data, blob_type, blob_name, owner_id, insertion_date)"+
+			"INSERT INTO blobs(blob_data, blob_type, blob_name, blob_checksum, insertion_date)"+
 				"VALUES ($1, $2, $3, $4, $5) RETURNING blob_id",
-			data[i], typeID, name, ownerID, dt.Format("2006-01-02")).Scan(&blobID)
+			data[i], typeID, name, checksum, dt.Format("2006-01-02")).Scan(&blobID)
 
 		plog.Debugf("id returned: %v", blobID)
 

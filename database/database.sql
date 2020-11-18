@@ -21,7 +21,7 @@ CREATE TABLE blobs (
     blob_data BYTEA NOT NULL,
     blob_type INT REFERENCES filetypes(type_id),
     blob_name VARCHAR(256),
-    owner_id BIGINT REFERENCES users(user_id) NOT NULL,
+    blob_checksum BYTEA NOT NULL,
     insertion_date DATE NOT NULL,
     active BOOLEAN DEFAULT TRUE,
     PRIMARY KEY(blob_id)
