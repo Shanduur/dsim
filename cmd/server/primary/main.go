@@ -19,7 +19,7 @@ import (
 func main() {
 	var wg sync.WaitGroup
 
-	plog.Warningf("%v", os.Getpid())
+	plog.Warningf("PID: %v", os.Getpid())
 
 	configLocation := os.Getenv("CONFIG")
 	if len(configLocation) == 0 {
