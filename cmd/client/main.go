@@ -26,9 +26,12 @@ func main() {
 		configLocation = "~/.config/pluggabl.d/config_client.json"
 	}
 
-	userManagement := flag.Bool("user-mg", false, "set true if you want to create or remove user")
+	createUser := flag.Bool("new-user", false, "set true if you want to create new user")
+	deleteUser := flag.Bool("del-user", false, "set true if you want to delete existing user")
+	modifyUser := flag.Bool("mod-user", false, "set true if you want to modify user")
 	login := flag.String("uname", "", "username")
 	passphrase := flag.String("pwd", "", "passphrase")
+	newPassphrase := flag.String("new-pwd", "", "new passphrase")
 	query := flag.String("query", "", "path to query file")
 	train := flag.String("train", "", "path to train file")
 	outFile := flag.String("o", "result", "path to output file, should not contain extension")
@@ -44,7 +47,7 @@ func main() {
 		plog.Fatalf(codes.IncorrectArgs, "passphrase or username not provided")
 	}
 
-	if *userManagement == false && (len(*query) == 0 || len(*train) == 0) {
+	if *createUser == false && (len(*query) == 0 || len(*train) == 0) {
 		plog.Fatalf(codes.IncorrectArgs, "query or train path not provided")
 	}
 
@@ -64,7 +67,7 @@ func main() {
 		plog.Fatalf(codes.ClientConnectionError, "cannot dial server: %v", err)
 	}
 
-	if *userManagement == true {
+	if *createUser == true {
 		umClient := pb.NewUserServiceClient(conn)
 
 		creds := transfer.NewCredentials(*login, *passphrase)
@@ -85,6 +88,50 @@ func main() {
 		}
 
 		plog.Messagef("created user: %v", res.Response.ReturnCode)
+	} else if *modifyUser == true {
+		umClient := pb.NewUserServiceClient(conn)
+
+		oldCreds := transfer.NewCredentials(*login, *passphrase)
+		newCreds := transfer.NewCredentials(*login, *newPassphrase)
+		req := &pb.ModifyUserRequest{
+			OldCredentials: oldCreds,
+			NewCredentials: newCreds,
+		}
+
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		res, err := umClient.ModifyUser(ctx, req)
+
+		if err != nil {
+			st, ok := status.FromError(err)
+			if ok && pb.Response_ReturnCode(st.Code()) == pb.Response_error {
+				plog.Fatalf(codes.DbError, "%v", err)
+			}
+		}
+
+		plog.Messagef("modified user: %v", res.Response.ReturnCode)
+	} else if *deleteUser == true {
+		umClient := pb.NewUserServiceClient(conn)
+
+		creds := transfer.NewCredentials(*login, *passphrase)
+		req := &pb.ActionUserRequest{
+			Credentials: creds,
+		}
+
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		res, err := umClient.DeleteUser(ctx, req)
+
+		if err != nil {
+			st, ok := status.FromError(err)
+			if ok && pb.Response_ReturnCode(st.Code()) == pb.Response_error {
+				plog.Fatalf(codes.DbError, "%v", err)
+			}
+		}
+
+		plog.Messagef("deleted user: %v", res.Response.ReturnCode)
 	} else {
 		jobClient := pb.NewJobServiceClient(conn)
 
