@@ -7,10 +7,10 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/Sheerley/pluggabl/internal/codes"
-	"github.com/Sheerley/pluggabl/pkg/db"
-	"github.com/Sheerley/pluggabl/pkg/pb"
-	"github.com/Sheerley/pluggabl/pkg/plog"
+	"github.com/Sheerley/pluggabl/codes"
+	"github.com/Sheerley/pluggabl/db"
+	"github.com/Sheerley/pluggabl/pb"
+	"github.com/Sheerley/pluggabl/plog"
 )
 
 // TransportServer struct is implementation of the gRPC server

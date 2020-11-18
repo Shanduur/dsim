@@ -9,14 +9,14 @@ prebuild:
 	cd $(shell go env GOPATH)/pkg/mod/gocv.io/x/gocv\@$(GOCV_VERSION) && $(MAKE) install
 
 clean:
-	rm -f ./pkg/pb/*.pb.go
+	rm -f ./pb/*.pb.go
 	rm -rf ./build/*
 
 proto:
 	protoc \
-	--proto_path=pkg/proto \
+	--proto_path=proto \
 	--go_out=plugins=grpc:. \
-	pkg/proto/*.proto
+	proto/*.proto
 
 build:
 	go build -o ./build/$(shell go env GOOS)/$(shell go env GOARCH)/primary.run   ./cmd/server/primary 

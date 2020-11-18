@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Sheerley/pluggabl/internal/codes"
-	"github.com/Sheerley/pluggabl/internal/convo"
-	"github.com/Sheerley/pluggabl/pkg/pb"
-	"github.com/Sheerley/pluggabl/pkg/plog"
+	"github.com/Sheerley/pluggabl/codes"
+	"github.com/Sheerley/pluggabl/convo"
+	"github.com/Sheerley/pluggabl/pb"
+	"github.com/Sheerley/pluggabl/plog"
 	"github.com/google/uuid"
 )
 

@@ -3,10 +3,10 @@ package serialize
 import (
 	"testing"
 
-	"github.com/Sheerley/pluggabl/pkg/pb"
+	"github.com/Sheerley/pluggabl/pb"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/Sheerley/pluggabl/pkg/transfer"
+	"github.com/Sheerley/pluggabl/transfer"
 )
 
 func TestProtoAndBinaryFile(t *testing.T) {

@@ -17,7 +17,7 @@
     "protoc": {
         "path": "/usr/bin/protoc",
         "options": [
-            "--proto_path=pkg/proto/",
+            "--proto_path=proto/",
         ]
     }
 }

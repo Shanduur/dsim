@@ -6,7 +6,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/Sheerley/pluggabl/pkg/plog"
+	"github.com/Sheerley/pluggabl/plog"
 )
 
 // Config struct holds all the informations necessary to configure

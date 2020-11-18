@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 
-	"github.com/Sheerley/pluggabl/internal/codes"
-	"github.com/Sheerley/pluggabl/pkg/compute"
-	"github.com/Sheerley/pluggabl/pkg/plog"
+	"github.com/Sheerley/pluggabl/codes"
+	"github.com/Sheerley/pluggabl/compute"
+	"github.com/Sheerley/pluggabl/plog"
 )
 
 func main() {

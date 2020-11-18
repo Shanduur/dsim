@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Sheerley/pluggabl/internal/codes"
-	"github.com/Sheerley/pluggabl/internal/convo"
-	"github.com/Sheerley/pluggabl/pkg/db"
-	"github.com/Sheerley/pluggabl/pkg/plog"
+	"github.com/Sheerley/pluggabl/codes"
+	"github.com/Sheerley/pluggabl/convo"
+	"github.com/Sheerley/pluggabl/db"
+	"github.com/Sheerley/pluggabl/plog"
 )
 
 // Watchdog is used in servers main function to handle interrupt signal

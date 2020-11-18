@@ -5,9 +5,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Sheerley/pluggabl/internal/codes"
-	"github.com/Sheerley/pluggabl/pkg/pb"
-	"github.com/Sheerley/pluggabl/pkg/plog"
+	"github.com/Sheerley/pluggabl/codes"
+	"github.com/Sheerley/pluggabl/pb"
+	"github.com/Sheerley/pluggabl/plog"
 )
 
 // Auth func is used to check if user is user credentials are correct

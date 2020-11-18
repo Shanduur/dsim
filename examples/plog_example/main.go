@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"github.com/Sheerley/pluggabl/pkg/plog"
+	"github.com/Sheerley/pluggabl/plog"
 )
 
 func main() {

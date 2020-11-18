@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Sheerley/pluggabl/internal/codes"
+	"github.com/Sheerley/pluggabl/codes"
 )
 
 const dtFormat = "01-02-2006 15:04:05.000"

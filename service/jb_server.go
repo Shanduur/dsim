@@ -8,14 +8,14 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/Sheerley/pluggabl/pkg/transfer"
+	"github.com/Sheerley/pluggabl/transfer"
 
 	"github.com/google/uuid"
 
-	"github.com/Sheerley/pluggabl/internal/convo"
-	"github.com/Sheerley/pluggabl/pkg/db"
-	"github.com/Sheerley/pluggabl/pkg/pb"
-	"github.com/Sheerley/pluggabl/pkg/plog"
+	"github.com/Sheerley/pluggabl/convo"
+	"github.com/Sheerley/pluggabl/db"
+	"github.com/Sheerley/pluggabl/pb"
+	"github.com/Sheerley/pluggabl/plog"
 )
 
 // InternalJobServer is implementation of gRPC server

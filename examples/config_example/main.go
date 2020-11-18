@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/Sheerley/pluggabl/internal/codes"
-	"github.com/Sheerley/pluggabl/internal/convo"
-	"github.com/Sheerley/pluggabl/pkg/plog"
+	"github.com/Sheerley/pluggabl/codes"
+	"github.com/Sheerley/pluggabl/convo"
+	"github.com/Sheerley/pluggabl/plog"
 )
 
 func main() {

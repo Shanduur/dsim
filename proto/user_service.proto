@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package pluggable.transfer;
 
-option go_package = "pkg/pb";
+option go_package = "pb";
 
 import "credentials_message.proto";
 import "response_message.proto";

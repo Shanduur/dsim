@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package pluggable.transfer;
 
-option go_package = "pkg/pb";
+option go_package = "pb";
 
 message Chunk {
     int32 file_number = 1;

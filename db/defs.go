@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Sheerley/pluggabl/internal/codes"
-	"github.com/Sheerley/pluggabl/internal/convo"
-	"github.com/Sheerley/pluggabl/pkg/plog"
+	"github.com/Sheerley/pluggabl/codes"
+	"github.com/Sheerley/pluggabl/convo"
+	"github.com/Sheerley/pluggabl/plog"
 
 	"github.com/jackc/pgx/v4"
 )
