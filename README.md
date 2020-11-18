@@ -15,7 +15,7 @@ gRPC - `protobuf-compiler`
 
 # TODO
 
-- [ ] Calculate checksum (client)
+- [x] Calculate checksum (client)
 - [ ] Check checksum (primary)
 - [ ] Send response `response` (primary)
 - [ ] Send response `file info` (primary)

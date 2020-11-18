@@ -9,8 +9,8 @@ import (
 
 	"github.com/Sheerley/pluggabl/codes"
 	"github.com/Sheerley/pluggabl/convo"
-	"github.com/Sheerley/pluggabl/fuse"
 	"github.com/Sheerley/pluggabl/db"
+	"github.com/Sheerley/pluggabl/fuse"
 	"github.com/Sheerley/pluggabl/pb"
 	"github.com/Sheerley/pluggabl/plog"
 	"github.com/Sheerley/pluggabl/service"
@@ -19,6 +19,8 @@ import (
 
 func main() {
 	var wg sync.WaitGroup
+
+	plog.Warningf("%v", os.Getpid())
 
 	configLocation := os.Getenv("CONFIG")
 	if len(configLocation) == 0 {

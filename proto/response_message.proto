@@ -14,4 +14,5 @@ message Response {
 
     ReturnCode return_code = 1;
     string return_message = 2;
+    repeated int32 context = 3; 
 }

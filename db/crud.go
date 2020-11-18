@@ -15,7 +15,7 @@ import (
 )
 
 // UploadFiles function inserts blobs into database
-func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, user *pb.Credentials) (id []int64, err error) {
+func UploadFiles(ctx context.Context, data [][]byte, skipped []int32, fileInfo []*pb.FileInfo, user *pb.Credentials) (id []int64, err error) {
 	conn, err := connect()
 	if err != nil {
 		return append(id, codes.UnknownID), fmt.Errorf("unable to connect to database: %v", err)
@@ -34,6 +34,19 @@ func UploadFiles(ctx context.Context, data [][]byte, fileInfo []*pb.FileInfo, us
 
 	for i := 0; i < len(data); i++ {
 		var blobID int64
+
+		cont := false
+		for _, skip := range skipped {
+			if skip == int32(i) {
+				cont = true
+				break
+			}
+		}
+
+		if cont {
+			id = append(id, int64(-1))
+			continue
+		}
 
 		err = conn.QueryRow(context.Background(), "SELECT COUNT(type_id) FROM filetypes WHERE type_extension = $1",
 			fileInfo[i].FileExtension).Scan(&count)
@@ -100,6 +113,37 @@ func UserExists(user *pb.Credentials) error {
 	}
 
 	return nil
+}
+
+// CheckChecksum checks if the file is already inside database
+func CheckChecksum(checksum []byte) (id int64, err error) {
+	id = -1
+
+	conn, err := connect()
+	if err != nil {
+		err = fmt.Errorf("unable to connect to database: %v", err)
+		return
+	}
+
+	count := 0
+
+	err = conn.QueryRow(context.Background(), "SELECT COUNT(blob_id) FROM blobs WHERE blob_checksum = $1", checksum).Scan(&count)
+	if err != nil {
+		err = fmt.Errorf("unable to execute querry: %v", err)
+		return
+	}
+
+	if count == 0 {
+		return
+	}
+
+	err = conn.QueryRow(context.Background(), "SELECT blob_id FROM blobs WHERE blob_checksum = $1", checksum).Scan(&id)
+	if err != nil {
+		err = fmt.Errorf("unable to execute querry: %v", err)
+		return
+	}
+
+	return
 }
 
 // GetFile retrieves result blob from database

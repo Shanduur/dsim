@@ -6,5 +6,5 @@ option go_package = "./pb";
 
 message FileInfo {
     string file_extension = 1;
-    string checksum = 2;
+    bytes checksum = 2;
 }

@@ -19,6 +19,8 @@ import (
 func main() {
 	var wg sync.WaitGroup
 
+	plog.Warningf("%v", os.Getpid())
+
 	configLocation := os.Getenv("CONFIG")
 	if len(configLocation) == 0 {
 		configLocation = "/etc/pluggabl/config.json"

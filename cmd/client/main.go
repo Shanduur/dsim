@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"crypto/sha256"
 	"flag"
 	"fmt"
 	"io"
@@ -158,11 +159,30 @@ func main() {
 
 			files = append(files, f)
 
+			var buffer []byte
+			chunk := make([]byte, 1024)
+			for {
+				n, err := f.Read(chunk)
+				if err == io.EOF {
+					break
+				}
+				if err != nil {
+					plog.Fatalf(codes.FileError, "checksum calculation file reading: %v", err)
+				}
+				buffer = append(buffer, chunk[:n]...)
+			}
+
+			s256 := sha256.New()
+			checksum := s256.Sum(buffer)
+
 			fo := &pb.FileInfo{
 				FileExtension: filepath.Ext(filenames[i]),
+				Checksum:      checksum,
 			}
 
 			fileinfo = append(fileinfo, fo)
+
+			f.Seek(0, io.SeekStart)
 
 			defer files[len(files)-1].Close()
 		}
@@ -184,7 +204,30 @@ func main() {
 			plog.Fatalf(codes.ManagerConnectionError, "unable to process request: \n- %v \n- %v", err, stream.RecvMsg(nil))
 		}
 
+		res, err := stream.Recv()
+		if err != nil {
+			plog.Fatalf(codes.ServerError, "unable to process request: \n- %v \n- %v", err, stream.RecvMsg(nil))
+		}
+
+		skipped := res.GetResponse().GetContext()
+		if len(skipped) > 0 {
+			plog.Verbosef("skipped %v files: %v", len(skipped), skipped)
+		}
+
 		for i := 0; i < len(files); i++ {
+			cont := false
+			for _, skip := range skipped {
+				if skip == int32(i) {
+					plog.Verbosef("skipping %v", i)
+					cont = true
+					break
+				}
+			}
+
+			if cont {
+				continue
+			}
+
 			reader := bufio.NewReader(files[i])
 
 			buffer := make([]byte, 1024)
@@ -225,7 +268,7 @@ func main() {
 			plog.Errorf("unable to close send %v", err)
 		}
 
-		res, err := stream.Recv()
+		res, err = stream.Recv()
 		for {
 			if err != nil {
 				plog.Fatalf(codes.ServerError, "cannot recieve response: %v", err)

@@ -179,7 +179,8 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 
 	creds := transfer.NewAdminCredentials()
 
-	id, err := db.UploadFiles(ctx, fileSlice, fileInfo, creds)
+	var skipped []int32
+	id, err := db.UploadFiles(ctx, fileSlice, skipped, fileInfo, creds)
 	if err != nil {
 		err = fmt.Errorf("unable to upload the output file: %v", err)
 

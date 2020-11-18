@@ -69,6 +69,43 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 		return
 	}
 
+	var skipped []int32
+	skippedID := make(map[int32]int64)
+
+	for i, fi := range fileInfo {
+		checksum := fi.GetChecksum()
+
+		var existingID int64
+
+		existingID, err = db.CheckChecksum(checksum)
+		if err != nil {
+			err = fmt.Errorf("unable to check checksum in database: %v", err)
+
+			plog.Errorf("%v", err)
+
+			return
+		}
+
+		if existingID != -1 {
+			skippedID[int32(i)] = existingID
+			skipped = append(skipped, int32(i))
+		}
+	}
+
+	jrsp = &pb.JobResponse{
+		Data: &pb.JobResponse_Response{
+			Response: &pb.Response{
+				ReturnCode: pb.Response_error,
+				Context:    skipped,
+			},
+		},
+	}
+	err = stream.Send(jrsp)
+	if err != nil {
+		plog.Errorf("error sending response: %v", err)
+		return err
+	}
+
 	// create temporary storage for blob
 	tempStorage := make([][]byte, numberOfFiles)
 
@@ -133,10 +170,14 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 		}
 	}
 
-	tempID, err := db.UploadFiles(ctx, tempStorage, fileInfo, user)
+	tempID, err := db.UploadFiles(ctx, tempStorage, skipped, fileInfo, user)
 
 	for i := 0; i < len(tempID); i++ {
-		id = append(id, int64(tempID[i]))
+		if tempID[i] == -1 {
+			id = append(id, skippedID[int32(i)])
+		} else {
+			id = append(id, int64(tempID[i]))
+		}
 	}
 
 	if err != nil {
