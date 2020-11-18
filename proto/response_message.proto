@@ -2,13 +2,14 @@ syntax = "proto3";
 
 package pluggable.transfer;
 
-option go_package = "pb";
+option go_package = "./pb";
 
 message Response {
     enum ReturnCode {
         unknown = 0;
         ok = 1;
-        error = 2;
+        skip = 2;
+        error = 3;
     }
 
     ReturnCode return_code = 1;

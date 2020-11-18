@@ -12,3 +12,14 @@ gRPC - `protobuf-compiler`
 # Notes:
 
 - SFIT is color dependent, and made to work mainly with grayscale images.
+
+# TODO
+
+- [ ] Calculate checksum (client)
+- [ ] Check checksum (primary)
+- [ ] Send response `response` (primary)
+- [ ] Send response `file info` (primary)
+- [ ] If `skip` then send response `file info` (primary)
+- [ ] Check response (client)
+- [ ] If `skip` then switch to file contents #2 (client)
+- [ ] Send file contents

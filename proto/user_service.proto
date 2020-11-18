@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package pluggable.transfer;
 
-option go_package = "pb";
+option go_package = "./pb";
 
 import "credentials_message.proto";
 import "response_message.proto";
@@ -12,11 +12,17 @@ message ActionUserRequest {
     Credentials credentials = 1;
 }
 
+message ModifyUserRequest {
+    Credentials old_credentials = 1;
+    Credentials new_credentials = 2;
+}
+
 message ActionUserResponse {
     Response response = 1;
 }
 
 service UserService {
     rpc CreateUser(ActionUserRequest) returns (ActionUserResponse) {};
+    rpc ModifyUser(ModifyUserRequest) returns (ActionUserResponse) {};
     rpc DeleteUser(ActionUserRequest) returns (ActionUserResponse) {};
 }
