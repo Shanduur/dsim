@@ -29,7 +29,7 @@ func (srv *UserManagementServer) CreateUser(ctx context.Context, req *pb.ActionU
 
 	if len(credentials.UserId) > 0 {
 		// checking if user exists
-		err = db.UserExists(credentials)
+		err = db.UserExists(ctx, credentials)
 		if err != nil {
 			if err == (&codes.RecordExists{}) {
 				err = fmt.Errorf("user already exists: %v", err)
@@ -108,7 +108,7 @@ func (srv *UserManagementServer) ModifyUser(ctx context.Context, req *pb.ModifyU
 
 	if len(oldCredentials.UserId) > 0 {
 		// checking if user exists
-		err = db.UserExists(oldCredentials)
+		err = db.UserExists(ctx, oldCredentials)
 		if err != nil {
 			err = fmt.Errorf("user does not exists: %v", err)
 
@@ -184,7 +184,7 @@ func (srv *UserManagementServer) DeleteUser(ctx context.Context, req *pb.ActionU
 	if len(credentials.UserId) > 0 {
 		// checking if user exists
 
-		err = db.UserExists(credentials)
+		err = db.UserExists(ctx, credentials)
 		if err != nil {
 			err = fmt.Errorf("user does not exists: %v", err)
 

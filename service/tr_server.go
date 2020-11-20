@@ -77,7 +77,7 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 
 		var existingID int64
 
-		existingID, err = db.CheckChecksum(checksum)
+		existingID, err = db.CheckChecksum(ctx, checksum)
 		if err != nil {
 			err = fmt.Errorf("unable to check checksum in database: %v", err)
 
@@ -171,6 +171,11 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 	}
 
 	tempID, err := db.UploadFiles(ctx, tempStorage, skipped, fileInfo, user)
+	if err != nil {
+		plog.Errorf("cannot upload file to database: %v", err)
+
+		return
+	}
 
 	for i := 0; i < len(tempID); i++ {
 		if tempID[i] == -1 {
@@ -180,37 +185,109 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 		}
 	}
 
+	resultID, err := db.CheckParents(ctx, id)
 	if err != nil {
-		plog.Errorf("cannot upload file to database: %v", err)
+		plog.Errorf("cannot get id from parents from database: %v", err)
 
 		return
 	}
 
-	plural := ""
-	if len(id) > 1 {
-		plural = "s"
-	}
-	plog.Messagef("succesfully recieved %v blob%v with id%v: %v", len(id), plural, plural, id)
+	plog.Verbose(resultID)
 
-	addr, port, err := db.GetFreeNode()
+	if resultID == codes.UnknownID {
 
-	if err == (&codes.NoFreeNode{}) {
-		for {
-			plog.Messagef("job queued: %v", err)
-			addr, port, err = db.GetFreeNode()
+		plural := ""
+		if len(id) > 1 {
+			plural = "s"
+		}
+		plog.Messagef("succesfully recieved %v blob%v with id%v: %v", len(id), plural, plural, id)
 
-			if err != (&codes.NoFreeNode{}) {
-				break
+		addr, port, err := db.GetFreeNode()
+
+		if err == (&codes.NoFreeNode{}) {
+			for {
+				plog.Messagef("job queued: %v", err)
+				addr, port, err = db.GetFreeNode()
+
+				if err != (&codes.NoFreeNode{}) {
+					break
+				}
 			}
 		}
-	}
-	if err != nil {
-		msg := fmt.Sprintf("error getting node address: %v", err)
+		if err != nil {
+			msg := fmt.Sprintf("error getting node address: %v", err)
+
+			jrsp = &pb.JobResponse{
+				Data: &pb.JobResponse_Response{
+					Response: &pb.Response{
+						ReturnCode:    pb.Response_error,
+						ReturnMessage: msg,
+					},
+				},
+			}
+
+			err2 := stream.Send(jrsp)
+
+			plog.Errorf("error getting node address: \n- %v\n- %v", err, err2)
+			return err
+		}
+
+		address := fmt.Sprintf("%v:%v", addr, port)
+
+		plog.Messagef("dial secondary node %v", address)
+
+		conn, err := grpc.Dial(address, grpc.WithInsecure())
+		if err != nil {
+			msg := fmt.Sprintf("cannot dial secondary node: %v", err)
+
+			jrsp = &pb.JobResponse{
+				Data: &pb.JobResponse_Response{
+					Response: &pb.Response{
+						ReturnCode:    pb.Response_error,
+						ReturnMessage: msg,
+					},
+				},
+			}
+
+			err2 := stream.Send(jrsp)
+
+			plog.Errorf("cannot dial secondary node: \n- %v\n- %v", err, err2)
+			return err
+		}
+
+		ijClient := pb.NewInternalJobServiceClient(conn)
+
+		ireq := &pb.InternalJobRequest{
+			Job: &pb.InternalJob{
+				FileId: id,
+			},
+		}
+
+		res, err := ijClient.SubmitJob(ctx, ireq)
+		if err != nil {
+			msg := fmt.Sprintf("unable to finish the job: %v", err)
+
+			jrsp = &pb.JobResponse{
+				Data: &pb.JobResponse_Response{
+					Response: &pb.Response{
+						ReturnCode:    pb.Response_error,
+						ReturnMessage: msg,
+					},
+				},
+			}
+
+			err2 := stream.Send(jrsp)
+
+			plog.Errorf("error submitting job: \n- %v\n- %v", err, err2)
+			return err
+		}
+
+		msg := fmt.Sprintf("job finished succesfully")
 
 		jrsp = &pb.JobResponse{
 			Data: &pb.JobResponse_Response{
 				Response: &pb.Response{
-					ReturnCode:    pb.Response_error,
+					ReturnCode:    pb.Response_ok,
 					ReturnMessage: msg,
 				},
 			},
@@ -218,22 +295,25 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 
 		err2 := stream.Send(jrsp)
 
-		plog.Errorf("error getting node address: \n- %v\n- %v", err, err2)
-		return err
-	}
+		if err2 != nil {
+			plog.Errorf("error sending response: \n- %v\n- %v", err, err2)
+		}
 
-	address := fmt.Sprintf("%v:%v", addr, port)
+		fileID := res.GetFileId()
 
-	plog.Messagef("dial secondary node %v", address)
-
-	conn, err := grpc.Dial(address, grpc.WithInsecure())
-	if err != nil {
-		msg := fmt.Sprintf("cannot dial secondary node: %v", err)
+		if len(fileID) > 1 {
+			err = fmt.Errorf("unexpected number of return files: %v", len(fileID))
+			plog.Errorf(err.Error())
+			return err
+		}
+		resultID = fileID[0]
+	} else {
+		msg := fmt.Sprintf("loading result from cache")
 
 		jrsp = &pb.JobResponse{
 			Data: &pb.JobResponse_Response{
 				Response: &pb.Response{
-					ReturnCode:    pb.Response_error,
+					ReturnCode:    pb.Response_ok,
 					ReturnMessage: msg,
 				},
 			},
@@ -241,62 +321,12 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 
 		err2 := stream.Send(jrsp)
 
-		plog.Errorf("cannot dial secondary node: \n- %v\n- %v", err, err2)
-		return err
-	}
-
-	ijClient := pb.NewInternalJobServiceClient(conn)
-
-	ireq := &pb.InternalJobRequest{
-		Job: &pb.InternalJob{
-			FileId: id,
-		},
-	}
-
-	res, err := ijClient.SubmitJob(ctx, ireq)
-	if err != nil {
-		msg := fmt.Sprintf("unable to finish the job: %v", err)
-
-		jrsp = &pb.JobResponse{
-			Data: &pb.JobResponse_Response{
-				Response: &pb.Response{
-					ReturnCode:    pb.Response_error,
-					ReturnMessage: msg,
-				},
-			},
+		if err2 != nil {
+			plog.Errorf("error sending response: \n- %v\n- %v", err, err2)
 		}
-
-		err2 := stream.Send(jrsp)
-
-		plog.Errorf("error submitting job: \n- %v\n- %v", err, err2)
-		return err
 	}
 
-	msg := fmt.Sprintf("job finished succesfully")
-
-	jrsp = &pb.JobResponse{
-		Data: &pb.JobResponse_Response{
-			Response: &pb.Response{
-				ReturnCode:    pb.Response_ok,
-				ReturnMessage: msg,
-			},
-		},
-	}
-
-	err2 := stream.Send(jrsp)
-
-	if err2 != nil {
-		plog.Errorf("error sending response: \n- %v\n- %v", err, err2)
-	}
-
-	fileID := res.GetFileId()
-
-	if len(fileID) > 1 {
-		err = fmt.Errorf("unexpected number of return files: %v", len(fileID))
-		plog.Errorf(err.Error())
-		return err
-	}
-	resultFile, _, extension, err := db.GetFile(ctx, fileID[0])
+	resultFile, _, extension, err := db.GetFile(ctx, resultID)
 	if err != nil {
 		plog.Errorf("unable to download file from database: %v", err)
 		return err

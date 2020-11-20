@@ -10,6 +10,6 @@ RUN chmod -R 777 /etc/pluggabl
 
 LABEL maintainer="mateusz.urbanek.98@gmail.com" \
     type="primary-node" \
-    version="0.3.0"
+    version="0.3.1"
 
 CMD [ "/pluggabl/server.run" ]

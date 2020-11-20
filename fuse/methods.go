@@ -1,6 +1,7 @@
 package fuse
 
 import (
+	"context"
 	"os"
 	"os/signal"
 	"sync"
@@ -36,7 +37,7 @@ func Heartbeat(conf convo.Config) {
 	var err error
 	count := 1
 	for {
-		err = db.UpdateTimestamp(conf)
+		err = db.UpdateTimestamp(context.Background(), conf)
 		if err != nil {
 			if count <= 5 {
 				plog.Errorf("error #%v while updating timestamp: %v", count, err)

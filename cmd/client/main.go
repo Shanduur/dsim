@@ -276,6 +276,7 @@ func main() {
 			}
 
 			if res != nil {
+				plog.Debugf("response: %v", res.GetResponse().GetReturnMessage())
 				break
 			} else {
 				res, err = stream.Recv()

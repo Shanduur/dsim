@@ -8,14 +8,11 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/Sheerley/pluggabl/transfer"
-
-	"github.com/google/uuid"
-
 	"github.com/Sheerley/pluggabl/convo"
 	"github.com/Sheerley/pluggabl/db"
 	"github.com/Sheerley/pluggabl/pb"
 	"github.com/Sheerley/pluggabl/plog"
+	"github.com/google/uuid"
 )
 
 // InternalJobServer is implementation of gRPC server
@@ -177,10 +174,8 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 		FileExtension: extension,
 	})
 
-	creds := transfer.NewAdminCredentials()
-
 	var skipped []int32
-	id, err := db.UploadFiles(ctx, fileSlice, skipped, fileInfo, creds)
+	id, err := db.UploadResult(ctx, fileSlice, skipped, fileInfo, fileIDs)
 	if err != nil {
 		err = fmt.Errorf("unable to upload the output file: %v", err)
 
