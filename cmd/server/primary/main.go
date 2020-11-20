@@ -28,7 +28,7 @@ func main() {
 	}
 
 	logDescription := fmt.Sprintf("log level with possible values:\n - Verbose: %v\n - Debug: %v\n - Info: %v"+
-		"\n - Waring: %v\n - Error: %v not recommended\n - Fatal: %v not recommended",
+		"\n - Waring: %v\n - Error: %v not recommended\n - Fatal: %v not recommended\n",
 		plog.VERBOSE, plog.DEBUG, plog.INFO, plog.WARNING, plog.ERROR, plog.FATAL)
 	logLevel := flag.Int("log-level", plog.WARNING, logDescription)
 

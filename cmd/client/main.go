@@ -25,22 +25,23 @@ func main() {
 	configLocation := os.Getenv("CONFIG")
 	if len(configLocation) == 0 {
 		configLocation = "~/.config/pluggabl.d/config_client.json"
+		plog.Messagef("config env variable not set, current config location: %v", configLocation)
 	}
 
-	createUser := flag.Bool("new-user", false, "set true if you want to create new user")
-	deleteUser := flag.Bool("del-user", false, "set true if you want to delete existing user")
-	modifyUser := flag.Bool("mod-user", false, "set true if you want to modify user")
+	createUser := flag.Bool("user-new", false, "set true if you want to create new user")
+	deleteUser := flag.Bool("user-del", false, "set true if you want to delete existing user")
+	modifyUser := flag.Bool("user-mod", false, "set true if you want to modify user")
 	login := flag.String("uname", "", "username")
 	passphrase := flag.String("pwd", "", "passphrase")
-	newPassphrase := flag.String("new-pwd", "", "new passphrase")
+	newPassphrase := flag.String("pwd-new", "", "new passphrase")
 	query := flag.String("query", "", "path to query file")
 	train := flag.String("train", "", "path to train file")
 	outFile := flag.String("o", "result", "path to output file, should not contain extension")
 
 	logDescription := fmt.Sprintf("log level with possible values:\n - Verbose: %v\n - Debug: %v\n - Info: %v"+
-		"\n - Waring: %v\n - Error: %v not recommended\n - Fatal: %v not recommended",
+		"\n - Waring: %v\n - Error: %v not recommended\n - Fatal: %v not recommended\n",
 		plog.VERBOSE, plog.DEBUG, plog.INFO, plog.WARNING, plog.ERROR, plog.FATAL)
-	logLevel := flag.Int("log-level", plog.INFO, logDescription)
+	logLevel := flag.Int("log-level", plog.WARNING, logDescription)
 
 	flag.Parse()
 

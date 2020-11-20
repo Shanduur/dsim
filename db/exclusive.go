@@ -38,7 +38,7 @@ func RegisterNode(conf convo.Config) (err error) {
 	}
 
 	err = tx.QueryRow(context.Background(),
-		"SELECT COUNT(*) FROM nodes WHERE node_ip = $1 AND node_port = $2 AND active = FALSE OR node_timeout < $3",
+		"SELECT COUNT(*) FROM nodes WHERE node_ip = $1 AND node_port = $2 AND (active = FALSE OR node_timeout < $3)",
 		fmt.Sprintf("%v", conf.Address), conf.ExternalPort, dt.Format("2006-01-02 15:04:05.070")).Scan(&countInactive)
 	if err != nil {
 		return fmt.Errorf("unable to count in table: %v", err)
@@ -63,7 +63,7 @@ func RegisterNode(conf convo.Config) (err error) {
 			return fmt.Errorf("unable to insert node config into table: %v", err)
 		}
 	} else {
-		return fmt.Errorf("node already registred")
+		return fmt.Errorf("node already registred:\n- active: %v\n- inactive: %v", countActive, countInactive)
 	}
 
 	tx.Commit(context.Background())

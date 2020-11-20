@@ -38,7 +38,12 @@ install:
 	sudo chmod +x /opt/pluggabl/*
 
 	[ ! -d /etc/pluggabl/ ] && sudo mkdir /etc/pluggabl/ || echo ok
-	sudo cp ./config/*.json /etc/pluggabl/
+	sudo cp ./config/config_primary.json /etc/pluggabl/
+	sudo cp ./config/config_secondary.json /etc/pluggabl/
+	sudo cp ./config/config_db.json /etc/pluggabl/
+
+	[ ! -d ~/.config/pluggabl.d/ ] && sudo mkdir ~/.config/pluggabl.d/ || echo ok
+	sudo cp ./config/config_client.json ~/.config/pluggabl.d/
 
 test:
 	go test -cover -race ./...
