@@ -24,7 +24,11 @@ import (
 func main() {
 	configLocation := os.Getenv("CONFIG")
 	if len(configLocation) == 0 {
-		configLocation = "~/.config/pluggabl.d/config_client.json"
+		home, err := os.UserHomeDir()
+		if err != nil {
+			plog.Fatalf(codes.ConfError, "unable to dine home folder: %v", err)
+		}
+		configLocation = home + "/.config/pluggabl.d/config_client.json"
 		plog.Messagef("config env variable not set, current config location: %v", configLocation)
 	}
 

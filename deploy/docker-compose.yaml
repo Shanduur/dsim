@@ -5,6 +5,7 @@ services:
     image: shanduur/pluggabl-primary
     restart: unless-stopped
     environment:
+      - TZ=Europe/Warsaw
       - PG_DATABASE=postgresql://192.168.1.232:5432/pluggable_db?user=admin&password=XRB9UWu^bm8E^2aV
       - LOG_LEVEL=debug
     ports:
@@ -14,8 +15,10 @@ services:
     image: shanduur/pluggabl-secondary
     restart: unless-stopped
     environment:
+      - TZ=Europe/Warsaw
       - PG_DATABASE=postgresql://192.168.1.232:5432/pluggable_db?user=admin&password=XRB9UWu^bm8E^2aV
-      - EXTERNAL=4010
+      - EXTERNAL_PORT=4010
+      - EXTERNAL_IP=192.168.1.109
       - LOG_LEVEL=debug
     ports:
       - '4010:4004'
@@ -24,8 +27,10 @@ services:
     image: shanduur/pluggabl-secondary
     restart: unless-stopped
     environment:
+      - TZ=Europe/Warsaw
       - PG_DATABASE=postgresql://192.168.1.232:5432/pluggable_db?user=admin&password=XRB9UWu^bm8E^2aV
-      - EXTERNAL=4011
+      - EXTERNAL_PORT=4011
+      - EXTERNAL_IP=192.168.1.109
       - LOG_LEVEL=debug
     ports:
       - '4011:4004'
@@ -34,8 +39,10 @@ services:
     image: shanduur/pluggabl-secondary
     restart: unless-stopped
     environment:
+      - TZ=Europe/Warsaw
       - PG_DATABASE=postgresql://192.168.1.232:5432/pluggable_db?user=admin&password=XRB9UWu^bm8E^2aV
-      - EXTERNAL=4012
+      - EXTERNAL_PORT=4012
+      - EXTERNAL_IP=192.168.1.109
       - LOG_LEVEL=debug
     ports:
       - '4012:4004'
@@ -44,8 +51,10 @@ services:
     image: shanduur/pluggabl-secondary
     restart: unless-stopped
     environment:
+      - TZ=Europe/Warsaw
       - PG_DATABASE=postgresql://192.168.1.232:5432/pluggable_db?user=admin&password=XRB9UWu^bm8E^2aV
-      - EXTERNAL=4013
+      - EXTERNAL_PORT=4013
+      - EXTERNAL_IP=192.168.1.109
       - LOG_LEVEL=debug
     ports:
       - '4013:4004'

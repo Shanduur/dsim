@@ -27,7 +27,7 @@ func NewInternalJobServer() *InternalJobServer {
 func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJobRequest) (*pb.InternalJobResponse, error) {
 	var rsp *pb.InternalJobResponse
 
-	cfg, err := convo.LoadConfiguration("config/config_secondary.json")
+	cfg, err := convo.LoadConfiguration("/etc/pluggabl/config.json")
 	if err != nil {
 		err = fmt.Errorf("unable to retrieve file: %v", err)
 

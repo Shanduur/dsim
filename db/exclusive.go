@@ -18,6 +18,7 @@ func RegisterNode(conf convo.Config) (err error) {
 	if err != nil {
 		return fmt.Errorf("unable to connect to database: %v", err)
 	}
+	defer conn.Close(context.Background())
 
 	tx, err := conn.Begin(context.Background())
 	if err != nil {
@@ -56,9 +57,9 @@ func RegisterNode(conf convo.Config) (err error) {
 		}
 	} else if countInactive == 1 {
 		_, err = tx.Exec(context.Background(),
-			"UPDATE nodes SET active = TRUE, node_max_jobs = $1 "+
-				"WHERE node_ip = $2 AND node_port = $3 AND active = FALSE",
-			conf.MaxThreads, fmt.Sprintf("%v", conf.Address), conf.ExternalPort)
+			"UPDATE nodes SET active = TRUE, node_max_jobs = $1, node_timeout = $2 "+
+				"WHERE node_ip = $3 AND node_port = $4 AND active = FALSE",
+			conf.MaxThreads, dt.Format("2006-01-02 15:04:05.070"), fmt.Sprintf("%v", conf.Address), conf.ExternalPort)
 		if err != nil {
 			return fmt.Errorf("unable to insert node config into table: %v", err)
 		}
@@ -77,6 +78,7 @@ func UnregisterNode(conf convo.Config) (err error) {
 	if err != nil {
 		return fmt.Errorf("unable to connect to database: %v", err)
 	}
+	defer conn.Close(context.Background())
 
 	tx, err := conn.Begin(context.Background())
 	if err != nil {
@@ -115,6 +117,7 @@ func GetFreeNode() (addr string, port int, err error) {
 		err = fmt.Errorf("unable to connect to database: %v", err)
 		return
 	}
+	defer conn.Close(context.Background())
 
 	tx, err := conn.Begin(context.Background())
 	if err != nil {
@@ -196,6 +199,7 @@ func UpdateJobStatus(conf convo.Config, value int) (err error) {
 	if err != nil {
 		return fmt.Errorf("unable to connect to database: %v", err)
 	}
+	defer conn.Close(context.Background())
 
 	tx, err := conn.Begin(context.Background())
 	if err != nil {

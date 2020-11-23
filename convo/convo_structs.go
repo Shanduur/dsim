@@ -42,14 +42,20 @@ func (cc *Config) jsonToConfig(cj configJSON) {
 	cc.MaxThreads = cj.MaxThreads
 	cc.Type = cj.Type
 
-	cc.Address = net.ParseIP(cj.Addr)
+	extenralAddress := os.Getenv("EXTERNAL_IP")
+
+	if len(extenralAddress) > 7 {
+		cc.Address = net.ParseIP(extenralAddress)
+	} else {
+		cc.Address = net.ParseIP(cj.Addr)
+	}
+
 	cc.Port = cj.Port
 	cc.JobBinaryName = cj.Cmd
 
-	stringPort := os.Getenv("EXTERNAL")
+	stringPort := os.Getenv("EXTERNAL_PORT")
 
 	port, err := strconv.Atoi(stringPort)
-
 	if err != nil {
 		if cj.EPort == 0 {
 			cc.ExternalPort = cj.Port

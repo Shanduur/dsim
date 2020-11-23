@@ -20,6 +20,7 @@ func UploadFiles(ctx context.Context, data [][]byte, skipped []int32, fileInfo [
 	if err != nil {
 		return append(id, codes.UnknownID), fmt.Errorf("unable to connect to database: %v", err)
 	}
+	defer conn.Close(ctx)
 
 	tx, err := conn.Begin(ctx)
 	if err != nil {
@@ -100,6 +101,7 @@ func UploadResult(ctx context.Context, data [][]byte, skipped []int32, fileInfo 
 	if err != nil {
 		return append(id, codes.UnknownID), fmt.Errorf("unable to connect to database: %v", err)
 	}
+	defer conn.Close(ctx)
 
 	tx, err := conn.Begin(ctx)
 	if err != nil {
@@ -182,6 +184,7 @@ func CheckParents(ctx context.Context, parents []int64) (id int64, err error) {
 		err = fmt.Errorf("unable to connect to database: %v", err)
 		return
 	}
+	defer conn.Close(ctx)
 
 	count := 0
 
@@ -213,6 +216,7 @@ func UserExists(ctx context.Context, user *pb.Credentials) error {
 	if err != nil {
 		return fmt.Errorf("unable to connect to database: %v", err)
 	}
+	defer conn.Close(ctx)
 
 	count := 0
 
@@ -237,6 +241,7 @@ func CheckChecksum(ctx context.Context, checksum []byte) (id int64, err error) {
 		err = fmt.Errorf("unable to connect to database: %v", err)
 		return
 	}
+	defer conn.Close(ctx)
 
 	count := 0
 
@@ -266,6 +271,7 @@ func GetFile(ctx context.Context, id int64) (result []byte, name string, extensi
 		err = fmt.Errorf("unable to connect to database: %v", err)
 		return
 	}
+	defer conn.Close(ctx)
 
 	err = conn.QueryRow(ctx, "SELECT blob_data, blob_name FROM blobs WHERE blob_id = $1", id).Scan(&result, &name)
 	if err != nil {
@@ -296,6 +302,7 @@ func CreateUser(ctx context.Context, user *pb.Credentials) error {
 	if err != nil {
 		return fmt.Errorf("unable to connect to database: %v", err)
 	}
+	defer conn.Close(ctx)
 
 	tx, err := conn.Begin(ctx)
 	if err != nil {
@@ -330,6 +337,7 @@ func DeleteUser(ctx context.Context, user *pb.Credentials) error {
 	if err != nil {
 		return fmt.Errorf("unable to connect to database: %v", err)
 	}
+	defer conn.Close(ctx)
 
 	err = conn.QueryRow(ctx, "SELECT user_key FROM users WHERE user_name = $1", user.UserId).Scan(&key)
 	if err != nil {
@@ -374,6 +382,7 @@ func ModifyUser(ctx context.Context, user *pb.Credentials, oldUser *pb.Credentia
 	if err != nil {
 		return fmt.Errorf("unable to connect to database: %v", err)
 	}
+	defer conn.Close(ctx)
 
 	err = conn.QueryRow(ctx, "SELECT user_key FROM users WHERE user_name = $1", user.UserId).Scan(&key)
 	if err != nil {
@@ -416,6 +425,7 @@ func UpdateTimestamp(ctx context.Context, conf convo.Config) (err error) {
 	if err != nil {
 		return fmt.Errorf("unable to connect to database: %v", err)
 	}
+	defer conn.Close(ctx)
 
 	tx, err := conn.Begin(ctx)
 	if err != nil {
