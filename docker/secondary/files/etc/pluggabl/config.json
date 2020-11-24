@@ -1,0 +1,9 @@
+{
+    "type": "secondary",
+    "job-binary-name": "/pluggabl/exec.run",
+    "address": "192.168.1.109",
+    "port": 4004,
+    "external-port": 4010,
+    "garbage-collection-timeout": 1000,
+    "max-threads": 4
+}

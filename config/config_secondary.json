@@ -1,0 +1,9 @@
+{
+    "type": "secondary",
+    "job-binary-name": "./build/linux/amd64/exec.run",
+    "address": "0.0.0.0",
+    "port": 4005,
+    "external-port": 4005,
+    "garbage-collection-timeout": 1000,
+    "max-threads": 4
+}

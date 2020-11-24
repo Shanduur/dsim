@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package pluggable.transfer;
+
+option go_package = "./pb";
+
+message FileInfo {
+    string file_extension = 1;
+    bytes checksum = 2;
+}

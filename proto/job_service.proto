@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package pluggable.transfer;
+
+option go_package = "./pb";
+
+import "job_message.proto";
+import "response_message.proto";
+import "chunk_message.proto";
+import "fileInfo_message.proto";
+
+message JobRequest {
+    oneof data {
+        Job job = 1;
+        Chunk chunk_data = 2;
+    }
+}
+
+message InternalJobRequest {
+    InternalJob job = 1;
+}
+
+message JobResponse {
+    oneof data {
+        FileInfo file_info = 1;
+        Response response = 2;
+        Chunk chunk_data = 3;
+    }
+}
+
+message InternalJobResponse {
+    repeated int64 file_id = 1;
+    Response response = 2; 
+}
+
+service JobService {
+    rpc SubmitJob(stream JobRequest) returns (stream JobResponse) {};
+}
+
+service InternalJobService {
+    rpc SubmitJob(InternalJobRequest) returns (InternalJobResponse) {};
+}
