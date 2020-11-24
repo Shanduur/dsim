@@ -1,6 +1,6 @@
 GOCV_VERSION=v0.25.0 
 
-.PHONY: build build_multiarch prebuild install clean proto test docker
+.PHONY: build build_all build_multiarch prebuild install clean proto test docker
 
 all: prebuild clean proto build
 
@@ -20,17 +20,22 @@ proto:
 
 build:
 	go build -o ./build/$(shell go env GOOS)/$(shell go env GOARCH)/primary.run   ./cmd/server/primary 
+	go build -o ./build/$(shell go env GOOS)/$(shell go env GOARCH)/client.run    ./cmd/client
+
+build_all: build
 	go build -o ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run ./cmd/server/secondary 
 	go build -o ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      ./cmd/exec 
-	go build -o ./build/$(shell go env GOOS)/$(shell go env GOARCH)/client.run    ./cmd/client
 
 install:
 	[ ! -d /opt/pluggabl/ ] && sudo mkdir /opt/pluggabl/ || echo ok
 
 	sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/primary.run   /opt/pluggabl/primary.run
-	sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run /opt/pluggabl/secondary.run
-	sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      /opt/pluggabl/exec.run
 	sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/client.run    /opt/pluggabl/client.run
+	[ -e ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run ] && \
+		sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run /opt/pluggabl/secondary.run || echo ok
+	[ -e ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run ] && \
+		sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      /opt/pluggabl/exec.run  || echo ok
+
 	sudo cp ./scripts/pluggabl.sh      /opt/pluggabl/pluggabl.sh
 
 	sudo ln -sf /opt/pluggabl/pluggabl.sh /usr/bin/pluggabl
@@ -42,6 +47,7 @@ install:
 	sudo cp ./config/config_secondary.json /etc/pluggabl/
 	sudo cp ./config/config_db.json /etc/pluggabl/
 
+	[ ! -d ~/.config/ ] && sudo mkdir ~/.config/ || echo ok
 	[ ! -d ~/.config/pluggabl.d/ ] && sudo mkdir ~/.config/pluggabl.d/ || echo ok
 	sudo cp ./config/config_client.json ~/.config/pluggabl.d/
 
