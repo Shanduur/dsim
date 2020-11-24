@@ -38,8 +38,30 @@ type configJSON struct {
 }
 
 func (cc *Config) jsonToConfig(cj configJSON) {
-	cc.GarbageCollectionTimeout = cj.GcTimeout
-	cc.MaxThreads = cj.MaxThreads
+	stringGCPercentage := os.Getenv("GC_PERCENTAGE")
+	gcPercentage, err := strconv.Atoi(stringGCPercentage)
+	if err != nil {
+		cc.GarbageCollectionTimeout = cj.GcTimeout
+	} else {
+		if cj.EPort <= 100 {
+			cc.GarbageCollectionTimeout = cj.GcTimeout
+		} else {
+			cc.GarbageCollectionTimeout = gcPercentage
+		}
+	}
+
+	stringThreads := os.Getenv("THREADS")
+	threads, err := strconv.Atoi(stringThreads)
+	if err != nil {
+		if cj.EPort == 0 {
+			cc.MaxThreads = cj.MaxThreads
+		} else {
+			cc.MaxThreads = threads
+		}
+	} else {
+		cc.MaxThreads = cj.MaxThreads
+	}
+
 	cc.Type = cj.Type
 
 	extenralAddress := os.Getenv("EXTERNAL_IP")
