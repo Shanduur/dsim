@@ -54,7 +54,7 @@ install:
 test:
 	go test -cover -race ./...
 	
-docker: build
+docker: build_all
 	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/primary.run   ./docker/primary/files/pluggabl/server.run
 	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run ./docker/secondary/files/pluggabl/server.run
 	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      ./docker/secondary/files/pluggabl/exec.run
