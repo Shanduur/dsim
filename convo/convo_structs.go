@@ -41,13 +41,13 @@ func (cc *Config) jsonToConfig(cj configJSON) {
 	stringGCPercentage := os.Getenv("GC_PERCENTAGE")
 	gcPercentage, err := strconv.Atoi(stringGCPercentage)
 	if err != nil {
+		cc.GarbageCollectionTimeout = cj.GcTimeout
+	} else {
 		if cj.EPort <= 100 {
 			cc.GarbageCollectionTimeout = cj.GcTimeout
 		} else {
 			cc.GarbageCollectionTimeout = gcPercentage
 		}
-	} else {
-		cc.GarbageCollectionTimeout = cj.GcTimeout
 	}
 
 	stringThreads := os.Getenv("THREADS")
