@@ -1,7 +1,11 @@
 #!/bin/bash
-PHOTOFOLDER=$1
 
-OPTIONS="-o=$(date '+%s') -uname=user -pwd=password -log-level=5"
+[[ $1 == "-folder" ]] && PHOTOFOLDER=$2 || echo no folder provided && exit 1
+
+OPTIONS="-o=./out/$(date '+%s') -uname=user -pwd=password -log-level=5"
+
+[ -d ./out/ ] && echo ok || mkdir ./out/
+rm -rf ./out/*
 
 echo "" > time.txt
 

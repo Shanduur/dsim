@@ -6,7 +6,7 @@ import (
 	"gocv.io/x/gocv"
 )
 
-// BestMatches takes two arguments being Querry and Train
+// BestMatches takes two arguments being Query and Train
 // and holding paths to the images that have to be
 // processed during the SIFT detection and Brute
 // force matching. Function returns gocv.Mat holding

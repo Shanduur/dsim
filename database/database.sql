@@ -1,5 +1,7 @@
 -- Database definition for PostgreSQL
 
+CREATE DATABASE pluggable_db;
+
 CREATE TABLE users (
     user_id BIGSERIAL NOT NULL,
     user_name VARCHAR(32) NOT NULL,
