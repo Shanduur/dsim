@@ -208,8 +208,8 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 			for {
 				plog.Messagef("job queued: %v", err)
 				addr, port, err = db.GetFreeNode()
-
 				if err != (&codes.NoFreeNode{}) {
+					err = nil
 					break
 				}
 			}
