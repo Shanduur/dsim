@@ -12,11 +12,11 @@ Get-ChildItem -Path .\out\ -Include *.* -File -Recurse | foreach { $_.Delete()}
 echo "" > time.txt
 
 $items | Sort-Object {Get-Random} | foreach {
-    $query = $_
+    $s1 = $_
     $items | Sort-Object {Get-Random} | foreach {
-        $train = $_
+        $s2 = $_
 
-        $time = Measure-Command -Expression {.\client.exe $query $train}
+        $time = Measure-Command -Expression {.\client.exe "-source-img1=$s1 -source-img2=$s2"}
 
         echo $time >> time.txt
     }

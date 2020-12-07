@@ -10,21 +10,21 @@ import (
 
 func main() {
 	plog.SetLogLevel(plog.INFO)
-	query := flag.String("query", "", "name of query file")
-	train := flag.String("train", "", "name of train file")
+	img1 := flag.String("img1", "", "name of first image file")
+	img2 := flag.String("img2", "", "name of second image file")
 	out := flag.String("out", "", "name of output file")
 	logLevel := flag.Int("log-level", plog.INFO, "log level")
 
 	flag.Parse()
-	if len(*query) == 0 || len(*train) == 0 || len(*out) == 0 {
+	if len(*img1) == 0 || len(*img2) == 0 || len(*out) == 0 {
 		plog.Fatalf(codes.IncorrectArgs, "error with parsing arguments")
 	}
 
 	plog.SetLogLevel(*logLevel)
 
-	plog.Messagef("running with args:\n -query=%v,\n -train=%v,\n -out=%v,\n -log-level=%v", *query, *train, *out, *logLevel)
+	plog.Messagef("running with args:\n -img1=%v,\n -img2=%v,\n -out=%v,\n -log-level=%v", *img1, *img2, *out, *logLevel)
 
-	outMat := compute.BestMatches(*query, *train)
+	outMat := compute.BestMatches(*img1, *img2)
 
 	plog.Debugf("saving output [empty=%v]", outMat.Empty())
 	compute.SaveMat(*out, outMat)

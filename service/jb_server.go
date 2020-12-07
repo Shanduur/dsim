@@ -110,10 +110,10 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 
 	defer purgeFiles(filenames)
 
-	query := "-query=" + filenames[0]
-	train := "-train=" + filenames[1]
+	img1Flag := "-img1=" + filenames[0]
+	img2Flag := "-img2=" + filenames[1]
 
-	job := exec.CommandContext(ctx, cfg.JobBinaryName, query, train, "-out="+outname)
+	job := exec.CommandContext(ctx, cfg.JobBinaryName, img1Flag, img2Flag, "-out="+outname)
 
 	c := make(chan bool)
 
