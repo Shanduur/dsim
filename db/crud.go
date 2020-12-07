@@ -188,7 +188,7 @@ func CheckParents(ctx context.Context, parents []int64) (id int64, err error) {
 
 	count := 0
 
-	err = conn.QueryRow(ctx, "SELECT COUNT(blob_id) FROM blobs WHERE parents && $1", parents).Scan(&count)
+	err = conn.QueryRow(ctx, "SELECT COUNT(blob_id) FROM blobs WHERE parents = $1", parents).Scan(&count)
 	if err != nil {
 		err = fmt.Errorf("unable to count blob_id: %v", err)
 		return
@@ -200,7 +200,7 @@ func CheckParents(ctx context.Context, parents []int64) (id int64, err error) {
 		return
 	}
 
-	err = conn.QueryRow(ctx, "SELECT blob_id FROM blobs WHERE parents && $1 LIMIT 1", parents).Scan(&id)
+	err = conn.QueryRow(ctx, "SELECT blob_id FROM blobs WHERE parents = $1 LIMIT 1", parents).Scan(&id)
 	if err != nil {
 		id = codes.UnknownID
 		err = fmt.Errorf("unable select blob_id with parents: %v", err)
@@ -429,7 +429,7 @@ func UpdateTimestamp(ctx context.Context, conf convo.Config) (err error) {
 
 	tx, err := conn.Begin(ctx)
 	if err != nil {
-		return err
+		return
 	}
 
 	// in case of returning error rollback unfinished transaction
@@ -438,14 +438,14 @@ func UpdateTimestamp(ctx context.Context, conf convo.Config) (err error) {
 	dt := time.Now()
 
 	_, err = tx.Exec(ctx, "UPDATE nodes SET node_timeout = $1, active = TRUE WHERE node_ip = $2 AND node_port = $3",
-		dt.Format("2006-01-02 15:04:05.070"), fmt.Sprintf("%v", conf.Address), conf.Port)
+		dt.Format("2006-01-02 15:04:05.070"), fmt.Sprintf("%v", conf.Address), conf.ExternalPort)
 	if err != nil {
-		return err
+		return
 	}
 
 	err = tx.Commit(ctx)
 	if err != nil {
-		return err
+		return
 	}
 
 	return nil

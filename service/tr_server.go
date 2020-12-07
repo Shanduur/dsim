@@ -115,8 +115,6 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 	currentFile := int32(0)
 
 	for {
-		plog.Verbosef("waiting to recieve more data from file number %v", currentFile)
-
 		req, err = stream.Recv()
 		if err == io.EOF {
 			tempStorage[currentFile] = make([]byte, len(fileData.Bytes()))
@@ -370,8 +368,6 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 			plog.Errorf("error submitting job: \n- %v\n- %v", err, err2)
 			return err
 		}
-
-		plog.Verbosef("sending result data to client")
 
 		jrsp = &pb.JobResponse{
 			Data: &pb.JobResponse_ChunkData{

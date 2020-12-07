@@ -15,11 +15,14 @@ rm -rf ./out/*
 [ -d ./log/ ] && echo ok || mkdir ./log/
 rm -rf ./log/*
 
+[ -d ./err/ ] && echo ok || mkdir ./err/
+rm -rf ./err/*
+
 for s1 in $(ls $PHOTOFOLDER | sort -R); do
     for s2 in $(ls $PHOTOFOLDER | sort -R); do
         { time ./client.run \
-            -source-img1=$s1 \
-            -source-img2=$s2 \
-            $OPTIONS > ./log/err$s1$s2.txt 2>&1; } 2> ./log/time$s1$s2.txt &
+            -source-img1=$PHOTOFOLDER/$s1 \
+            -source-img2=$PHOTOFOLDER/$s2 \
+            $OPTIONS >> ./err/err.txt 2>&1; } 2>> ./log/time.txt
     done
 done

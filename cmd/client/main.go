@@ -53,7 +53,7 @@ func main() {
 		plog.Fatalf(codes.IncorrectArgs, "passphrase or username not provided")
 	}
 
-	if *createUser == false && (len(*srcImg1) == 0 || len(*srcImg2) == 0) {
+	if *createUser == false && *deleteUser == false && *modifyUser == false && (len(*srcImg1) == 0 || len(*srcImg2) == 0) {
 		plog.Fatalf(codes.IncorrectArgs, "srcImg1 or srcImg2 path not provided")
 	}
 
@@ -252,8 +252,6 @@ func main() {
 					plog.Fatalf(codes.FileError, "error reading file: %v", err)
 				}
 
-				plog.Verbosef("sending data to server for file %v", i)
-
 				req := &pb.JobRequest{
 					Data: &pb.JobRequest_ChunkData{
 						ChunkData: &pb.Chunk{
@@ -309,8 +307,6 @@ func main() {
 		plog.Debugf("file extension recieved: %v", extension)
 
 		for {
-			plog.Verbosef("waiting to recieve more data for result file")
-
 			res, err = stream.Recv()
 			if err == io.EOF {
 				recievedFile = fileData.Bytes()
