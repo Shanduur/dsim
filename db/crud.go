@@ -83,7 +83,7 @@ func UploadFiles(ctx context.Context, data [][]byte, skipped []int32, fileInfo [
 	}
 
 	if ctx.Err() == context.Canceled {
-		return append(id, codes.UnknownID), &codes.SignalCanceled{}
+		return append(id, codes.UnknownID), codes.ErrSignalCanceled
 	}
 
 	err = tx.Commit(ctx)
@@ -164,7 +164,7 @@ func UploadResult(ctx context.Context, data [][]byte, skipped []int32, fileInfo 
 	}
 
 	if ctx.Err() == context.Canceled {
-		return append(id, codes.UnknownID), &codes.SignalCanceled{}
+		return append(id, codes.UnknownID), codes.ErrSignalCanceled
 	}
 
 	err = tx.Commit(ctx)
@@ -200,7 +200,7 @@ func CheckParents(ctx context.Context, parents []int64) (id int64, err error) {
 		return
 	}
 
-	err = conn.QueryRow(ctx, "SELECT blob_id FROM blobs WHERE parents = $1 LIMIT 1", parents).Scan(&id)
+	err = conn.QueryRow(ctx, "SELECT blob_id FROM blobs WHERE parents && $1 LIMIT 1", parents).Scan(&id)
 	if err != nil {
 		id = codes.UnknownID
 		err = fmt.Errorf("unable select blob_id with parents: %v", err)
@@ -226,7 +226,7 @@ func UserExists(ctx context.Context, user *pb.Credentials) error {
 	}
 
 	if count != 0 {
-		return &codes.RecordExists{}
+		return codes.ErrRecordExists
 	}
 
 	return nil
@@ -318,7 +318,7 @@ func CreateUser(ctx context.Context, user *pb.Credentials) error {
 	}
 
 	if ctx.Err() == context.Canceled {
-		return &codes.SignalCanceled{}
+		return codes.ErrSignalCanceled
 	}
 
 	err = tx.Commit(ctx)
@@ -363,7 +363,7 @@ func DeleteUser(ctx context.Context, user *pb.Credentials) error {
 	}
 
 	if ctx.Err() == context.Canceled {
-		return &codes.SignalCanceled{}
+		return codes.ErrSignalCanceled
 	}
 
 	err = tx.Commit(ctx)
@@ -408,7 +408,7 @@ func ModifyUser(ctx context.Context, user *pb.Credentials, oldUser *pb.Credentia
 	}
 
 	if ctx.Err() == context.Canceled {
-		return &codes.SignalCanceled{}
+		return codes.ErrSignalCanceled
 	}
 
 	err = tx.Commit(ctx)

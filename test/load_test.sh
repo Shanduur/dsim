@@ -17,9 +17,9 @@ rm -rf ./log/*
 
 for s1 in $(ls $PHOTOFOLDER | sort -R); do
     for s2 in $(ls $PHOTOFOLDER | sort -R); do
-        { time pluggabl client \
+        { time ./client.run \
             -source-img1=$s1 \
             -source-img2=$s2 \
-            $OPTIONS 2>&1; } 2> ./log/time$s1$s2.txt &
+            $OPTIONS > ./log/err$s1$s2.txt 2>&1; } 2> ./log/time$s1$s2.txt &
     done
 done

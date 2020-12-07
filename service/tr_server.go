@@ -47,7 +47,7 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 
 	err = db.Auth(ctx, user)
 	if err != nil {
-		if err.Error() == (&codes.NotAuthenticated{}).Error() {
+		if err.Error() == codes.ErrNotAuthenticated.Error() {
 			plog.Errorf("%v", err)
 
 			return
@@ -204,12 +204,11 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 
 		addr, port, err := db.GetFreeNode()
 
-		if err == (&codes.NoFreeNode{}) {
+		if err == codes.ErrNoFreeNode {
 			for {
 				plog.Messagef("job queued: %v", err)
 				addr, port, err = db.GetFreeNode()
-				if err != (&codes.NoFreeNode{}) {
-					err = nil
+				if err != (codes.ErrNoFreeNode) {
 					break
 				}
 			}

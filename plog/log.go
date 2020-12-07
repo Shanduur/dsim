@@ -200,7 +200,7 @@ func Fatalf(code int, format string, v ...interface{}) {
 // ContextStatus creates warning in logs when ctx recievs cancelation.
 func ContextStatus(ctx context.Context) {
 	if ctx.Err() == context.Canceled {
-		Warningf("%v", &codes.SignalCanceled{})
+		Warningf("%v", codes.ErrSignalCanceled)
 	}
 }
 

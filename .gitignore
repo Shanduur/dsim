@@ -21,3 +21,6 @@ tmp/
 **/tmp/
 *.tmp.*
 _*.sh
+
+test/out/
+test/log/
