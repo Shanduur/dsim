@@ -31,7 +31,7 @@ func (srv *UserManagementServer) CreateUser(ctx context.Context, req *pb.ActionU
 		// checking if user exists
 		err = db.UserExists(ctx, credentials)
 		if err != nil {
-			if err == (&codes.RecordExists{}) {
+			if err == (codes.ErrRecordExists) {
 				err = fmt.Errorf("user already exists: %v", err)
 			}
 

@@ -3,7 +3,7 @@
 
 # App scheme
 
-![scheme](./docs/plugabbl.png)
+![scheme](./docs/uml/deployment_uml.png)
 
 # Additional tools:
 
@@ -23,7 +23,6 @@ $ dnf install protobuf-compiler
 ```
 $ dnf --enablerepo=PowerTools install protobuf-compiler
 ```
-
 
 # Notes:
 

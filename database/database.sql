@@ -1,5 +1,7 @@
 -- Database definition for PostgreSQL
 
+CREATE DATABASE pluggable_db;
+
 CREATE TABLE users (
     user_id BIGSERIAL NOT NULL,
     user_name VARCHAR(32) NOT NULL,
@@ -23,7 +25,7 @@ CREATE TABLE blobs (
     blob_name VARCHAR(256),
     blob_checksum BYTEA NOT NULL,
     insertion_date DATE NOT NULL,
-    parents []INT,
+    parents INT[],
     active BOOLEAN DEFAULT TRUE,
     PRIMARY KEY(blob_id)
 );

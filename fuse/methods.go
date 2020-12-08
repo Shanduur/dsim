@@ -48,6 +48,8 @@ func Heartbeat(conf convo.Config) {
 					"fatal error while updating timestamp: %v", err)
 			}
 		} else {
+			plog.Debugf("heartbeat updated")
+
 			time.Sleep(50 * time.Second)
 			count = 1
 		}

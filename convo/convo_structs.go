@@ -37,19 +37,46 @@ type configJSON struct {
 	DbPasswd   string `json:"database-password"`
 }
 
+// SavedConfig holds the default config
+var SavedConfig Config
+
 func (cc *Config) jsonToConfig(cj configJSON) {
-	cc.GarbageCollectionTimeout = cj.GcTimeout
-	cc.MaxThreads = cj.MaxThreads
+	stringGCPercentage := os.Getenv("GC_PERCENTAGE")
+	gcPercentage, err := strconv.Atoi(stringGCPercentage)
+	if err != nil {
+		cc.GarbageCollectionTimeout = cj.GcTimeout
+	} else {
+		if cj.EPort <= 100 {
+			cc.GarbageCollectionTimeout = cj.GcTimeout
+		} else {
+			cc.GarbageCollectionTimeout = gcPercentage
+		}
+	}
+
+	stringThreads := os.Getenv("THREADS")
+	threads, err := strconv.Atoi(stringThreads)
+	if err != nil {
+		cc.MaxThreads = cj.MaxThreads
+	} else {
+		cc.MaxThreads = threads
+	}
+
 	cc.Type = cj.Type
 
-	cc.Address = net.ParseIP(cj.Addr)
+	extenralAddress := os.Getenv("EXTERNAL_IP")
+
+	if len(extenralAddress) > 7 {
+		cc.Address = net.ParseIP(extenralAddress)
+	} else {
+		cc.Address = net.ParseIP(cj.Addr)
+	}
+
 	cc.Port = cj.Port
 	cc.JobBinaryName = cj.Cmd
 
-	stringPort := os.Getenv("EXTERNAL")
+	stringPort := os.Getenv("EXTERNAL_PORT")
 
 	port, err := strconv.Atoi(stringPort)
-
 	if err != nil {
 		if cj.EPort == 0 {
 			cc.ExternalPort = cj.Port

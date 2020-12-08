@@ -20,6 +20,7 @@ func Auth(ctx context.Context, user *pb.Credentials) error {
 	if err != nil {
 		return fmt.Errorf("unable to connect to database: %v", err)
 	}
+	defer conn.Close(ctx)
 
 	err = conn.QueryRow(context.Background(), "SELECT user_key FROM users WHERE user_name = $1", user.UserId).Scan(&key)
 	if err != nil {
@@ -29,7 +30,7 @@ func Auth(ctx context.Context, user *pb.Credentials) error {
 	res := bytes.Compare(key, user.UserKey)
 
 	if res != 0 {
-		return &codes.NotAuthenticated{}
+		return codes.ErrNotAuthenticated
 	}
 
 	return nil

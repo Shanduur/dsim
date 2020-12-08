@@ -24,7 +24,11 @@ import (
 func main() {
 	configLocation := os.Getenv("CONFIG")
 	if len(configLocation) == 0 {
-		configLocation = "~/.config/pluggabl.d/config_client.json"
+		home, err := os.UserHomeDir()
+		if err != nil {
+			plog.Fatalf(codes.ConfError, "unable to dine home folder: %v", err)
+		}
+		configLocation = home + "/.config/pluggabl.d/config_client.json"
 		plog.Messagef("config env variable not set, current config location: %v", configLocation)
 	}
 
@@ -34,8 +38,8 @@ func main() {
 	login := flag.String("uname", "", "username")
 	passphrase := flag.String("pwd", "", "passphrase")
 	newPassphrase := flag.String("pwd-new", "", "new passphrase")
-	query := flag.String("query", "", "path to query file")
-	train := flag.String("train", "", "path to train file")
+	srcImg1 := flag.String("source-img1", "", "path to first source image file")
+	srcImg2 := flag.String("source-img2", "", "path to second source image file")
 	outFile := flag.String("o", "result", "path to output file, should not contain extension")
 
 	logDescription := fmt.Sprintf("log level with possible values:\n - Verbose: %v\n - Debug: %v\n - Info: %v"+
@@ -49,8 +53,8 @@ func main() {
 		plog.Fatalf(codes.IncorrectArgs, "passphrase or username not provided")
 	}
 
-	if *createUser == false && (len(*query) == 0 || len(*train) == 0) {
-		plog.Fatalf(codes.IncorrectArgs, "query or train path not provided")
+	if *createUser == false && *deleteUser == false && *modifyUser == false && (len(*srcImg1) == 0 || len(*srcImg2) == 0) {
+		plog.Fatalf(codes.IncorrectArgs, "srcImg1 or srcImg2 path not provided")
 	}
 
 	plog.SetLogLevel(*logLevel)
@@ -149,8 +153,12 @@ func main() {
 		var files []*os.File
 		var fileinfo []*pb.FileInfo
 
-		filenames = append(filenames, *query)
-		filenames = append(filenames, *train)
+		if len(*srcImg1) > 0 {
+			filenames = append(filenames, *srcImg1)
+		}
+		if len(*srcImg2) > 0 {
+			filenames = append(filenames, *srcImg2)
+		}
 
 		for i := 0; i < len(filenames); i++ {
 			f, err := os.Open(filenames[i])
@@ -244,8 +252,6 @@ func main() {
 					plog.Fatalf(codes.FileError, "error reading file: %v", err)
 				}
 
-				plog.Verbosef("sending data to server for file %v", i)
-
 				req := &pb.JobRequest{
 					Data: &pb.JobRequest_ChunkData{
 						ChunkData: &pb.Chunk{
@@ -301,8 +307,6 @@ func main() {
 		plog.Debugf("file extension recieved: %v", extension)
 
 		for {
-			plog.Verbosef("waiting to recieve more data for result file")
-
 			res, err = stream.Recv()
 			if err == io.EOF {
 				recievedFile = fileData.Bytes()

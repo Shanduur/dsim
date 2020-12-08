@@ -47,7 +47,7 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 
 	err = db.Auth(ctx, user)
 	if err != nil {
-		if err.Error() == (&codes.NotAuthenticated{}).Error() {
+		if err.Error() == codes.ErrNotAuthenticated.Error() {
 			plog.Errorf("%v", err)
 
 			return
@@ -115,8 +115,6 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 	currentFile := int32(0)
 
 	for {
-		plog.Verbosef("waiting to recieve more data from file number %v", currentFile)
-
 		req, err = stream.Recv()
 		if err == io.EOF {
 			tempStorage[currentFile] = make([]byte, len(fileData.Bytes()))
@@ -204,12 +202,11 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 
 		addr, port, err := db.GetFreeNode()
 
-		if err == (&codes.NoFreeNode{}) {
+		if err == codes.ErrNoFreeNode {
 			for {
 				plog.Messagef("job queued: %v", err)
 				addr, port, err = db.GetFreeNode()
-
-				if err != (&codes.NoFreeNode{}) {
+				if err != (codes.ErrNoFreeNode) {
 					break
 				}
 			}
@@ -371,8 +368,6 @@ func (srv *TransportServer) SubmitJob(stream pb.JobService_SubmitJobServer) (err
 			plog.Errorf("error submitting job: \n- %v\n- %v", err, err2)
 			return err
 		}
-
-		plog.Verbosef("sending result data to client")
 
 		jrsp = &pb.JobResponse{
 			Data: &pb.JobResponse_ChunkData{

@@ -3,12 +3,14 @@
 if [[ $1 == 'primary' ]]; then 
     shift
     echo "primary"
+    [[ -z $CONFIG ]] && export CONFIG=/etc/pluggabl/config_primary.json
     /opt/pluggabl/primary.run $@
     VALID="ok"
 
 elif [[ $1 == 'secondary' ]]; then
     shift
     echo "secondary"
+    [[ -z $CONFIG ]] && export CONFIG=/etc/pluggabl/config_secondary.json
     /opt/pluggabl/secondary.run $@
     VALID="ok"
 

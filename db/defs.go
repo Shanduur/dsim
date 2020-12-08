@@ -34,7 +34,3 @@ func connect() (*pgx.Conn, error) {
 
 	return pgx.Connect(context.Background(), url)
 }
-
-func close() {
-
-}
