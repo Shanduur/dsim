@@ -7,17 +7,18 @@ $options = "-o=.\out\$(Get-Date -Format "yyyyMMddHHmmss") -uname=user -pwd=passw
 $items = Get-ChildItem -name -Path $folder
 
 New-Item -ItemType Directory -Force -Path .\out\
+New-Item -ItemType Directory -Force -Path .\log\
 Get-ChildItem -Path .\out\ -Include *.* -File -Recurse | foreach { $_.Delete()}
 
 echo "" > time.txt
 
 $items | Sort-Object {Get-Random} | foreach {
-    $query = $_
+    $s1 = $_
     $items | Sort-Object {Get-Random} | foreach {
-        $train = $_
+        $s2 = $_
 
-        $time = Measure-Command -Expression {.\client.exe $query $train}
+        $time = Measure-Command -Expression {.\client.exe "-source-img1=$s1 -source-img2=$s2 $options"}
 
-        echo $time >> time.txt
+        echo $time >> .\log\time.txt
     }
 }

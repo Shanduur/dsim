@@ -27,23 +27,9 @@ func NewInternalJobServer() *InternalJobServer {
 func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJobRequest) (*pb.InternalJobResponse, error) {
 	var rsp *pb.InternalJobResponse
 
-	cfg, err := convo.LoadConfiguration("/etc/pluggabl/config.json")
-	if err != nil {
-		err = fmt.Errorf("unable to retrieve file: %v", err)
+	cfg := convo.SavedConfig
 
-		rsp = &pb.InternalJobResponse{
-			Response: &pb.Response{
-				ReturnMessage: err.Error(),
-				ReturnCode:    pb.Response_error,
-			},
-		}
-
-		plog.Errorf("%v", err)
-
-		return rsp, err
-	}
-
-	err = db.UpdateJobStatus(cfg, +1)
+	err := db.UpdateJobStatus(cfg, +1)
 	if err != nil {
 		err = fmt.Errorf("unable to update job status: %v", err)
 
@@ -82,7 +68,11 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 			return rsp, err
 		}
 
-		extension = ext
+		if ext == "unknown" {
+			extension = ".unn"
+		} else {
+			extension = ext
+		}
 
 		name = name + ext
 
@@ -110,10 +100,16 @@ func (srv *InternalJobServer) SubmitJob(ctx context.Context, req *pb.InternalJob
 
 	defer purgeFiles(filenames)
 
-	query := "-query=" + filenames[0]
-	train := "-train=" + filenames[1]
+	var argv []string
+	for _, f := range filenames {
+		arg := fmt.Sprintf("-img=%v", f)
 
-	job := exec.CommandContext(ctx, cfg.JobBinaryName, query, train, "-out="+outname)
+		argv = append(argv, arg)
+	}
+
+	argv = append(argv, "-out="+outname)
+
+	job := exec.CommandContext(ctx, cfg.JobBinaryName, argv...)
 
 	c := make(chan bool)
 

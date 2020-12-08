@@ -37,6 +37,9 @@ type configJSON struct {
 	DbPasswd   string `json:"database-password"`
 }
 
+// SavedConfig holds the default config
+var SavedConfig Config
+
 func (cc *Config) jsonToConfig(cj configJSON) {
 	stringGCPercentage := os.Getenv("GC_PERCENTAGE")
 	gcPercentage, err := strconv.Atoi(stringGCPercentage)
@@ -53,13 +56,9 @@ func (cc *Config) jsonToConfig(cj configJSON) {
 	stringThreads := os.Getenv("THREADS")
 	threads, err := strconv.Atoi(stringThreads)
 	if err != nil {
-		if cj.EPort == 0 {
-			cc.MaxThreads = cj.MaxThreads
-		} else {
-			cc.MaxThreads = threads
-		}
-	} else {
 		cc.MaxThreads = cj.MaxThreads
+	} else {
+		cc.MaxThreads = threads
 	}
 
 	cc.Type = cj.Type

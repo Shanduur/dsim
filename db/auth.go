@@ -30,7 +30,7 @@ func Auth(ctx context.Context, user *pb.Credentials) error {
 	res := bytes.Compare(key, user.UserKey)
 
 	if res != 0 {
-		return &codes.NotAuthenticated{}
+		return codes.ErrNotAuthenticated
 	}
 
 	return nil

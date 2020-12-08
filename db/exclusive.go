@@ -162,12 +162,12 @@ func GetFreeNode() (addr string, port int, err error) {
 	plog.Verbose(countActive)
 
 	if countActive == 0 {
-		err = &codes.NoActiveNode{}
+		err = codes.ErrNoActiveNode
 
 		plog.Verbose(err)
 
 		_, err2 := tx.Exec(context.Background(), "UPDATE nodes SET active = FALSE "+
-			"WHERE node_timeout < $1 AND active = false",
+			"WHERE node_timeout < $1 AND active = TRUE",
 			dt.Format("2006-01-02 15:04:05.070"))
 		if err2 != nil {
 			plog.Errorf("error while updating inactive nodes: %v", err2)
@@ -175,7 +175,7 @@ func GetFreeNode() (addr string, port int, err error) {
 
 		return
 	} else if countFree == 0 {
-		err = &codes.NoFreeNode{}
+		err = codes.ErrNoFreeNode
 		plog.Verbose(err)
 		return
 	}

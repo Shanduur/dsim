@@ -6,16 +6,16 @@ import (
 	"gocv.io/x/gocv"
 )
 
-// BestMatches takes two arguments being Query and Train
-// and holding paths to the images that have to be
+// BestMatches takes two arguments src1 and src2
+// holding paths to the images that have to be
 // processed during the SIFT detection and Brute
 // force matching. Function returns gocv.Mat holding
 // result of feature matching algorithm.
-func BestMatches(query string, train string) gocv.Mat {
+func BestMatches(src1 string, src2 string) gocv.Mat {
 
-	img1 := gocv.IMRead(query, gocv.IMReadGrayScale)
+	img1 := gocv.IMRead(src1, gocv.IMReadGrayScale)
 	defer img1.Close()
-	img2 := gocv.IMRead(train, gocv.IMReadGrayScale)
+	img2 := gocv.IMRead(src2, gocv.IMReadGrayScale)
 	defer img2.Close()
 
 	// creating new SIFT
