@@ -21,13 +21,6 @@ for s1 in $(ls $PHOTOFOLDER | sort -R); do
             -source-img1=$PHOTOFOLDER/$s1 \
             -source-img2=$PHOTOFOLDER/$s2 \
             -o=./out/$s1$s2 \
-<<<<<<< HEAD
             $OPTIONS >> ./err/err.txt 2>&1
-
-=======
-            $OPTIONS >> ./err/$PHOTOFOLDER/err.txt 2>&1; } 2>> ./log/$PHOTOFOLDER/time.txt
-
-        echo " --- " >> ./err/$PHOTOFOLDER/err.txt
->>>>>>> 6cbb6760bc12a9eca65b07727a198e030b12cd89
     done
 done
