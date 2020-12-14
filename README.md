@@ -26,4 +26,4 @@ $ dnf --enablerepo=PowerTools install protobuf-compiler
 
 # Notes:
 
-- SFIT is color dependent, and made to work mainly with grayscale images.
+- SIFT is color dependent, and made to work mainly with grayscale images.
