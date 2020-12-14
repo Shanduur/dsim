@@ -1,0 +1,3 @@
+mkdir: cannot create directory ‘./out/’: File exists
+45.43user 102.66system 1:05:48elapsed 3%CPU (0avgtext+0avgdata 26776maxresident)k
+1232inputs+0outputs (43major+379127minor)pagefaults 0swaps
