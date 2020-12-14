@@ -216,23 +216,29 @@ func UpdateJobStatus(conf convo.Config, value int) (err error) {
 
 	var count int
 
-	err = tx.QueryRow(context.Background(), "SELECT COUNT(*) FROM nodes WHERE node_ip = $1",
-		fmt.Sprintf("%v", conf.Address)).Scan(&count)
+	err = tx.QueryRow(context.Background(),
+		"SELECT COUNT(*) FROM nodes "+
+			"WHERE node_ip = $1 AND node_port = $2",
+		fmt.Sprintf("%v", conf.Address), conf.ExternalPort).Scan(&count)
 	if err != nil {
 		return fmt.Errorf("unable to count in table: %v", err)
 	}
 
 	dt := time.Now()
 	if count > 0 {
-		err = tx.QueryRow(context.Background(), "SELECT node_reg_jobs FROM nodes WHERE node_ip = $1",
-			fmt.Sprintf("%v", conf.Address)).Scan(&count)
+		err = tx.QueryRow(context.Background(),
+			"SELECT node_reg_jobs FROM nodes "+
+				"WHERE node_ip = $1 AND node_port = $2",
+			fmt.Sprintf("%v", conf.Address), conf.ExternalPort).Scan(&count)
 		if err != nil {
 			return fmt.Errorf("unable to get node_reg_jobs: %v", err)
 		}
 
 		_, err = tx.Exec(context.Background(),
-			"UPDATE nodes SET node_reg_jobs = $1, node_timeout = $2 WHERE node_ip = $3",
-			count+value, dt.Format("2006-01-02 15:04:05.070"), fmt.Sprintf("%v", conf.Address))
+			"UPDATE nodes SET node_reg_jobs = $1, node_timeout = $2 "+
+				"WHERE node_ip = $3 and node_port = $4",
+			count+value, dt.Format("2006-01-02 15:04:05.070"),
+			fmt.Sprintf("%v", conf.Address), conf.ExternalPort)
 		if err != nil {
 			return fmt.Errorf("unable to update node in table: %v", err)
 		}
