@@ -30,4 +30,4 @@ RUN cd /root && make install && rm -f /root/Makefile
 
 LABEL maintainer="mateusz.urbanek.98@gmail.com" \
     type="lib" \
-version="0.1.0-init"
+    version="1.0.0"

@@ -7,7 +7,6 @@ $options = "-o=.\out\$(Get-Date -Format "yyyyMMddHHmmss") -uname=user -pwd=passw
 $items = Get-ChildItem -name -Path $folder
 
 New-Item -ItemType Directory -Force -Path .\out\
-New-Item -ItemType Directory -Force -Path .\log\
 Get-ChildItem -Path .\out\ -Include *.* -File -Recurse | foreach { $_.Delete()}
 
 echo "" > time.txt
@@ -19,6 +18,6 @@ $items | Sort-Object {Get-Random} | foreach {
 
         $time = Measure-Command -Expression {.\client.exe "-source-img1=$s1 -source-img2=$s2 $options"}
 
-        echo $time >> .\log\time.txt
+        echo $time >> time.txt
     }
 }
