@@ -38,7 +38,9 @@ func LoadConfiguration(location string) (conf Config, err error) {
 		debug.SetGCPercent(conf.GarbageCollectionTimeout)
 	}
 
-	SavedConfig = conf
+	if conf.Type != "db" {
+		SavedConfig = conf
+	}
 
 	return
 }

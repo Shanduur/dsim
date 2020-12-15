@@ -1,5 +1,7 @@
 FROM ubuntu:latest
 
+RUN apt-get update -y && apt-get install tzdata -y
+
 EXPOSE 4004
 
 ENV CONFIG="/etc/pluggabl/config.json"
