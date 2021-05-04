@@ -5,13 +5,13 @@ import (
 	"crypto/sha256"
 	"time"
 
-	"github.com/Sheerley/pluggabl/plog"
+	"github.com/Sheerley/dsim/plog"
 	"github.com/jackc/pgx/v4"
 )
 
 func main() {
 
-	conn, err := pgx.Connect(context.Background(), "postgresql://100.86.110.14:5432/pluggable_db?user=admin&password=XRB9UWu^bm8E^2aV")
+	conn, err := pgx.Connect(context.Background(), "postgresql://100.86.110.14:5432/dsime_db?user=admin&password=XRB9UWu^bm8E^2aV")
 	if err != nil {
 		plog.Fatalf(1, "Unable to connect to database: %v", err)
 	}

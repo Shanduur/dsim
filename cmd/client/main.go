@@ -12,11 +12,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Sheerley/pluggabl/codes"
-	"github.com/Sheerley/pluggabl/convo"
-	"github.com/Sheerley/pluggabl/pb"
-	"github.com/Sheerley/pluggabl/plog"
-	"github.com/Sheerley/pluggabl/transfer"
+	"github.com/Sheerley/dsim/codes"
+	"github.com/Sheerley/dsim/convo"
+	"github.com/Sheerley/dsim/pb"
+	"github.com/Sheerley/dsim/plog"
+	"github.com/Sheerley/dsim/transfer"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"
 )
@@ -28,7 +28,7 @@ func main() {
 		if err != nil {
 			plog.Fatalf(codes.ConfError, "unable to dine home folder: %v", err)
 		}
-		configLocation = home + "/.config/pluggabl.d/config_client.json"
+		configLocation = home + "/.config/dsim.d/config_client.json"
 		plog.Messagef("config env variable not set, current config location: %v", configLocation)
 	}
 

@@ -1,6 +1,6 @@
 -- Database definition for PostgreSQL
 
-CREATE DATABASE pluggable_db;
+CREATE DATABASE dsime_db;
 
 CREATE TABLE users (
     user_id BIGSERIAL NOT NULL,

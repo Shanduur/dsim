@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Sheerley/pluggabl/plog"
+	"github.com/Sheerley/dsim/plog"
 
-	"github.com/Sheerley/pluggabl/codes"
+	"github.com/Sheerley/dsim/codes"
 
-	"github.com/Sheerley/pluggabl/convo"
+	"github.com/Sheerley/dsim/convo"
 )
 
 // RegisterNode is used in the start of server to register node inside database

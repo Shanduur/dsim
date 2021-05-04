@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 
-	"github.com/Sheerley/pluggabl/codes"
-	"github.com/Sheerley/pluggabl/compute"
-	"github.com/Sheerley/pluggabl/fuse"
-	"github.com/Sheerley/pluggabl/plog"
+	"github.com/Sheerley/dsim/codes"
+	"github.com/Sheerley/dsim/compute"
+	"github.com/Sheerley/dsim/fuse"
+	"github.com/Sheerley/dsim/plog"
 )
 
 var argv fuse.FlagsArray

@@ -7,12 +7,12 @@ import (
 	"os"
 	"sync"
 
-	"github.com/Sheerley/pluggabl/codes"
-	"github.com/Sheerley/pluggabl/convo"
-	"github.com/Sheerley/pluggabl/fuse"
-	"github.com/Sheerley/pluggabl/pb"
-	"github.com/Sheerley/pluggabl/plog"
-	"github.com/Sheerley/pluggabl/service"
+	"github.com/Sheerley/dsim/codes"
+	"github.com/Sheerley/dsim/convo"
+	"github.com/Sheerley/dsim/fuse"
+	"github.com/Sheerley/dsim/pb"
+	"github.com/Sheerley/dsim/plog"
+	"github.com/Sheerley/dsim/service"
 	"google.golang.org/grpc"
 )
 
@@ -23,7 +23,7 @@ func main() {
 
 	configLocation := os.Getenv("CONFIG")
 	if len(configLocation) == 0 {
-		configLocation = "/etc/pluggabl/config.json"
+		configLocation = "/etc/dsim/config.json"
 		plog.Warningf("config env variable not set, current config location: %v", configLocation)
 	}
 

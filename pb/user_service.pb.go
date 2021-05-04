@@ -244,23 +244,23 @@ func file_user_service_proto_rawDescGZIP() []byte {
 
 var file_user_service_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_user_service_proto_goTypes = []interface{}{
-	(*ActionUserRequest)(nil),  // 0: pluggable.transfer.ActionUserRequest
-	(*ModifyUserRequest)(nil),  // 1: pluggable.transfer.ModifyUserRequest
-	(*ActionUserResponse)(nil), // 2: pluggable.transfer.ActionUserResponse
-	(*Credentials)(nil),        // 3: pluggable.transfer.Credentials
-	(*Response)(nil),           // 4: pluggable.transfer.Response
+	(*ActionUserRequest)(nil),  // 0: dsime.transfer.ActionUserRequest
+	(*ModifyUserRequest)(nil),  // 1: dsime.transfer.ModifyUserRequest
+	(*ActionUserResponse)(nil), // 2: dsime.transfer.ActionUserResponse
+	(*Credentials)(nil),        // 3: dsime.transfer.Credentials
+	(*Response)(nil),           // 4: dsime.transfer.Response
 }
 var file_user_service_proto_depIdxs = []int32{
-	3, // 0: pluggable.transfer.ActionUserRequest.credentials:type_name -> pluggable.transfer.Credentials
-	3, // 1: pluggable.transfer.ModifyUserRequest.old_credentials:type_name -> pluggable.transfer.Credentials
-	3, // 2: pluggable.transfer.ModifyUserRequest.new_credentials:type_name -> pluggable.transfer.Credentials
-	4, // 3: pluggable.transfer.ActionUserResponse.response:type_name -> pluggable.transfer.Response
-	0, // 4: pluggable.transfer.UserService.CreateUser:input_type -> pluggable.transfer.ActionUserRequest
-	1, // 5: pluggable.transfer.UserService.ModifyUser:input_type -> pluggable.transfer.ModifyUserRequest
-	0, // 6: pluggable.transfer.UserService.DeleteUser:input_type -> pluggable.transfer.ActionUserRequest
-	2, // 7: pluggable.transfer.UserService.CreateUser:output_type -> pluggable.transfer.ActionUserResponse
-	2, // 8: pluggable.transfer.UserService.ModifyUser:output_type -> pluggable.transfer.ActionUserResponse
-	2, // 9: pluggable.transfer.UserService.DeleteUser:output_type -> pluggable.transfer.ActionUserResponse
+	3, // 0: dsime.transfer.ActionUserRequest.credentials:type_name -> dsime.transfer.Credentials
+	3, // 1: dsime.transfer.ModifyUserRequest.old_credentials:type_name -> dsime.transfer.Credentials
+	3, // 2: dsime.transfer.ModifyUserRequest.new_credentials:type_name -> dsime.transfer.Credentials
+	4, // 3: dsime.transfer.ActionUserResponse.response:type_name -> dsime.transfer.Response
+	0, // 4: dsime.transfer.UserService.CreateUser:input_type -> dsime.transfer.ActionUserRequest
+	1, // 5: dsime.transfer.UserService.ModifyUser:input_type -> dsime.transfer.ModifyUserRequest
+	0, // 6: dsime.transfer.UserService.DeleteUser:input_type -> dsime.transfer.ActionUserRequest
+	2, // 7: dsime.transfer.UserService.CreateUser:output_type -> dsime.transfer.ActionUserResponse
+	2, // 8: dsime.transfer.UserService.ModifyUser:output_type -> dsime.transfer.ActionUserResponse
+	2, // 9: dsime.transfer.UserService.DeleteUser:output_type -> dsime.transfer.ActionUserResponse
 	7, // [7:10] is the sub-list for method output_type
 	4, // [4:7] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
@@ -360,7 +360,7 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 
 func (c *userServiceClient) CreateUser(ctx context.Context, in *ActionUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error) {
 	out := new(ActionUserResponse)
-	err := c.cc.Invoke(ctx, "/pluggable.transfer.UserService/CreateUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dsime.transfer.UserService/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -369,7 +369,7 @@ func (c *userServiceClient) CreateUser(ctx context.Context, in *ActionUserReques
 
 func (c *userServiceClient) ModifyUser(ctx context.Context, in *ModifyUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error) {
 	out := new(ActionUserResponse)
-	err := c.cc.Invoke(ctx, "/pluggable.transfer.UserService/ModifyUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dsime.transfer.UserService/ModifyUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -378,7 +378,7 @@ func (c *userServiceClient) ModifyUser(ctx context.Context, in *ModifyUserReques
 
 func (c *userServiceClient) DeleteUser(ctx context.Context, in *ActionUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error) {
 	out := new(ActionUserResponse)
-	err := c.cc.Invoke(ctx, "/pluggable.transfer.UserService/DeleteUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dsime.transfer.UserService/DeleteUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -420,7 +420,7 @@ func _UserService_CreateUser_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pluggable.transfer.UserService/CreateUser",
+		FullMethod: "/dsime.transfer.UserService/CreateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).CreateUser(ctx, req.(*ActionUserRequest))
@@ -438,7 +438,7 @@ func _UserService_ModifyUser_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pluggable.transfer.UserService/ModifyUser",
+		FullMethod: "/dsime.transfer.UserService/ModifyUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).ModifyUser(ctx, req.(*ModifyUserRequest))
@@ -456,7 +456,7 @@ func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pluggable.transfer.UserService/DeleteUser",
+		FullMethod: "/dsime.transfer.UserService/DeleteUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).DeleteUser(ctx, req.(*ActionUserRequest))
@@ -465,7 +465,7 @@ func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 var _UserService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "pluggable.transfer.UserService",
+	ServiceName: "dsime.transfer.UserService",
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

@@ -3,7 +3,7 @@ package transfer
 import (
 	"crypto/sha512"
 
-	"github.com/Sheerley/pluggabl/pb"
+	"github.com/Sheerley/dsim/pb"
 )
 
 // NewDummyCredentials generates dummy Credentials struct

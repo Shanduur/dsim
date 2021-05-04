@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package pluggable.transfer;
+package dsime.transfer;
 
 option go_package = "./pb";
 

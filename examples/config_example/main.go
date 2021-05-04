@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/Sheerley/pluggabl/codes"
-	"github.com/Sheerley/pluggabl/convo"
-	"github.com/Sheerley/pluggabl/plog"
+	"github.com/Sheerley/dsim/codes"
+	"github.com/Sheerley/dsim/convo"
+	"github.com/Sheerley/dsim/plog"
 )
 
 func main() {

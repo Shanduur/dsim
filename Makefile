@@ -27,41 +27,41 @@ build_all: build
 	go build -o ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      ./cmd/exec 
 
 install:
-	[ ! -d /opt/pluggabl/ ] && sudo mkdir /opt/pluggabl/ || echo ok
+	[ ! -d /opt/dsim/ ] && sudo mkdir /opt/dsim/ || echo ok
 
-	sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/primary.run   /opt/pluggabl/primary.run
-	sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/client.run    /opt/pluggabl/client.run
+	sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/primary.run   /opt/dsim/primary.run
+	sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/client.run    /opt/dsim/client.run
 	[ -e ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run ] && \
-		sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run /opt/pluggabl/secondary.run || echo ok
+		sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run /opt/dsim/secondary.run || echo ok
 	[ -e ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run ] && \
-		sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      /opt/pluggabl/exec.run  || echo ok
+		sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      /opt/dsim/exec.run  || echo ok
 
-	sudo cp ./scripts/pluggabl.sh      /opt/pluggabl/pluggabl.sh
+	sudo cp ./scripts/dsim.sh      /opt/dsim/dsim.sh
 
-	sudo ln -sf /opt/pluggabl/pluggabl.sh /usr/bin/pluggabl
+	sudo ln -sf /opt/dsim/dsim.sh /usr/bin/dsim
 	
-	sudo chmod +x /opt/pluggabl/*
+	sudo chmod +x /opt/dsim/*
 
-	[ ! -d /etc/pluggabl/ ] && sudo mkdir /etc/pluggabl/ || echo ok
-	sudo cp ./config/config_primary.json /etc/pluggabl/
-	sudo cp ./config/config_secondary.json /etc/pluggabl/
-	sudo cp ./config/config_db.json /etc/pluggabl/
+	[ ! -d /etc/dsim/ ] && sudo mkdir /etc/dsim/ || echo ok
+	sudo cp ./config/config_primary.json /etc/dsim/
+	sudo cp ./config/config_secondary.json /etc/dsim/
+	sudo cp ./config/config_db.json /etc/dsim/
 
 	[ ! -d ~/.config/ ] && sudo mkdir ~/.config/ || echo ok
-	[ ! -d ~/.config/pluggabl.d/ ] && sudo mkdir ~/.config/pluggabl.d/ || echo ok
-	sudo cp ./config/config_client.json ~/.config/pluggabl.d/
+	[ ! -d ~/.config/dsim.d/ ] && sudo mkdir ~/.config/dsim.d/ || echo ok
+	sudo cp ./config/config_client.json ~/.config/dsim.d/
 
 test:
 	go test -cover -race ./...
 	
 docker: build_all
-	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/primary.run   ./docker/primary/files/pluggabl/server.run
-	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run ./docker/secondary/files/pluggabl/server.run
-	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      ./docker/secondary/files/pluggabl/exec.run
+	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/primary.run   ./docker/primary/files/dsim/server.run
+	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run ./docker/secondary/files/dsim/server.run
+	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      ./docker/secondary/files/dsim/exec.run
 	cd docker && $(MAKE) all
 
 build_multiarch:
-	echo "This supports only 64-bit architectures. Also you are not building pluggabl/exec." ; \
+	echo "This supports only 64-bit architectures. Also you are not building dsim/exec." ; \
 	for i in 0 ; do \
 		for os in windows ; do \
 			for arch in amd64 ; do \

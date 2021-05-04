@@ -4,14 +4,14 @@ RUN apt-get update -y && apt-get install tzdata -y
 
 EXPOSE 4004
 
-ENV CONFIG="/etc/pluggabl/config.json"
+ENV CONFIG="/etc/dsim/config.json"
 ENV PG_DATABASE=
 
 COPY ./files/ /
-RUN chmod -R 777 /etc/pluggabl
+RUN chmod -R 777 /etc/dsim
 
 LABEL maintainer="mateusz.urbanek.98@gmail.com" \
     type="primary-node" \
     version="1.0.2"
 
-CMD [ "/pluggabl/server.run" ]
+CMD [ "/dsim/server.run" ]

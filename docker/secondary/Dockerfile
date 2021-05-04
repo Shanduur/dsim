@@ -1,8 +1,8 @@
-FROM shanduur/pluggabl-lib:latest
+FROM shanduur/dsim-lib:latest
 
 EXPOSE 4004
 
-ENV CONFIG="/etc/pluggabl/config.json"
+ENV CONFIG="/etc/dsim/config.json"
 ENV PG_DATABASE=
 
 COPY ./files/ /
@@ -11,4 +11,4 @@ LABEL maintainer="mateusz.urbanek.98@gmail.com" \
     type="secondary-node" \
     version="1.0.4"
 
-CMD [ "/pluggabl/server.run" ]
+CMD [ "/dsim/server.run" ]

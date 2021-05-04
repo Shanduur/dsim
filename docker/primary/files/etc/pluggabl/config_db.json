@@ -2,7 +2,7 @@
     "type": "db",
     "address": "192.168.1.232",
     "port": 5432,
-    "database-name": "pluggable_db",
+    "database-name": "dsime_db",
     "database-username": "admin",
     "database-password": "XRB9UWu^bm8E^2aV"
 }

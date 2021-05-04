@@ -7,10 +7,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Sheerley/pluggabl/codes"
-	"github.com/Sheerley/pluggabl/convo"
-	"github.com/Sheerley/pluggabl/db"
-	"github.com/Sheerley/pluggabl/plog"
+	"github.com/Sheerley/dsim/codes"
+	"github.com/Sheerley/dsim/convo"
+	"github.com/Sheerley/dsim/db"
+	"github.com/Sheerley/dsim/plog"
 )
 
 // Watchdog is used in servers main function to handle interrupt signal

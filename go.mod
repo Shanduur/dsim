@@ -1,4 +1,4 @@
-module github.com/Sheerley/pluggabl
+module github.com/Sheerley/dsim
 
 go 1.15
 
