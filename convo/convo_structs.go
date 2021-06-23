@@ -6,11 +6,11 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/Sheerley/dsim/plog"
+	"github.com/Sheerley/dsip/plog"
 )
 
 // Config struct holds all the informations necessary to configure
-// dsim apps (client, PrimaryNode and SecondaryNode)
+// dsip apps (client, PrimaryNode and SecondaryNode)
 type Config struct {
 	Type                     string
 	Address                  net.IP
@@ -99,7 +99,7 @@ func (cc *Config) jsonToConfig(cj configJSON) {
 
 // Tell is used to create splash info about node
 func (cc Config) Tell() (s string) {
-	s = fmt.Sprintf("\tWelcome to dsim!\n"+
+	s = fmt.Sprintf("\tWelcome to dsip!\n"+
 		"\tThis server runs as %v node.\n"+
 		"\tYou can acces it at %v:%v.\n",
 		cc.Type, cc.Address, cc.ExternalPort)

@@ -1,4 +1,4 @@
-module github.com/Sheerley/dsim
+module github.com/Sheerley/dsip
 
 go 1.15
 

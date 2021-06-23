@@ -244,23 +244,23 @@ func file_user_service_proto_rawDescGZIP() []byte {
 
 var file_user_service_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_user_service_proto_goTypes = []interface{}{
-	(*ActionUserRequest)(nil),  // 0: dsime.transfer.ActionUserRequest
-	(*ModifyUserRequest)(nil),  // 1: dsime.transfer.ModifyUserRequest
-	(*ActionUserResponse)(nil), // 2: dsime.transfer.ActionUserResponse
-	(*Credentials)(nil),        // 3: dsime.transfer.Credentials
-	(*Response)(nil),           // 4: dsime.transfer.Response
+	(*ActionUserRequest)(nil),  // 0: dsipe.transfer.ActionUserRequest
+	(*ModifyUserRequest)(nil),  // 1: dsipe.transfer.ModifyUserRequest
+	(*ActionUserResponse)(nil), // 2: dsipe.transfer.ActionUserResponse
+	(*Credentials)(nil),        // 3: dsipe.transfer.Credentials
+	(*Response)(nil),           // 4: dsipe.transfer.Response
 }
 var file_user_service_proto_depIdxs = []int32{
-	3, // 0: dsime.transfer.ActionUserRequest.credentials:type_name -> dsime.transfer.Credentials
-	3, // 1: dsime.transfer.ModifyUserRequest.old_credentials:type_name -> dsime.transfer.Credentials
-	3, // 2: dsime.transfer.ModifyUserRequest.new_credentials:type_name -> dsime.transfer.Credentials
-	4, // 3: dsime.transfer.ActionUserResponse.response:type_name -> dsime.transfer.Response
-	0, // 4: dsime.transfer.UserService.CreateUser:input_type -> dsime.transfer.ActionUserRequest
-	1, // 5: dsime.transfer.UserService.ModifyUser:input_type -> dsime.transfer.ModifyUserRequest
-	0, // 6: dsime.transfer.UserService.DeleteUser:input_type -> dsime.transfer.ActionUserRequest
-	2, // 7: dsime.transfer.UserService.CreateUser:output_type -> dsime.transfer.ActionUserResponse
-	2, // 8: dsime.transfer.UserService.ModifyUser:output_type -> dsime.transfer.ActionUserResponse
-	2, // 9: dsime.transfer.UserService.DeleteUser:output_type -> dsime.transfer.ActionUserResponse
+	3, // 0: dsipe.transfer.ActionUserRequest.credentials:type_name -> dsipe.transfer.Credentials
+	3, // 1: dsipe.transfer.ModifyUserRequest.old_credentials:type_name -> dsipe.transfer.Credentials
+	3, // 2: dsipe.transfer.ModifyUserRequest.new_credentials:type_name -> dsipe.transfer.Credentials
+	4, // 3: dsipe.transfer.ActionUserResponse.response:type_name -> dsipe.transfer.Response
+	0, // 4: dsipe.transfer.UserService.CreateUser:input_type -> dsipe.transfer.ActionUserRequest
+	1, // 5: dsipe.transfer.UserService.ModifyUser:input_type -> dsipe.transfer.ModifyUserRequest
+	0, // 6: dsipe.transfer.UserService.DeleteUser:input_type -> dsipe.transfer.ActionUserRequest
+	2, // 7: dsipe.transfer.UserService.CreateUser:output_type -> dsipe.transfer.ActionUserResponse
+	2, // 8: dsipe.transfer.UserService.ModifyUser:output_type -> dsipe.transfer.ActionUserResponse
+	2, // 9: dsipe.transfer.UserService.DeleteUser:output_type -> dsipe.transfer.ActionUserResponse
 	7, // [7:10] is the sub-list for method output_type
 	4, // [4:7] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
@@ -360,7 +360,7 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 
 func (c *userServiceClient) CreateUser(ctx context.Context, in *ActionUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error) {
 	out := new(ActionUserResponse)
-	err := c.cc.Invoke(ctx, "/dsime.transfer.UserService/CreateUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dsipe.transfer.UserService/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -369,7 +369,7 @@ func (c *userServiceClient) CreateUser(ctx context.Context, in *ActionUserReques
 
 func (c *userServiceClient) ModifyUser(ctx context.Context, in *ModifyUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error) {
 	out := new(ActionUserResponse)
-	err := c.cc.Invoke(ctx, "/dsime.transfer.UserService/ModifyUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dsipe.transfer.UserService/ModifyUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -378,7 +378,7 @@ func (c *userServiceClient) ModifyUser(ctx context.Context, in *ModifyUserReques
 
 func (c *userServiceClient) DeleteUser(ctx context.Context, in *ActionUserRequest, opts ...grpc.CallOption) (*ActionUserResponse, error) {
 	out := new(ActionUserResponse)
-	err := c.cc.Invoke(ctx, "/dsime.transfer.UserService/DeleteUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dsipe.transfer.UserService/DeleteUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -420,7 +420,7 @@ func _UserService_CreateUser_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dsime.transfer.UserService/CreateUser",
+		FullMethod: "/dsipe.transfer.UserService/CreateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).CreateUser(ctx, req.(*ActionUserRequest))
@@ -438,7 +438,7 @@ func _UserService_ModifyUser_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dsime.transfer.UserService/ModifyUser",
+		FullMethod: "/dsipe.transfer.UserService/ModifyUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).ModifyUser(ctx, req.(*ModifyUserRequest))
@@ -456,7 +456,7 @@ func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dsime.transfer.UserService/DeleteUser",
+		FullMethod: "/dsipe.transfer.UserService/DeleteUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).DeleteUser(ctx, req.(*ActionUserRequest))
@@ -465,7 +465,7 @@ func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 var _UserService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "dsime.transfer.UserService",
+	ServiceName: "dsipe.transfer.UserService",
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

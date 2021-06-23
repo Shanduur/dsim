@@ -8,10 +8,10 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/Sheerley/dsim/convo"
-	"github.com/Sheerley/dsim/db"
-	"github.com/Sheerley/dsim/pb"
-	"github.com/Sheerley/dsim/plog"
+	"github.com/Sheerley/dsip/convo"
+	"github.com/Sheerley/dsip/db"
+	"github.com/Sheerley/dsip/pb"
+	"github.com/Sheerley/dsip/plog"
 	"github.com/google/uuid"
 )
 

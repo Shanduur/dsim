@@ -82,7 +82,7 @@ type Response struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ReturnCode    Response_ReturnCode `protobuf:"varint,1,opt,name=return_code,json=returnCode,proto3,enum=dsime.transfer.Response_ReturnCode" json:"return_code,omitempty"`
+	ReturnCode    Response_ReturnCode `protobuf:"varint,1,opt,name=return_code,json=returnCode,proto3,enum=dsipe.transfer.Response_ReturnCode" json:"return_code,omitempty"`
 	ReturnMessage string              `protobuf:"bytes,2,opt,name=return_message,json=returnMessage,proto3" json:"return_message,omitempty"`
 	Context       []int32             `protobuf:"varint,3,rep,packed,name=context,proto3" json:"context,omitempty"`
 }
@@ -177,11 +177,11 @@ func file_response_message_proto_rawDescGZIP() []byte {
 var file_response_message_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_response_message_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_response_message_proto_goTypes = []interface{}{
-	(Response_ReturnCode)(0), // 0: dsime.transfer.Response.ReturnCode
-	(*Response)(nil),         // 1: dsime.transfer.Response
+	(Response_ReturnCode)(0), // 0: dsipe.transfer.Response.ReturnCode
+	(*Response)(nil),         // 1: dsipe.transfer.Response
 }
 var file_response_message_proto_depIdxs = []int32{
-	0, // 0: dsime.transfer.Response.return_code:type_name -> dsime.transfer.Response.ReturnCode
+	0, // 0: dsipe.transfer.Response.return_code:type_name -> dsipe.transfer.Response.ReturnCode
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

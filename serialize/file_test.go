@@ -3,10 +3,10 @@ package serialize
 import (
 	"testing"
 
-	"github.com/Sheerley/dsim/pb"
+	"github.com/Sheerley/dsip/pb"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/Sheerley/dsim/transfer"
+	"github.com/Sheerley/dsip/transfer"
 )
 
 func TestProtoAndBinaryFile(t *testing.T) {

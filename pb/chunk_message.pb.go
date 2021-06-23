@@ -107,7 +107,7 @@ func file_chunk_message_proto_rawDescGZIP() []byte {
 
 var file_chunk_message_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_chunk_message_proto_goTypes = []interface{}{
-	(*Chunk)(nil), // 0: dsime.transfer.Chunk
+	(*Chunk)(nil), // 0: dsipe.transfer.Chunk
 }
 var file_chunk_message_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"github.com/Sheerley/dsim/plog"
+	"github.com/Sheerley/dsip/plog"
 )
 
 func main() {

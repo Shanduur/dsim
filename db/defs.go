@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Sheerley/dsim/codes"
-	"github.com/Sheerley/dsim/convo"
-	"github.com/Sheerley/dsim/plog"
+	"github.com/Sheerley/dsip/codes"
+	"github.com/Sheerley/dsip/convo"
+	"github.com/Sheerley/dsip/plog"
 
 	"github.com/jackc/pgx/v4"
 )
@@ -23,7 +23,7 @@ func connect() (*pgx.Conn, error) {
 	if len(url) < len(dbURL) {
 		plog.Messagef("env var PG_DATABASE is not valid, attempting to load config file")
 
-		conf, err := convo.LoadConfiguration("/etc/dsim/config_db.json")
+		conf, err := convo.LoadConfiguration("/etc/dsip/config_db.json")
 		if err != nil {
 			plog.Fatalf(codes.ConfError, "error while loading db configuration: %v", err)
 		} else {

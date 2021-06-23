@@ -174,14 +174,14 @@ func file_job_message_proto_rawDescGZIP() []byte {
 
 var file_job_message_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_job_message_proto_goTypes = []interface{}{
-	(*Job)(nil),         // 0: dsime.transfer.Job
-	(*InternalJob)(nil), // 1: dsime.transfer.InternalJob
-	(*Credentials)(nil), // 2: dsime.transfer.Credentials
-	(*FileInfo)(nil),    // 3: dsime.transfer.FileInfo
+	(*Job)(nil),         // 0: dsipe.transfer.Job
+	(*InternalJob)(nil), // 1: dsipe.transfer.InternalJob
+	(*Credentials)(nil), // 2: dsipe.transfer.Credentials
+	(*FileInfo)(nil),    // 3: dsipe.transfer.FileInfo
 }
 var file_job_message_proto_depIdxs = []int32{
-	2, // 0: dsime.transfer.Job.user:type_name -> dsime.transfer.Credentials
-	3, // 1: dsime.transfer.Job.file_information:type_name -> dsime.transfer.FileInfo
+	2, // 0: dsipe.transfer.Job.user:type_name -> dsipe.transfer.Credentials
+	3, // 1: dsipe.transfer.Job.file_information:type_name -> dsipe.transfer.FileInfo
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

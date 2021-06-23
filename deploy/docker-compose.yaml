@@ -2,21 +2,21 @@ version: 2.4
 
 services:
   primary:
-    image: shanduur/dsim-primary
+    image: shanduur/dsip-primary
     restart: unless-stopped
     environment:
       - TZ=Europe/Warsaw
-      - PG_DATABASE=postgresql://192.168.1.232:5432/dsime_db?user=admin&password=XRB9UWu^bm8E^2aV
+      - PG_DATABASE=postgresql://192.168.1.232:5432/dsipe_db?user=admin&password=XRB9UWu^bm8E^2aV
       - LOG_LEVEL=debug
     ports:
       - '4004:4004'
 
   secondary_0:
-    image: shanduur/dsim-secondary
+    image: shanduur/dsip-secondary
     restart: unless-stopped
     environment:
       - TZ=Europe/Warsaw
-      - PG_DATABASE=postgresql://192.168.1.232:5432/dsime_db?user=admin&password=XRB9UWu^bm8E^2aV
+      - PG_DATABASE=postgresql://192.168.1.232:5432/dsipe_db?user=admin&password=XRB9UWu^bm8E^2aV
       - EXTERNAL_PORT=4010
       - EXTERNAL_IP=192.168.1.109
       - LOG_LEVEL=debug
@@ -24,11 +24,11 @@ services:
       - '4010:4004'
 
   secondary_1:
-    image: shanduur/dsim-secondary
+    image: shanduur/dsip-secondary
     restart: unless-stopped
     environment:
       - TZ=Europe/Warsaw
-      - PG_DATABASE=postgresql://192.168.1.232:5432/dsime_db?user=admin&password=XRB9UWu^bm8E^2aV
+      - PG_DATABASE=postgresql://192.168.1.232:5432/dsipe_db?user=admin&password=XRB9UWu^bm8E^2aV
       - EXTERNAL_PORT=4011
       - EXTERNAL_IP=192.168.1.109
       - LOG_LEVEL=debug
@@ -36,11 +36,11 @@ services:
       - '4011:4004'
 
   secondary_2:
-    image: shanduur/dsim-secondary
+    image: shanduur/dsip-secondary
     restart: unless-stopped
     environment:
       - TZ=Europe/Warsaw
-      - PG_DATABASE=postgresql://192.168.1.232:5432/dsime_db?user=admin&password=XRB9UWu^bm8E^2aV
+      - PG_DATABASE=postgresql://192.168.1.232:5432/dsipe_db?user=admin&password=XRB9UWu^bm8E^2aV
       - EXTERNAL_PORT=4012
       - EXTERNAL_IP=192.168.1.109
       - LOG_LEVEL=debug
@@ -48,11 +48,11 @@ services:
       - '4012:4004'
   
   secondary_3:
-    image: shanduur/dsim-secondary
+    image: shanduur/dsip-secondary
     restart: unless-stopped
     environment:
       - TZ=Europe/Warsaw
-      - PG_DATABASE=postgresql://192.168.1.232:5432/dsime_db?user=admin&password=XRB9UWu^bm8E^2aV
+      - PG_DATABASE=postgresql://192.168.1.232:5432/dsipe_db?user=admin&password=XRB9UWu^bm8E^2aV
       - EXTERNAL_PORT=4013
       - EXTERNAL_IP=192.168.1.109
       - LOG_LEVEL=debug

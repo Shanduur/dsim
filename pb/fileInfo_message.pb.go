@@ -108,7 +108,7 @@ func file_fileInfo_message_proto_rawDescGZIP() []byte {
 
 var file_fileInfo_message_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_fileInfo_message_proto_goTypes = []interface{}{
-	(*FileInfo)(nil), // 0: dsime.transfer.FileInfo
+	(*FileInfo)(nil), // 0: dsipe.transfer.FileInfo
 }
 var file_fileInfo_message_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

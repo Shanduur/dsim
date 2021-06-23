@@ -108,7 +108,7 @@ func file_credentials_message_proto_rawDescGZIP() []byte {
 
 var file_credentials_message_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_credentials_message_proto_goTypes = []interface{}{
-	(*Credentials)(nil), // 0: dsime.transfer.Credentials
+	(*Credentials)(nil), // 0: dsipe.transfer.Credentials
 }
 var file_credentials_message_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

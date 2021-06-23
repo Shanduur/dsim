@@ -379,28 +379,28 @@ func file_job_service_proto_rawDescGZIP() []byte {
 
 var file_job_service_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_job_service_proto_goTypes = []interface{}{
-	(*JobRequest)(nil),          // 0: dsime.transfer.JobRequest
-	(*InternalJobRequest)(nil),  // 1: dsime.transfer.InternalJobRequest
-	(*JobResponse)(nil),         // 2: dsime.transfer.JobResponse
-	(*InternalJobResponse)(nil), // 3: dsime.transfer.InternalJobResponse
-	(*Job)(nil),                 // 4: dsime.transfer.Job
-	(*Chunk)(nil),               // 5: dsime.transfer.Chunk
-	(*InternalJob)(nil),         // 6: dsime.transfer.InternalJob
-	(*FileInfo)(nil),            // 7: dsime.transfer.FileInfo
-	(*Response)(nil),            // 8: dsime.transfer.Response
+	(*JobRequest)(nil),          // 0: dsipe.transfer.JobRequest
+	(*InternalJobRequest)(nil),  // 1: dsipe.transfer.InternalJobRequest
+	(*JobResponse)(nil),         // 2: dsipe.transfer.JobResponse
+	(*InternalJobResponse)(nil), // 3: dsipe.transfer.InternalJobResponse
+	(*Job)(nil),                 // 4: dsipe.transfer.Job
+	(*Chunk)(nil),               // 5: dsipe.transfer.Chunk
+	(*InternalJob)(nil),         // 6: dsipe.transfer.InternalJob
+	(*FileInfo)(nil),            // 7: dsipe.transfer.FileInfo
+	(*Response)(nil),            // 8: dsipe.transfer.Response
 }
 var file_job_service_proto_depIdxs = []int32{
-	4, // 0: dsime.transfer.JobRequest.job:type_name -> dsime.transfer.Job
-	5, // 1: dsime.transfer.JobRequest.chunk_data:type_name -> dsime.transfer.Chunk
-	6, // 2: dsime.transfer.InternalJobRequest.job:type_name -> dsime.transfer.InternalJob
-	7, // 3: dsime.transfer.JobResponse.file_info:type_name -> dsime.transfer.FileInfo
-	8, // 4: dsime.transfer.JobResponse.response:type_name -> dsime.transfer.Response
-	5, // 5: dsime.transfer.JobResponse.chunk_data:type_name -> dsime.transfer.Chunk
-	8, // 6: dsime.transfer.InternalJobResponse.response:type_name -> dsime.transfer.Response
-	0, // 7: dsime.transfer.JobService.SubmitJob:input_type -> dsime.transfer.JobRequest
-	1, // 8: dsime.transfer.InternalJobService.SubmitJob:input_type -> dsime.transfer.InternalJobRequest
-	2, // 9: dsime.transfer.JobService.SubmitJob:output_type -> dsime.transfer.JobResponse
-	3, // 10: dsime.transfer.InternalJobService.SubmitJob:output_type -> dsime.transfer.InternalJobResponse
+	4, // 0: dsipe.transfer.JobRequest.job:type_name -> dsipe.transfer.Job
+	5, // 1: dsipe.transfer.JobRequest.chunk_data:type_name -> dsipe.transfer.Chunk
+	6, // 2: dsipe.transfer.InternalJobRequest.job:type_name -> dsipe.transfer.InternalJob
+	7, // 3: dsipe.transfer.JobResponse.file_info:type_name -> dsipe.transfer.FileInfo
+	8, // 4: dsipe.transfer.JobResponse.response:type_name -> dsipe.transfer.Response
+	5, // 5: dsipe.transfer.JobResponse.chunk_data:type_name -> dsipe.transfer.Chunk
+	8, // 6: dsipe.transfer.InternalJobResponse.response:type_name -> dsipe.transfer.Response
+	0, // 7: dsipe.transfer.JobService.SubmitJob:input_type -> dsipe.transfer.JobRequest
+	1, // 8: dsipe.transfer.InternalJobService.SubmitJob:input_type -> dsipe.transfer.InternalJobRequest
+	2, // 9: dsipe.transfer.JobService.SubmitJob:output_type -> dsipe.transfer.JobResponse
+	3, // 10: dsipe.transfer.InternalJobService.SubmitJob:output_type -> dsipe.transfer.InternalJobResponse
 	9, // [9:11] is the sub-list for method output_type
 	7, // [7:9] is the sub-list for method input_type
 	7, // [7:7] is the sub-list for extension type_name
@@ -520,7 +520,7 @@ func NewJobServiceClient(cc grpc.ClientConnInterface) JobServiceClient {
 }
 
 func (c *jobServiceClient) SubmitJob(ctx context.Context, opts ...grpc.CallOption) (JobService_SubmitJobClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_JobService_serviceDesc.Streams[0], "/dsime.transfer.JobService/SubmitJob", opts...)
+	stream, err := c.cc.NewStream(ctx, &_JobService_serviceDesc.Streams[0], "/dsipe.transfer.JobService/SubmitJob", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -594,7 +594,7 @@ func (x *jobServiceSubmitJobServer) Recv() (*JobRequest, error) {
 }
 
 var _JobService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "dsime.transfer.JobService",
+	ServiceName: "dsipe.transfer.JobService",
 	HandlerType: (*JobServiceServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
@@ -625,7 +625,7 @@ func NewInternalJobServiceClient(cc grpc.ClientConnInterface) InternalJobService
 
 func (c *internalJobServiceClient) SubmitJob(ctx context.Context, in *InternalJobRequest, opts ...grpc.CallOption) (*InternalJobResponse, error) {
 	out := new(InternalJobResponse)
-	err := c.cc.Invoke(ctx, "/dsime.transfer.InternalJobService/SubmitJob", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dsipe.transfer.InternalJobService/SubmitJob", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -659,7 +659,7 @@ func _InternalJobService_SubmitJob_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dsime.transfer.InternalJobService/SubmitJob",
+		FullMethod: "/dsipe.transfer.InternalJobService/SubmitJob",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InternalJobServiceServer).SubmitJob(ctx, req.(*InternalJobRequest))
@@ -668,7 +668,7 @@ func _InternalJobService_SubmitJob_Handler(srv interface{}, ctx context.Context,
 }
 
 var _InternalJobService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "dsime.transfer.InternalJobService",
+	ServiceName: "dsipe.transfer.InternalJobService",
 	HandlerType: (*InternalJobServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

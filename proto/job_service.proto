@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package dsime.transfer;
+package dsipe.transfer;
 
 option go_package = "./pb";
 

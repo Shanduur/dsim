@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Sheerley/dsim/codes"
-	"github.com/Sheerley/dsim/convo"
-	"github.com/Sheerley/dsim/pb"
-	"github.com/Sheerley/dsim/plog"
+	"github.com/Sheerley/dsip/codes"
+	"github.com/Sheerley/dsip/convo"
+	"github.com/Sheerley/dsip/pb"
+	"github.com/Sheerley/dsip/plog"
 	"github.com/google/uuid"
 )
 

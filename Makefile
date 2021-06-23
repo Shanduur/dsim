@@ -27,41 +27,41 @@ build_all: build
 	go build -o ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      ./cmd/exec 
 
 install:
-	[ ! -d /opt/dsim/ ] && sudo mkdir /opt/dsim/ || echo ok
+	[ ! -d /opt/dsip/ ] && sudo mkdir /opt/dsip/ || echo ok
 
-	sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/primary.run   /opt/dsim/primary.run
-	sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/client.run    /opt/dsim/client.run
+	sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/primary.run   /opt/dsip/primary.run
+	sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/client.run    /opt/dsip/client.run
 	[ -e ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run ] && \
-		sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run /opt/dsim/secondary.run || echo ok
+		sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run /opt/dsip/secondary.run || echo ok
 	[ -e ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run ] && \
-		sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      /opt/dsim/exec.run  || echo ok
+		sudo cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      /opt/dsip/exec.run  || echo ok
 
-	sudo cp ./scripts/dsim.sh      /opt/dsim/dsim.sh
+	sudo cp ./scripts/dsip.sh      /opt/dsip/dsip.sh
 
-	sudo ln -sf /opt/dsim/dsim.sh /usr/bin/dsim
+	sudo ln -sf /opt/dsip/dsip.sh /usr/bin/dsip
 	
-	sudo chmod +x /opt/dsim/*
+	sudo chmod +x /opt/dsip/*
 
-	[ ! -d /etc/dsim/ ] && sudo mkdir /etc/dsim/ || echo ok
-	sudo cp ./config/config_primary.json /etc/dsim/
-	sudo cp ./config/config_secondary.json /etc/dsim/
-	sudo cp ./config/config_db.json /etc/dsim/
+	[ ! -d /etc/dsip/ ] && sudo mkdir /etc/dsip/ || echo ok
+	sudo cp ./config/config_primary.json /etc/dsip/
+	sudo cp ./config/config_secondary.json /etc/dsip/
+	sudo cp ./config/config_db.json /etc/dsip/
 
 	[ ! -d ~/.config/ ] && sudo mkdir ~/.config/ || echo ok
-	[ ! -d ~/.config/dsim.d/ ] && sudo mkdir ~/.config/dsim.d/ || echo ok
-	sudo cp ./config/config_client.json ~/.config/dsim.d/
+	[ ! -d ~/.config/dsip.d/ ] && sudo mkdir ~/.config/dsip.d/ || echo ok
+	sudo cp ./config/config_client.json ~/.config/dsip.d/
 
 test:
 	go test -cover -race ./...
 	
 docker: build_all
-	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/primary.run   ./docker/primary/files/dsim/server.run
-	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run ./docker/secondary/files/dsim/server.run
-	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      ./docker/secondary/files/dsim/exec.run
+	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/primary.run   ./docker/primary/files/dsip/server.run
+	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/secondary.run ./docker/secondary/files/dsip/server.run
+	cp ./build/$(shell go env GOOS)/$(shell go env GOARCH)/exec.run      ./docker/secondary/files/dsip/exec.run
 	cd docker && $(MAKE) all
 
 build_multiarch:
-	echo "This supports only 64-bit architectures. Also you are not building dsim/exec." ; \
+	echo "This supports only 64-bit architectures. Also you are not building dsip/exec." ; \
 	for i in 0 ; do \
 		for os in windows ; do \
 			for arch in amd64 ; do \
