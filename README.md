@@ -4,6 +4,7 @@
 # Deployment scheme
 
 ![scheme](./docs/uml/deployment/deployment_diagram.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fshanduur%2Fdsip.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fshanduur%2Fdsip?ref=badge_shield)
 
 # Additional tools:
 
@@ -27,3 +28,7 @@ $ dnf --enablerepo=PowerTools install protobuf-compiler
 # Notes:
 
 - SIFT is color dependent, and made to work mainly with grayscale images.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fshanduur%2Fdsip.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fshanduur%2Fdsip?ref=badge_large)
